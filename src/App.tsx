@@ -83,7 +83,7 @@ function App() {
   };
 
   return (
-    <div className={`app ${theme}`}>
+    <div className={`app ${theme} noselect`} style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
       <Link to={'/'}>Главная</Link>
       <Link to={'/about'}>О сайте</Link>
       <Suspense fallback={<div>Loading...</div>}>
@@ -107,8 +107,8 @@ function App() {
       >
         🗑 Удалить
       </button>
-      <div style={{ border: '1px solid black', width: '500px', height: '500px' }}>
-        <Stage width={500} height={500} onClick={() => setSelectedId(null)}>
+      <div style={{ border: '1px solid black', width: window.innerWidth / 2, height: window.innerHeight / 2 }}>
+        <Stage width={window.innerWidth / 2} height={window.innerHeight / 2} onClick={() => setSelectedId(null)}>
           <Layer>
             {figures.map((fig) =>
               fig.type === 'rectangle' ? (
