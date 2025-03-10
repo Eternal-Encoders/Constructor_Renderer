@@ -5,6 +5,8 @@ import { Link, Route, Routes } from 'react-router';
 import { EditorPanel } from './components/EditorPanel';
 import { AboutPageAsync } from './pages/AboutPage/AboutPage.async';
 import { MainPageAsync } from './pages/MainPage/MainPage.async';
+import './styles/index.scss';
+import { useTheme } from './theme/useTheme';
 
 interface Figure {
   id: string;
@@ -19,6 +21,8 @@ interface Figure {
 }
 
 function App() {
+  const { theme, toggleTheme } = useTheme();
+
   const [figures, setFigures] = useState<Figure[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -79,7 +83,7 @@ function App() {
   };
 
   return (
-    <>
+    <div className={`app ${theme}`}>
       <Link to={'/'}>Главная</Link>
       <Link to={'/about'}>О сайте</Link>
       <Suspense fallback={<div>Loading...</div>}>
@@ -149,7 +153,7 @@ function App() {
           </Layer>
         </Stage>
       </div>
-    </>
+    </div>
   );
 }
 

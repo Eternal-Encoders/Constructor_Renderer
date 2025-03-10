@@ -2,7 +2,6 @@
     margin-left: 10px;
 
     &__list {
-        list-style: none;
         display: flex;
         width: 280px;
         height: 40px;
@@ -24,7 +23,7 @@
         
 
         &:hover {
-            background-color: #EDEDF5;
+            background-color: var(--bg1-color);
         }
 
         &:first-child { 
