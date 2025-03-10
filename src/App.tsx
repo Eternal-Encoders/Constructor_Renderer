@@ -1,5 +1,6 @@
+import classNames from 'classnames';
 import Konva from 'konva';
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Layer, Line, Rect, Stage } from 'react-konva';
 import { Link, Route, Routes } from 'react-router';
 import { EditorPanel } from './components/EditorPanel';
@@ -21,10 +22,29 @@ interface Figure {
 }
 
 function App() {
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
 
   const [figures, setFigures] = useState<Figure[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (event: { keyCode: number; ctrlKey: boolean; preventDefault: () => void; }) => {
+      console.log(event);
+      if (event.keyCode === 46 && selectedId) {
+        handleDelete();
+      }
+      if (event.ctrlKey && event.keyCode === 90) {
+        event.preventDefault(); // предотвращаем стандартное поведение
+        handleUndoMove();
+      }
+    };
+    // Добавляем слушатель события нажатия клавиш
+    window.addEventListener('keydown', handleKeyDown);
+    // Удаляем слушатель при размонтировании компонента
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedId]); // Зависимость от selectedId
 
   const handleAddFigure = (type: 'rectangle' | 'dottedLine') => {
     const newFigure: Figure = {
@@ -83,7 +103,7 @@ function App() {
   };
 
   return (
-    <div className={`app ${theme} noselect`} style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+    <div className={classNames(`app ${theme} noselect`)} style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
       <Link to={'/'}>Главная</Link>
       <Link to={'/about'}>О сайте</Link>
       <Suspense fallback={<div>Loading...</div>}>
@@ -98,7 +118,7 @@ function App() {
         disabled={!selectedId}
         style={{ margin: '10px' }}
       >
-        Отменить перемещение
+        Назад
       </button>
       <button
         onClick={handleDelete}
