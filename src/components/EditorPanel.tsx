@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import DottedLine from '../assets/DottedLine.svg?react';
 import Rectangle from '../assets/Rectangle.svg?react';
 import cls from "./EditorPanel.module.scss";
@@ -8,12 +9,12 @@ interface IEditorPanelProps {
 
 export const EditorPanel = ({ onAddFigure }: IEditorPanelProps) => {
     return (
-        <div className={cls.EditorPanel}>
-            <ul className={cls.EditorPanel__list}>
-                <li className={cls.EditorPanel__item} onClick={() => onAddFigure('rectangle')}>
+        <div className={classNames(cls.EditorPanel)}>
+            <ul className={classNames(cls.EditorPanel__list)}>
+                <li className={classNames(cls.EditorPanel__item)} onClick={() => onAddFigure('rectangle')}>
                     <Rectangle />
                 </li>
-                <li className={cls.EditorPanel__item} onClick={() => onAddFigure('dottedLine')}>
+                <li className={classNames(cls.EditorPanel__item)} onClick={() => onAddFigure('dottedLine')}>
                     <DottedLine />
                 </li>
             </ul>
