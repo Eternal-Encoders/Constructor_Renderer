@@ -1,5 +1,6 @@
 import Konva from 'konva';
 import { useEffect, useRef } from 'react';
+import { EditorPanel } from './components/EditorPanel';
 
 function App() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -39,10 +40,11 @@ function App() {
     <>
       <div
         ref={containerRef}
-        style={{ border: '1px solid black', height: '500px', width: '500px' }}
+        style={{ border: '1px solid black', height: '500px', width: '500px', marginBottom: '20px' }}
       >
         {/* Konva сам всё нарисует внутри */}
       </div>
+      <EditorPanel />
     </>
   );
 }

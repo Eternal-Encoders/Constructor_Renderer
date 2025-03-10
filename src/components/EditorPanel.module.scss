@@ -1,0 +1,39 @@
+.EditorPanel {
+    margin-left: 10px;
+
+    &__list {
+        list-style: none;
+        display: flex;
+        width: 280px;
+        height: 40px;
+        // border: 1px solid #C3C3D0;
+        // border-radius: 6px;
+    }
+
+    &__item {
+        cursor: pointer;
+        width: 56px;
+        height: 40px;
+        padding: 8px 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+        border: 1px solid #C3C3D0;
+        border-right: none;
+        
+
+        &:hover {
+            background-color: #EDEDF5;
+        }
+
+        &:first-child { 
+            border-radius: 6px 0 0 6px;
+        }
+
+        &:last-child {
+            border-radius: 0 6px 6px 0;
+            border-right: 1px solid #C3C3D0;
+        }
+    }
+}
