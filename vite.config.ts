@@ -12,15 +12,15 @@ export default defineConfig({
         floatPrecision: 2,
       },
     },
-  
+
     // esbuild options, to transform jsx to js
     esbuildOptions: {
       // ...
     },
-  
+
     // A minimatch pattern, or array of patterns, which specifies the files in the build the plugin should include.
     include: "**/*.svg?react",
-  
+
     //  A minimatch pattern, or array of patterns, which specifies the files in the build the plugin should ignore. By default no files are ignored.
     exclude: "",
   }), react()],
@@ -31,4 +31,17 @@ export default defineConfig({
       },
     },
   },
-})
+  resolve: {
+    alias: {
+      app: "/src/app",
+      assets: "/src/assets",
+      components: "/src/components",
+      entities: "/src/entities",
+      helpers: "/src/helpers",
+      pages: "/src/pages",
+      processes: "/src/processes",
+      shared: "/src/shared",
+      widgets: "/src/widgets"
+    },
+  },
+});
