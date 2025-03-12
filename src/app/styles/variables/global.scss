@@ -1,0 +1,34 @@
+:root {
+    --font-family-main: Lab Grotesque, "Times New Roman", Serif;
+
+    --font-size-l: 24px;
+    --font-line-l: 32px;
+    --font-weight-l: 600;
+    --font-l: var(--font-weight-l) var(--font-size-l) / var(--font-line-l) var(--font-family-main);
+    
+    --font-size-article: 16px;
+    --font-line-article: 20px;
+    --font-weight-article: 500;
+    --font-article: var(--font-weight-article) var(--font-size-article) / var(--font-line-article) var(--font-family-main);
+    
+    --font-size-main: 14px;
+    --font-line-main: 20px;
+    --font-weight-main: 500;
+    --font-main: var(--font-weight-main) var(--font-size-main) / var(--font-line-main) var(--font-family-main);
+    
+    --font-size-secondary: 14px;
+    --font-line-secondary: 20px;
+    --font-weight-secondary: 400;
+    --font-secondary: var(--font-weight-secondary) var(--font-size-secondary) / var(--font-line-secondary) var(--font-family-main);
+
+    --font-size-light: 14px;
+    --font-line-light: 20px;
+    --font-weight-light: 300;
+    --font-light: var(--font-weight-light) var(--font-size-light) / var(--font-line-light) var(--font-family-main);
+
+    --font-size-description: 12px;
+    --font-line-description: 16px;
+    --font-weight-description: 400;
+    --font-description: var(--font-weight-description) var(--font-size-description) / var(--font-line-description) var(--font-family-main);
+}
+
