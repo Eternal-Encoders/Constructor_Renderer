@@ -1,0 +1,10 @@
+.ActionButton {
+
+    &.active {
+        color: red;
+    }
+
+    &.disable {
+        color: gray;
+    }
+}

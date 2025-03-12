@@ -1,25 +1,14 @@
+import { AppRouter } from 'app/providers/router';
+import { useTheme } from 'app/providers/ThemeProvider';
+import 'app/styles/index.scss';
 import classNames from 'classnames';
+import { Figure } from 'entities/Figure/Figure';
 import Konva from 'konva';
-import { Suspense, useEffect, useState } from 'react';
-import { Layer, Line, Rect, Stage } from 'react-konva';
-import { Link, Route, Routes } from 'react-router';
-import { EditorPanel } from './components/EditorPanel';
-import { AboutPageAsync } from './pages/AboutPage/AboutPage.async';
-import { MainPageAsync } from './pages/MainPage/MainPage.async';
-import './styles/index.scss';
-import { useTheme } from './theme/useTheme';
-
-interface Figure {
-  id: string;
-  type: 'rectangle' | 'dottedLine';
-  x: number;
-  y: number;
-  width?: number;
-  height?: number;
-  points?: number[];
-  draggable: boolean;
-  history: { x: number; y: number; }[];
-}
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router';
+import { ActionButton } from 'shared/ui';
+import { Canvas } from 'widgets/Canvas';
+import { ObjectPalette } from 'widgets/ObjectPalette';
 
 function App() {
   const { theme } = useTheme();
@@ -44,6 +33,7 @@ function App() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedId]); // Зависимость от selectedId
 
   const handleAddFigure = (type: 'rectangle' | 'dottedLine') => {
@@ -106,73 +96,17 @@ function App() {
     <div className={classNames(`app ${theme} noselect`)} style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
       <Link to={'/'}>Главная</Link>
       <Link to={'/about'}>О сайте</Link>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Routes>
-          <Route path="/about" element={<AboutPageAsync />} />
-          <Route path="/" element={<MainPageAsync />} />
-        </Routes>
-      </Suspense>
-      <EditorPanel onAddFigure={handleAddFigure} />
-      <button
-        onClick={handleUndoMove}
-        disabled={!selectedId}
-        style={{ margin: '10px' }}
-      >
-        Назад
-      </button>
-      <button
-        onClick={handleDelete}
-        disabled={!selectedId}
-        style={{ margin: '10px', color: selectedId ? 'red' : 'gray' }}
-      >
-        🗑 Удалить
-      </button>
-      <div style={{ border: '1px solid black', width: window.innerWidth / 2, height: window.innerHeight / 2 }}>
-        <Stage width={window.innerWidth / 2} height={window.innerHeight / 2} onClick={() => setSelectedId(null)}>
-          <Layer>
-            {figures.map((fig) =>
-              fig.type === 'rectangle' ? (
-                <Rect
-                  key={fig.id}
-                  x={fig.x}
-                  y={fig.y}
-                  width={fig.width}
-                  height={fig.height}
-                  fill={selectedId === fig.id ? 'lightblue' : '#00D2FF'}
-                  stroke="black"
-                  strokeWidth={2}
-                  draggable
-                  onClick={(e) => {
-                    e.cancelBubble = true;
-                    setSelectedId(fig.id);
-                  }}
-                  onDragMove={(e) => handleDragMove(fig.id, e)}
-                  onDragEnd={(e) => handleDragEnd(fig.id, e)}
-                />
-              ) : (
-                <Line
-                  key={fig.id}
-                  x={fig.x}
-                  y={fig.y}
-                  points={fig.points!}
-                  stroke="black"
-                  strokeWidth={2}
-                  lineCap="round"
-                  lineJoin="round"
-                  dash={[10, 5]}
-                  draggable
-                  onClick={(e) => {
-                    e.cancelBubble = true;
-                    setSelectedId(fig.id);
-                  }}
-                  onDragMove={(e) => handleDragMove(fig.id, e)}
-                  onDragEnd={(e) => handleDragEnd(fig.id, e)}
-                />
-              )
-            )}
-          </Layer>
-        </Stage>
-      </div>
+      <AppRouter />
+      <ObjectPalette onAddFigure={handleAddFigure} />
+      <ActionButton selectedId={selectedId ?? undefined} onClick={() => handleUndoMove()}>Назад</ActionButton>
+      <ActionButton selectedId={selectedId ?? undefined} onClick={() => handleDelete()}>Удалить</ActionButton>
+      <Canvas
+        figures={figures}
+        selectedId={selectedId ?? undefined}
+        handleDragMove={handleDragMove}
+        handleDragEnd={handleDragEnd}
+        setSelectedId={setSelectedId}
+      />
     </div>
   );
 }
