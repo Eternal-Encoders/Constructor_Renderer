@@ -33,9 +33,9 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      App: "/src/App.tsx",
       app: "/src/app",
       assets: "/src/assets",
-      components: "/src/components",
       entities: "/src/entities",
       helpers: "/src/helpers",
       pages: "/src/pages",
