@@ -5,9 +5,9 @@ import classNames from 'classnames';
 import { Figure } from 'entities/Figure/Figure';
 import Konva from 'konva';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router';
 import { ActionButton } from 'shared/ui';
 import { Canvas } from 'widgets/Canvas';
+import { Navbar } from 'widgets/Navbar';
 import { ObjectPalette } from 'widgets/ObjectPalette';
 
 function App() {
@@ -93,20 +93,21 @@ function App() {
   };
 
   return (
-    <div className={classNames(`app ${theme} noselect`)} style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
-      <Link to={'/'}>Главная</Link>
-      <Link to={'/about'}>О сайте</Link>
-      <AppRouter />
-      <ObjectPalette onAddFigure={handleAddFigure} />
-      <ActionButton selectedId={selectedId ?? undefined} onClick={() => handleUndoMove()}>Назад</ActionButton>
-      <ActionButton selectedId={selectedId ?? undefined} onClick={() => handleDelete()}>Удалить</ActionButton>
-      <Canvas
-        figures={figures}
-        selectedId={selectedId ?? undefined}
-        handleDragMove={handleDragMove}
-        handleDragEnd={handleDragEnd}
-        setSelectedId={setSelectedId}
-      />
+    <div className={classNames(`app ${theme} noselect`)}>
+      <Navbar marginBottom={12} />
+      <div className={classNames(`content-page`)}>
+        <AppRouter />
+        <ObjectPalette onAddFigure={handleAddFigure} />
+        <ActionButton selectedId={selectedId ?? undefined} onClick={() => handleUndoMove()}>Назад</ActionButton>
+        <ActionButton selectedId={selectedId ?? undefined} onClick={() => handleDelete()}>Удалить</ActionButton>
+        <Canvas
+          figures={figures}
+          selectedId={selectedId ?? undefined}
+          handleDragMove={handleDragMove}
+          handleDragEnd={handleDragEnd}
+          setSelectedId={setSelectedId}
+        />
+      </div>
     </div>
   );
 }
