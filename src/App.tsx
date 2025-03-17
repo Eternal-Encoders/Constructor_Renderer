@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { Figure } from 'entities/Figure/Figure';
 import Konva from 'konva';
 import { useEffect, useState } from 'react';
-import { ActionButton } from 'shared/ui';
+import { ActionButton } from 'shared/ui/ActionButton/ActionButton';
 import { Canvas } from 'widgets/Canvas';
 import { Navbar } from 'widgets/Navbar';
 import { ObjectPalette } from 'widgets/ObjectPalette';
