@@ -2,8 +2,7 @@ import { AppRouter } from 'app/providers/router';
 import { useTheme } from 'app/providers/ThemeProvider';
 import 'app/styles/index.scss';
 import classNames from 'classnames';
-import { Figure } from 'entities/Figure/Figure';
-import Konva from 'konva';
+import { Figure, FigureType } from 'entities/Figure/Figure';
 import { useEffect, useState } from 'react';
 import { ActionButton } from 'shared/ui/ActionButton/ActionButton';
 import { Canvas } from 'widgets/Canvas';
@@ -15,16 +14,30 @@ function App() {
 
   const [figures, setFigures] = useState<Figure[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedFigure, setSelectedFigure] = useState<FigureType | null>(null);
 
   useEffect(() => {
     const handleKeyDown = (event: { keyCode: number; ctrlKey: boolean; preventDefault: () => void; }) => {
-      console.log(event);
+      // Key Del
       if (event.keyCode === 46 && selectedId) {
         handleDelete();
       }
-      if (event.ctrlKey && event.keyCode === 90) {
+      // Key Ctrl + Z
+      else if (event.ctrlKey && event.keyCode === 90) {
         event.preventDefault(); // предотвращаем стандартное поведение
         handleUndoMove();
+      }
+      // Key V
+      else if (event.keyCode === 86) {
+        setSelectedFigure(null);
+      }
+      // Key R
+      else if (event.keyCode === 82) {
+        setSelectedFigure(FigureType.Rectangle);
+      }
+      // Key L
+      else if (event.keyCode === 76) {
+        setSelectedFigure(FigureType.DottedLine);
       }
     };
     // Добавляем слушатель события нажатия клавиш
@@ -35,41 +48,6 @@ function App() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedId]); // Зависимость от selectedId
-
-  const handleAddFigure = (type: 'rectangle' | 'dottedLine') => {
-    const newFigure: Figure = {
-      id: `${type}-${Date.now()}`,
-      type,
-      x: 100,
-      y: 100,
-      width: type === 'rectangle' ? 100 : undefined,
-      height: type === 'rectangle' ? 50 : undefined,
-      points: type === 'dottedLine' ? [0, 0, 100, 0] : undefined,
-      draggable: true,
-      history: [{ x: 100, y: 100 }],
-    };
-    setFigures([...figures, newFigure]);
-  };
-
-  const handleDragMove = (id: string, e: Konva.KonvaEventObject<DragEvent>) => {
-    setFigures((prev) =>
-      prev.map((fig) =>
-        fig.id === id
-          ? { ...fig, x: e.target.x(), y: e.target.y() }
-          : fig
-      )
-    );
-  };
-
-  const handleDragEnd = (id: string, e: Konva.KonvaEventObject<DragEvent>) => {
-    setFigures((prev) =>
-      prev.map((fig) =>
-        fig.id === id
-          ? { ...fig, history: [...fig.history, { x: e.target.x(), y: e.target.y() }] }
-          : fig
-      )
-    );
-  };
 
   const handleUndoMove = () => {
     if (!selectedId) return;
@@ -97,14 +75,15 @@ function App() {
       <Navbar marginBottom={12} />
       <div className={classNames(`content-page`)}>
         <AppRouter />
-        <ObjectPalette onAddFigure={handleAddFigure} />
+        <ObjectPalette setSelectedFigure={setSelectedFigure} selectedFigure={selectedFigure}
+        />
         <ActionButton selectedId={selectedId ?? undefined} onClick={() => handleUndoMove()}>Назад</ActionButton>
         <ActionButton selectedId={selectedId ?? undefined} onClick={() => handleDelete()}>Удалить</ActionButton>
         <Canvas
+          setFigures={setFigures}
           figures={figures}
           selectedId={selectedId ?? undefined}
-          handleDragMove={handleDragMove}
-          handleDragEnd={handleDragEnd}
+          selectedFigure={selectedFigure}
           setSelectedId={setSelectedId}
         />
       </div>
