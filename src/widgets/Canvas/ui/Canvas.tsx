@@ -111,22 +111,42 @@ export const Canvas = ({ className, figures, selectedId, selectedFigure, setSele
     };
 
     const onWheel = (event: KonvaEventObject<WheelEvent, Node<NodeConfig>>) => {
-        return event.evt.deltaY > 0 ?
-            scale <= 0.2 ?
-                null : setScale(scale! - 0.1) :
-            scale >= 3 ?
-                null : setScale(scale! + 0.1);
+        event.evt.preventDefault();
+
+        const stage = event.target.getStage();
+        if (!stage) return;
+
+        const pointer = stage.getPointerPosition();
+        if (!pointer) return;
+
+        const scaleBy = 1.1;
+        const newScale = event.evt.deltaY > 0 ? scale / scaleBy : scale * scaleBy;
+        if (newScale < 0.2 || newScale > 3) return;
+
+        const mousePointTo = {
+            x: (pointer.x - canvasOffset.x) / scale,
+            y: (pointer.y - canvasOffset.y) / scale,
+        };
+
+        setScale(newScale);
+        setCanvasOffset({
+            x: pointer.x - mousePointTo.x * newScale,
+            y: pointer.y - mousePointTo.y * newScale,
+        });
     };
 
     const onMouseUp = (event: ReactMouseEvent<HTMLDivElement, MouseEvent>) => {
         event.preventDefault();
-        console.log(event);
+
         if (selectedFigure !== null) {
+            const x = (event.pageX - event.currentTarget.offsetLeft - canvasOffset.x) / scale - 50;
+            const y = (event.pageY - event.currentTarget.offsetTop - canvasOffset.y) / scale - 25;
+
             const newFigure: Figure = {
                 id: `${selectedFigure}-${Date.now()}`,
                 type: selectedFigure,
-                x: event.pageX - event.currentTarget.offsetLeft - (100 / 2),
-                y: selectedFigure === FigureType.DottedLine ? event.pageY - event.currentTarget.offsetTop : event.pageY - event.currentTarget.offsetTop - (50 / 2),
+                x,
+                y,
                 width: selectedFigure === FigureType.Rectangle ? 100 : undefined,
                 height: selectedFigure === FigureType.Rectangle ? 50 : undefined,
                 points: selectedFigure === FigureType.DottedLine ? [0, 0, 100, 0] : undefined,
@@ -136,6 +156,43 @@ export const Canvas = ({ className, figures, selectedId, selectedFigure, setSele
             setFigures([...figures, newFigure]);
         }
     };
+
+
+    const CANVAS_SIZE = { width: 20000, height: 20000 }; // Размер рабочего холста
+
+    const [canvasOffset, setCanvasOffset] = useState({
+        x: window.innerWidth / 2 - CANVAS_SIZE.width / 2,
+        y: window.innerHeight / 2 - CANVAS_SIZE.height / 2
+    });
+
+    const [isDragging, setIsDragging] = useState(false);
+    const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
+
+    const handleMouseDown = (e: KonvaEventObject<MouseEvent>) => {
+        setIsDragging(true);
+        setLastMousePos({ x: e.evt.clientX, y: e.evt.clientY });
+    };
+
+    const handleMouseMove = (e: KonvaEventObject<MouseEvent>) => {
+        if (!isDragging) return;
+
+        const dx = e.evt.clientX - lastMousePos.x;
+        const dy = e.evt.clientY - lastMousePos.y;
+
+        setCanvasOffset(prev => ({
+            x: prev.x + dx,
+            y: prev.y + dy,
+        }));
+
+        setLastMousePos({ x: e.evt.clientX, y: e.evt.clientY });
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
+
+    console.log(canvasOffset);
+    console.log(lastMousePos);
 
     return (
         <div
@@ -148,8 +205,15 @@ export const Canvas = ({ className, figures, selectedId, selectedFigure, setSele
                 height={canvasSize.height}
                 onClick={() => setSelectedId(null)}
                 scale={{ x: scale, y: scale }}
+                x={canvasOffset.x}
+                y={canvasOffset.y}
+                // draggable={false}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
             >
                 <Layer>
+                    <Rect width={CANVAS_SIZE.width} height={CANVAS_SIZE.height} fill="#f0f0f0" />
                     {figures.map((fig: Figure) => {
                         switch (fig.type) {
                             case FigureType.Rectangle:
