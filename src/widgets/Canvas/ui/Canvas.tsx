@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { Figure, FigureType } from "entities/Figure/Figure";
 import Konva from "konva";
 import { KonvaEventObject, Node, NodeConfig } from "konva/lib/Node";
-import { MouseEvent as ReactMouseEvent, useEffect, useState } from "react";
+import { MouseEvent as ReactMouseEvent, useState } from "react";
 import { Layer, Line, Rect, Stage } from "react-konva";
 import cls from "./Canvas.module.scss";
 
@@ -13,45 +13,42 @@ interface ICanvasProps {
     figures: Figure[];
     setSelectedId: (props: string | null) => void;
     setFigures: (props: Figure[] | ((prev: Figure[]) => Figure[])) => void;
+    scale: number | null;
+    setScale: (props: number) => void;
 }
 
-export const Canvas = ({ className, figures, selectedId, selectedFigure, setSelectedId, setFigures }: ICanvasProps) => {
+export const Canvas = ({ className, figures, selectedId, selectedFigure, setSelectedId, setFigures, scale, setScale, }: ICanvasProps) => {
 
     const [canvasSize, setCanvasSize] = useState({ width: window.innerWidth / 2, height: window.innerHeight / 2 });
-    const borderWithPx = 2;
+
+    // Задаём деффолтное значение для скалирования.
+    if (scale === null) scale = 1;
+
+    const strokeWidth = 1;
     const magneticDistance = 5;
-
-    useEffect(() => {
-        const handleResize = () => {
-            setCanvasSize({ width: window.innerWidth / 2, height: window.innerHeight / 2 });
-        };
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
 
     function tryMagneticCanvasBorders(e: Konva.KonvaEventObject<DragEvent>) {
         if (e.target.x() < 0) e.target.x(0); // Не даем выходить за границы верхнего левого угла
         if (e.target.y() < 0) e.target.y(0); // Не даем выходить за границы верхнего левого угла
 
         // Не даем выходить за границы нижнего левого угла
-        if (e.target.y() + e.target.attrs.height + borderWithPx >= canvasSize.height)
-            e.target.y(canvasSize.height - e.target.attrs.height - borderWithPx);
+        if (e.target.y() + e.target.attrs.height + strokeWidth >= canvasSize.height)
+            e.target.y(canvasSize.height - e.target.attrs.height - strokeWidth);
         // Не даем выходить за границы нижнего правого угла
-        if (e.target.x() + e.target.attrs.width + borderWithPx >= canvasSize.width)
-            e.target.x(canvasSize.width - e.target.attrs.width - borderWithPx);
+        if (e.target.x() + e.target.attrs.width + strokeWidth >= canvasSize.width)
+            e.target.x(canvasSize.width - e.target.attrs.width - strokeWidth);
 
         // Примагничивание к левым верхним границам
         if (e.target.x() <= magneticDistance && e.target.x() > 0) e.target.x(0);
         if (e.target.y() <= magneticDistance && e.target.y() > 0) e.target.y(0);
 
         // Примагничивание к правым нижнимграницам
-        if (e.target.x() + e.target.attrs.width + borderWithPx <= canvasSize.width && e.target.x() +
-            e.target.attrs.width + borderWithPx >= canvasSize.width - magneticDistance)
-            e.target.x(canvasSize.width - e.target.attrs.width - borderWithPx);
-        if (e.target.y() + e.target.attrs.height + borderWithPx <= canvasSize.height && e.target.y() +
-            e.target.attrs.height + borderWithPx >= canvasSize.height - magneticDistance)
-            e.target.y(canvasSize.height - e.target.attrs.height - borderWithPx);
+        if (e.target.x() + e.target.attrs.width + strokeWidth <= canvasSize.width && e.target.x() +
+            e.target.attrs.width + strokeWidth >= canvasSize.width - magneticDistance)
+            e.target.x(canvasSize.width - e.target.attrs.width - strokeWidth);
+        if (e.target.y() + e.target.attrs.height + strokeWidth <= canvasSize.height && e.target.y() +
+            e.target.attrs.height + strokeWidth >= canvasSize.height - magneticDistance)
+            e.target.y(canvasSize.height - e.target.attrs.height - strokeWidth);
     }
 
     function tryMagneticFigureBorders(id: string, e: KonvaEventObject<DragEvent, Node<NodeConfig>>) {
@@ -61,20 +58,20 @@ export const Canvas = ({ className, figures, selectedId, selectedFigure, setSele
             // Проверить на rectangle
             if (fig.width !== undefined && fig.height !== undefined) {
                 // Проверка на примагничивание к правому краю фигуры
-                if (Math.abs(fig.x + fig.width + borderWithPx - e.target.x()) < magneticDistance) {
-                    e.target.x(fig.x + fig.width + borderWithPx);
+                if (Math.abs(fig.x + fig.width + strokeWidth - e.target.x()) < magneticDistance) {
+                    e.target.x(fig.x + fig.width + strokeWidth);
                 }
                 // Проверка на примагничивание к нижнему краю фигуры
-                else if (Math.abs(fig.y + fig.height + borderWithPx - e.target.y()) < magneticDistance) {
-                    e.target.y(fig.y + fig.height + borderWithPx);
+                else if (Math.abs(fig.y + fig.height + strokeWidth - e.target.y()) < magneticDistance) {
+                    e.target.y(fig.y + fig.height + strokeWidth);
                 }
                 // Проверка на примагничивание к левому краю фигуры
-                else if (Math.abs(fig.x + borderWithPx - (e.target.x() + e.target.attrs.width)) < magneticDistance) {
-                    e.target.x(fig.x - borderWithPx - e.target.attrs.width);
+                else if (Math.abs(fig.x + strokeWidth - (e.target.x() + e.target.attrs.width)) < magneticDistance) {
+                    e.target.x(fig.x - strokeWidth - e.target.attrs.width);
                 }
                 // Проверка на примагничивание к верхнему краю фигуры
-                else if (Math.abs(fig.y + borderWithPx - (e.target.y() + e.target.attrs.height)) < magneticDistance) {
-                    e.target.y(fig.y - borderWithPx - e.target.attrs.height);
+                else if (Math.abs(fig.y + strokeWidth - (e.target.y() + e.target.attrs.height)) < magneticDistance) {
+                    e.target.y(fig.y - strokeWidth - e.target.attrs.height);
                 }
             }
         });
@@ -114,9 +111,12 @@ export const Canvas = ({ className, figures, selectedId, selectedFigure, setSele
     };
 
     const onWheel = (event: KonvaEventObject<WheelEvent, Node<NodeConfig>>) => {
-        console.log(event);
+        return event.evt.deltaY > 0 ?
+            scale <= 0.2 ?
+                null : setScale(scale! - 0.1) :
+            scale >= 3 ?
+                null : setScale(scale! + 0.1);
     };
-
 
     const onMouseUp = (event: ReactMouseEvent<HTMLDivElement, MouseEvent>) => {
         event.preventDefault();
@@ -131,7 +131,7 @@ export const Canvas = ({ className, figures, selectedId, selectedFigure, setSele
                 height: selectedFigure === FigureType.Rectangle ? 50 : undefined,
                 points: selectedFigure === FigureType.DottedLine ? [0, 0, 100, 0] : undefined,
                 draggable: true,
-                history: [{ x: 100, y: 100 }],
+                history: [],
             };
             setFigures([...figures, newFigure]);
         }
@@ -142,7 +142,13 @@ export const Canvas = ({ className, figures, selectedId, selectedFigure, setSele
             onMouseUp={(event) => onMouseUp(event)}
             className={classNames(cls.Canvas, {}, [className])}
             style={{ width: canvasSize.width, height: canvasSize.height }}>
-            <Stage onWheel={(event) => onWheel(event)} width={canvasSize.width} height={canvasSize.height} onClick={() => setSelectedId(null)}>
+            <Stage
+                onWheel={(event) => onWheel(event)}
+                width={canvasSize.width}
+                height={canvasSize.height}
+                onClick={() => setSelectedId(null)}
+                scale={{ x: scale, y: scale }}
+            >
                 <Layer>
                     {figures.map((fig: Figure) => {
                         switch (fig.type) {
@@ -156,7 +162,8 @@ export const Canvas = ({ className, figures, selectedId, selectedFigure, setSele
                                         height={fig.height}
                                         fill={selectedId === fig.id ? 'lightblue' : '#00D2FF'}
                                         stroke="black"
-                                        strokeWidth={2}
+                                        strokeWidth={1}
+                                        shadowBlur={1}
                                         draggable
                                         onClick={(e) => {
                                             e.cancelBubble = true;
@@ -174,7 +181,7 @@ export const Canvas = ({ className, figures, selectedId, selectedFigure, setSele
                                         y={fig.y}
                                         points={fig.points!}
                                         stroke="black"
-                                        strokeWidth={2}
+                                        strokeWidth={1}
                                         lineCap="round"
                                         lineJoin="round"
                                         dash={[10, 5]}

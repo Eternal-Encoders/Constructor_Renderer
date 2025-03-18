@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { Figure, FigureType } from 'entities/Figure/Figure';
 import { useEffect, useState } from 'react';
 import { ActionButton } from 'shared/ui/ActionButton/ActionButton';
+import { Select } from 'shared/ui/Select/Select';
 import { Canvas } from 'widgets/Canvas';
 import { Navbar } from 'widgets/Navbar';
 import { ObjectPalette } from 'widgets/ObjectPalette';
@@ -15,6 +16,7 @@ function App() {
   const [figures, setFigures] = useState<Figure[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedFigure, setSelectedFigure] = useState<FigureType | null>(null);
+  const [scale, setScale] = useState<number | null>(null);
 
   useEffect(() => {
     const handleKeyDown = (event: { keyCode: number; ctrlKey: boolean; preventDefault: () => void; }) => {
@@ -77,9 +79,14 @@ function App() {
         <AppRouter />
         <ObjectPalette setSelectedFigure={setSelectedFigure} selectedFigure={selectedFigure}
         />
-        <ActionButton selectedId={selectedId ?? undefined} onClick={() => handleUndoMove()}>Назад</ActionButton>
-        <ActionButton selectedId={selectedId ?? undefined} onClick={() => handleDelete()}>Удалить</ActionButton>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: 10, gap: 10 }}>
+          <ActionButton selectedId={selectedId ?? undefined} onClick={() => handleUndoMove()}>Назад</ActionButton>
+          <ActionButton className='red' selectedId={selectedId ?? undefined} onClick={() => handleDelete()}>🗑️ Удалить</ActionButton>
+          <Select setScale={setScale} scale={scale} />
+        </div>
         <Canvas
+          scale={scale}
+          setScale={setScale}
           setFigures={setFigures}
           figures={figures}
           selectedId={selectedId ?? undefined}
