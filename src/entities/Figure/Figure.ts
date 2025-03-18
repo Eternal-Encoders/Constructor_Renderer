@@ -1,6 +1,6 @@
 export interface Figure {
     id: string;
-    type: 'rectangle' | 'dottedLine';
+    type: FigureType;
     x: number;
     y: number;
     width?: number;
@@ -8,4 +8,9 @@ export interface Figure {
     points?: number[];
     draggable: boolean;
     history: { x: number; y: number; }[];
+}
+
+export enum FigureType {
+    Rectangle = 'rectangle',
+    DottedLine = 'dottedLine'
 }
