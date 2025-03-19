@@ -12,5 +12,6 @@ export interface Figure {
 
 export enum FigureType {
     Rectangle = 'rectangle',
-    DottedLine = 'dottedLine'
+    Pen = 'pen',
+    None = 'none'
 }
