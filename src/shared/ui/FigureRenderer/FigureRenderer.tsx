@@ -1,7 +1,7 @@
 import { ActionType } from "entities/Figure/Action";
 import { Figure, FigureType } from "entities/Figure/Figure";
 import { KonvaEventObject } from "konva/lib/Node";
-import { Line, Rect } from "react-konva";
+import { Rect } from "react-konva";
 
 interface IFigureRendererProps {
     className?: string;
@@ -74,25 +74,25 @@ export const FigureRenderer = ({ className, figures, selectedId, selectedAction,
                 />
             );
         }
-        if (fig.type === FigureType.DottedLine) {
-            return (
-                <Line
-                    key={fig.id}
-                    {...fig}
-                    stroke="black"
-                    strokeWidth={1}
-                    lineCap="round"
-                    lineJoin="round"
-                    dash={[10, 5]}
-                    draggable={selectedAction !== ActionType.Drag}
-                    onClick={(e) => {
-                        if (selectedAction === ActionType.Drag) return;
-                        e.cancelBubble = true;
-                        setSelectedId(fig.id);
-                    }}
-                />
-            );
-        }
+        // if (fig.type === FigureType.Pen) {
+        //     return (
+        //         <Line
+        //             key={fig.id}
+        //             {...fig}
+        //             stroke="black"
+        //             strokeWidth={1}
+        //             lineCap="round"
+        //             lineJoin="round"
+        //             dash={[10, 5]}
+        //             draggable={selectedAction !== ActionType.Drag}
+        //             onClick={(e) => {
+        //                 if (selectedAction === ActionType.Drag) return;
+        //                 e.cancelBubble = true;
+        //                 setSelectedId(fig.id);
+        //             }}
+        //         />
+        //     );
+        // }
         return null;
     });
 };
