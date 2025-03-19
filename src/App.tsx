@@ -16,7 +16,7 @@ function App() {
 
   const [figures, setFigures] = useState<Figure[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [selectedFigure, setSelectedFigure] = useState<FigureType | null>(null);
+  const [selectedFigure, setSelectedFigure] = useState<FigureType>(FigureType.None);
   const [selectedAction, setSelectedAction] = useState<ActionType>(ActionType.Cursor);
   const [scale, setScale] = useState<number>(1);
 
@@ -43,16 +43,18 @@ function App() {
   };
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    event.preventDefault();
     if (event.keyCode === 46 && selectedId) handleDelete();
     else if (event.ctrlKey && event.keyCode === 90) {
-      event.preventDefault();
       handleUndoMove();
     } else if (event.keyCode === 86) {
-      setSelectedFigure(null);
+      setSelectedAction(ActionType.Cursor);
     } else if (event.keyCode === 82) {
       setSelectedFigure(FigureType.Rectangle);
-    } else if (event.keyCode === 76) {
-      setSelectedFigure(FigureType.DottedLine);
+    } else if (event.keyCode === 80) {
+      setSelectedFigure(FigureType.Pen);
+    } else if (event.keyCode === 32) {
+      setSelectedAction(ActionType.Drag);
     }
   }, [selectedId, setSelectedFigure, handleUndoMove]);
 
