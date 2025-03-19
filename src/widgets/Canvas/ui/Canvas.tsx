@@ -3,7 +3,8 @@ import { ActionType } from "entities/Figure/Action";
 import { Figure, FigureType } from "entities/Figure/Figure";
 import { KonvaEventObject } from "konva/lib/Node";
 import { useState } from "react";
-import { Layer, Line, Rect, Stage } from "react-konva";
+import { Layer, Stage } from "react-konva";
+import { FigureRenderer } from "shared/ui/FigureRenderer/FigureRenderer";
 import cls from "./Canvas.module.scss";
 
 interface ICanvasProps {
@@ -77,7 +78,7 @@ export const Canvas = ({ className, figures, selectedId, selectedFigure, setSele
             draggable: true,
             history: [{ x, y }],
         };
-        setFigures([...figures, newFigure]);
+        setFigures((prev) => [...prev, newFigure]);
     };
 
     return (
@@ -95,51 +96,7 @@ export const Canvas = ({ className, figures, selectedId, selectedFigure, setSele
                 onMouseUp={handleMouseUp}
             >
                 <Layer>
-                    {figures.map((fig) => {
-                        if (fig.type === FigureType.Rectangle) {
-                            return (
-                                <Rect
-                                    key={fig.id}
-                                    x={fig.x}
-                                    y={fig.y}
-                                    width={fig.width}
-                                    height={fig.height}
-                                    fill={selectedId === fig.id ? 'lightblue' : '#00D2FF'}
-                                    stroke="black"
-                                    strokeWidth={1}
-                                    shadowBlur={1}
-                                    draggable={selectedAction !== ActionType.Drag}
-                                    onClick={(e) => {
-                                        if (selectedAction === ActionType.Drag) return;
-                                        e.cancelBubble = true;
-                                        setSelectedId(fig.id);
-                                    }}
-                                />
-                            );
-                        }
-                        if (fig.type === FigureType.DottedLine) {
-                            return (
-                                <Line
-                                    key={fig.id}
-                                    x={fig.x}
-                                    y={fig.y}
-                                    points={fig.points!}
-                                    stroke="black"
-                                    strokeWidth={1}
-                                    lineCap="round"
-                                    lineJoin="round"
-                                    dash={[10, 5]}
-                                    draggable={selectedAction !== ActionType.Drag}
-                                    onClick={(e) => {
-                                        if (selectedAction === ActionType.Drag) return;
-                                        e.cancelBubble = true;
-                                        setSelectedId(fig.id);
-                                    }}
-                                />
-                            );
-                        }
-                        return null;
-                    })}
+                    <FigureRenderer figures={figures} selectedId={selectedId} selectedAction={selectedAction} setSelectedId={setSelectedId} />
                 </Layer>
             </Stage>
         </div>
