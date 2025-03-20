@@ -16,6 +16,7 @@ const MAGNETIC_DISTANCE = 10;
 
 export const FigureRenderer = ({ className, figures, selectedId, selectedAction, setSelectedId, setFigures }: IFigureRendererProps) => {
     const onDragMove = (e: KonvaEventObject<DragEvent>) => {
+        if (selectedAction !== ActionType.Cursor) return;
         const node = e.target;
         const nodePos = node.position();
 
@@ -64,10 +65,10 @@ export const FigureRenderer = ({ className, figures, selectedId, selectedAction,
                     stroke="black"
                     strokeWidth={1}
                     shadowBlur={1}
-                    draggable={selectedAction !== ActionType.Drag}
+                    draggable={selectedAction === ActionType.Cursor}
                     onDragMove={onDragMove}
                     onClick={(e) => {
-                        if (selectedAction === ActionType.Drag) return;
+                        if (selectedAction !== ActionType.Cursor) return;
                         e.cancelBubble = true;
                         setSelectedId(fig.id);
                     }}

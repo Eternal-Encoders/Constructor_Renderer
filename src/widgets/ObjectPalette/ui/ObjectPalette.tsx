@@ -29,7 +29,7 @@ export const ObjectPalette = ({ selectedFigure, setSelectedFigure, selectedActio
                         ? cls.ObjectPalette__item_active
                         : undefined)}
                     onClick={() => {
-                        setSelectedAction(ActionType.Cursor);
+                        setSelectedAction(ActionType.None);
                         setSelectedFigure(FigureType.Rectangle);
                     }}>
                     <Rectangle />
@@ -42,7 +42,10 @@ export const ObjectPalette = ({ selectedFigure, setSelectedFigure, selectedActio
                     className={classNames(cls.ObjectPalette__item, selectedFigure === FigureType.Pen
                         ? cls.ObjectPalette__item_active
                         : undefined)}
-                    onClick={() => setSelectedFigure(FigureType.Pen)}>
+                    onClick={() => {
+                        setSelectedAction(ActionType.None);
+                        setSelectedFigure(FigureType.Pen);
+                    }}>
                     <Pen />
                 </li>
                 <li

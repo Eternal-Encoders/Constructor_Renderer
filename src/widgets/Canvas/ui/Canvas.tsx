@@ -26,7 +26,6 @@ export const Canvas = ({ className, figures, selectedId, selectedFigure,
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             if (!selectedId) return;
-            console.log(event.keyCode);
             event.preventDefault();
             setFigures((prev) =>
                 prev.map((fig) =>
@@ -45,8 +44,6 @@ export const Canvas = ({ className, figures, selectedId, selectedFigure,
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [selectedId, setFigures]);
 
-    const [canvasOffset, setCanvasOffset] = useState({ x: 0, y: 0 });
-
     const onWheel = (event: KonvaEventObject<WheelEvent>) => {
         event.evt.preventDefault();
 
@@ -55,37 +52,6 @@ export const Canvas = ({ className, figures, selectedId, selectedFigure,
         if (newScale < 0.1 || newScale > 3) return;
 
         setScale(newScale);
-    };
-
-    // const onCanvasClick = (event: KonvaEventObject<MouseEvent>) => {
-    //     if (!selectedFigure || selectedAction === ActionType.Drag || selectedId) return;
-
-    //     const stage = event.target.getStage();
-    //     if (!stage || event.target !== stage) return; // Чтобы не кликать по фигурам
-
-    //     const pointer = stage.getPointerPosition();
-    //     if (!pointer) return;
-    //     console.log(event);
-    //     console.log(canvasOffset);
-    //     const x = (pointer.x - canvasOffset.x) / scale;
-    //     const y = (pointer.y - canvasOffset.y) / scale;
-
-    //     const newFigure: Figure = {
-    //         id: `${selectedFigure}-${Date.now()}`,
-    //         type: selectedFigure,
-    //         x,
-    //         y,
-    //         width: selectedFigure === FigureType.Rectangle ? 100 : undefined,
-    //         height: selectedFigure === FigureType.Rectangle ? 50 : undefined,
-    //         points: selectedFigure === FigureType.DottedLine ? [0, 0, 100, 0] : undefined,
-    //         draggable: true,
-    //         history: [{ x, y }],
-    //     };
-    //     setFigures((prev) => [...prev, newFigure]);
-    // };
-
-    const onDragMove = (event: KonvaEventObject<DragEvent>) => {
-        setCanvasOffset(event.target.attrs);
     };
 
     const [startPos, setStartPos] = useState<{ x: number, y: number; } | null>(null);
@@ -116,7 +82,10 @@ export const Canvas = ({ className, figures, selectedId, selectedFigure,
     };
 
     const onMouseDown = (event: KonvaEventObject<MouseEvent>) => {
-        if (selectedAction === ActionType.Drag) return;
+        if (selectedAction === ActionType.Cursor) {
+            if (selectedId && event.target === event.target.getStage()) { setSelectedId(null); return; };
+        }
+        if (selectedAction !== ActionType.None) return;
         const stage = event.target.getStage();
         if (!stage) return;
 
@@ -128,7 +97,7 @@ export const Canvas = ({ className, figures, selectedId, selectedFigure,
 
     const onMouseMove = (event: KonvaEventObject<MouseEvent>) => {
         if (!startPos) return;
-        if (selectedAction === ActionType.Drag) return;
+        if (selectedAction !== ActionType.None) return;
 
         const stage = event.target.getStage();
         if (!stage) return;
@@ -148,13 +117,22 @@ export const Canvas = ({ className, figures, selectedId, selectedFigure,
         });
     };
 
+
     const onMouseUp = (event: KonvaEventObject<MouseEvent>) => {
+        if (selectedAction !== ActionType.None) return;
         if (!tempFigure) return;
-        if (selectedAction === ActionType.Drag) return;
+
+        // Проверяем минимальный размер перед добавлением
+        if (tempFigure.width !== undefined && tempFigure.height !== undefined && (tempFigure.width < 5 || tempFigure.height < 5)) {
+            setTempFigure(null);
+            setStartPos(null);
+            return;
+        }
 
         setFigures((prev) => [...prev, { ...tempFigure, id: `${selectedFigure}-${Date.now()}` }]);
         setTempFigure(null);
         setStartPos(null);
+
     };
 
     return (
@@ -168,7 +146,6 @@ export const Canvas = ({ className, figures, selectedId, selectedFigure,
             onMouseUp={onMouseUp}
             scale={{ x: scale, y: scale }}
             draggable={selectedAction === ActionType.Drag}
-            onDragMove={onDragMove}
         >
             <Layer>
                 <FigureRenderer
