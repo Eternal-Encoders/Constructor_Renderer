@@ -1,7 +1,10 @@
 import classNames from "classnames";
 import { ActionType } from "entities/Figure/Action";
 import { FigureType, Polygon, Rectangle } from "entities/Figure/Figure";
-import { useCallback, useEffect, useState } from "react";
+import { useCtrlWheelZoom } from "helpers/hooks/useCtrlWheelZoom";
+import { useKeyboardShortcuts } from "helpers/hooks/useKeyboardShortcuts";
+import { useMiddleMouseHold } from "helpers/hooks/useMiddleMouseHold";
+import { useCallback, useState } from "react";
 import { ActionButton } from "shared/ui/ActionButton/ActionButton";
 import { Select } from "shared/ui/Select/Select";
 import { Canvas } from "widgets/Canvas";
@@ -55,7 +58,7 @@ const MainPage = () => {
     }, [selectedId, rectangles, setRectangles, polygons, setPolygons]);
 
 
-    const handleDelete = () => {
+    const handleDelete = useCallback(() => {
         if (!selectedId) return;
         if (polygons.some((fig) => fig.id === selectedId)) {
             setPolygons((prev) => prev.filter((fig) => fig.id !== selectedId));
@@ -63,30 +66,21 @@ const MainPage = () => {
             setRectangles((prev) => prev.filter((fig) => fig.id !== selectedId));
         }
         setSelectedId(null);
-    };
+    }, [polygons, rectangles, selectedId]);
 
-    const handleKeyDown = useCallback((event: KeyboardEvent) => {
-        event.preventDefault();
-        if (event.keyCode === 46 && selectedId) handleDelete();
-        else if (event.keyCode === 86) {
-            setSelectedAction(ActionType.Cursor);
-            setSelectedFigure(FigureType.None);
-        } else if (event.keyCode === 82) {
-            setSelectedFigure(FigureType.Rectangle);
-            setSelectedAction(ActionType.None);
-        } else if (event.keyCode === 80) {
-            setSelectedFigure(FigureType.Polygon);
-            setSelectedAction(ActionType.None);
-        } else if (event.keyCode === 32) {
-            setSelectedAction(ActionType.Drag);
-            setSelectedFigure(FigureType.None);
-        }
-    }, [selectedId, setSelectedFigure, handleUndoMove]);
+    useKeyboardShortcuts({
+        selectedId,
+        handleDelete,
+        setSelectedAction,
+        setSelectedFigure,
+    });
 
-    useEffect(() => {
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [handleKeyDown]);
+    useMiddleMouseHold((action, figure) => {
+        setSelectedAction(action);
+        setSelectedFigure(figure);
+    });
+
+    useCtrlWheelZoom({ scale, setScale });
 
     return (
         <div className={classNames(`content-page`)}>
