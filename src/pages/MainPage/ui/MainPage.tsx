@@ -1,4 +1,3 @@
-import { AppRouter } from "app/providers/router";
 import classNames from "classnames";
 import { ActionType } from "entities/Figure/Action";
 import { FigureType, Polygon, Rectangle } from "entities/Figure/Figure";
@@ -91,7 +90,6 @@ const MainPage = () => {
 
     return (
         <div className={classNames(`content-page`)}>
-            <AppRouter />
             <ObjectPalette setSelectedAction={setSelectedAction} selectedAction={selectedAction} setSelectedFigure={setSelectedFigure} selectedFigure={selectedFigure}
             />
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: 10, gap: 10 }}>

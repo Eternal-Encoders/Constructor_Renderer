@@ -1,7 +1,7 @@
+import { AppRouter } from 'app/providers/router';
 import { useTheme } from 'app/providers/ThemeProvider';
 import 'app/styles/index.scss';
 import classNames from 'classnames';
-import { MainPage } from 'pages/MainPage';
 import { Navbar } from 'widgets/Navbar';
 
 function App() {
@@ -9,8 +9,8 @@ function App() {
 
   return (
     <div className={classNames(`app ${theme} noselect`)}>
-      <Navbar marginBottom={12} />в
-      <MainPage />
+      <Navbar marginBottom={12} />
+      <AppRouter />
     </div>
   );
 }
