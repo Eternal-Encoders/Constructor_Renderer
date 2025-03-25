@@ -5,18 +5,21 @@
 
 .app {
   font: var(--font-main);
-
-  background: var(--bg1-color);
+  background: var(--bg2-color);
   color: var(--primary1-color);
   min-height: 100vh;
 }
 
 .noselect {
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
+  -webkit-touch-callout: none; /* iOS Safari */ /* Safari */ /* Konqueror HTML */ /* Firefox */ /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
+}
+
+.content-page {
+  display: flex; 
+  justify-content: center; 
+  flex-direction: column; 
+  align-items: center;
+  background: #fff;
 }

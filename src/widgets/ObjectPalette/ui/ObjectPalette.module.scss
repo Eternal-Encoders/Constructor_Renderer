@@ -1,7 +1,7 @@
 .ObjectPalette {
-
     &__list {
         display: flex;
+
         // width: 280px;
         // height: 40px;
         // border: 1px solid #C3C3D0;
@@ -22,7 +22,7 @@
         
 
         &:hover {
-            background-color: var(--bg1-color);
+            background-color: var(--bg2-color);
         }
 
         &:first-child { 
@@ -32,6 +32,10 @@
         &:last-child {
             border-radius: 0 6px 6px 0;
             border-right: 1px solid #C3C3D0;
+        }
+
+        &_active {
+            background-color: var(--bg1-color) !important;
         }
     }
 }

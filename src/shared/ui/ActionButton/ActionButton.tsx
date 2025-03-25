@@ -10,7 +10,7 @@ interface IActionButtonProps {
 
 export const ActionButton = ({ className, selectedId, onClick, children }: IActionButtonProps) => {
     return (
-        <button className={classNames(cls.ActionButton, selectedId ? 'active' : 'disable', {}, [className])}
+        <button className={classNames(cls.ActionButton, (className === 'red' && selectedId) ? cls.ActionButton_red : undefined)}
             onClick={onClick}
             disabled={!selectedId}
         >

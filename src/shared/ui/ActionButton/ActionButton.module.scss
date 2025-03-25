@@ -1,10 +1,8 @@
 .ActionButton {
 
-    &.active {
-        color: red;
-    }
+    padding: 5px;
 
-    &.disable {
-        color: gray;
+    &_red {
+        color: red;
     }
 }

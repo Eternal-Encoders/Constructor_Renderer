@@ -1,0 +1,28 @@
+.Navbar {
+    width: 100%;
+    height: var(--navbar-height);
+    background: var(--bg2-color);
+    display: flex;
+    align-items: center;
+    padding: 41px 24px 33px 16px;
+    border: 1px solid #C3C3D0;
+}
+
+.links {
+    margin-left: auto;
+}
+
+.mainLink {
+    margin-right: 24px;
+}
+
+.mainLink,
+.aboutLink {
+    color: var(--weak1-color);
+    font: var(--font-secondary);
+    text-decoration: none;
+
+    &:hover {
+        color: var(--highlights1-color);
+    }
+}
