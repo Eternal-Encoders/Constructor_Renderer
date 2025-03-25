@@ -49,18 +49,6 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [selectedId, setRectangles]);
 
-
-    // Set new scale by wheeling up or down
-    const onWheel = (event: KonvaEventObject<WheelEvent>) => {
-        event.evt.preventDefault();
-
-        const scaleBy = 1.1;
-        const newScale = event.evt.deltaY > 0 ? scale / scaleBy : scale * scaleBy;
-        if (newScale < 0.1 || newScale > 3) return;
-
-        setScale(newScale);
-    };
-
     const [startPos, setStartPos] = useState<{ x: number, y: number; } | null>(null);
     const [tempRectangle, setTempRectangle] = useState<Rectangle | null>(null);
     const [tempLine, setTempLine] = useState<Polygon | null>(null);
@@ -212,11 +200,9 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
     return (
         <Stage
             className={classNames(cls.Stage, selectedAction === ActionType.Drag ? cls['grab_active'] : null,)}
-            onWheel={onWheel}
-            width={625}
-            height={916}
-            // width={window.innerWidth}
-            // height={window.innerHeight}
+            // onWheel={onWheel}
+            width={window.innerWidth}
+            height={window.innerHeight}
             onMouseDown={onMouseDown}
             onMouseMove={onMouseMove}
             onMouseUp={onMouseUp}
