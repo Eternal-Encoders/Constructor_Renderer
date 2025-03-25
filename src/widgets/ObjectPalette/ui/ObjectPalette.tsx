@@ -37,14 +37,14 @@ export const ObjectPalette = ({ selectedFigure, setSelectedFigure, selectedActio
                 <li
                     onMouseDown={(event) => {
                         // onMouseDown(event);
-                        return setSelectedFigure(FigureType.Pen);
+                        return setSelectedFigure(FigureType.Polygon);
                     }}
-                    className={classNames(cls.ObjectPalette__item, selectedFigure === FigureType.Pen
+                    className={classNames(cls.ObjectPalette__item, selectedFigure === FigureType.Polygon
                         ? cls.ObjectPalette__item_active
                         : undefined)}
                     onClick={() => {
                         setSelectedAction(ActionType.None);
-                        setSelectedFigure(FigureType.Pen);
+                        setSelectedFigure(FigureType.Polygon);
                     }}>
                     <Pen />
                 </li>
