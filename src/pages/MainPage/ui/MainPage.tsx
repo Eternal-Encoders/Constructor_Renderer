@@ -31,28 +31,30 @@ const MainPage = () => {
         if (isPolygon) {
             setPolygons((prev) =>
                 prev.map((fig) => {
-                    if (fig.id === selectedId && fig.history.length > 1) {
-                        const newHistory = [...fig.history];
-                        newHistory.pop();
-                        return { ...fig, points: newHistory[newHistory.length - 1].points, history: newHistory };
-                    }
-                    return fig;
+                    if (fig.id !== selectedId || fig.history.length === 0) return fig;
+
+                    // Берём последнее состояние
+                    const lastState = fig.history[fig.history.length - 1];
+
+                    return {
+                        ...fig,
+                        points: [...lastState.points], // Восстанавливаем `points`
+                        history: fig.history.slice(0, -1), // Убираем последний элемент из истории
+                    };
                 })
             );
         } else if (isRectangle) {
             setRectangles((prev) =>
-                prev.map((fig) => {
-                    if (fig.id === selectedId && fig.history.length > 0) {
-                        const lastPosition = fig.history[fig.history.length - 1];
-                        return {
+                prev.map((fig) =>
+                    fig.id === selectedId && fig.history.length > 0
+                        ? {
                             ...fig,
-                            x: lastPosition.x,
-                            y: lastPosition.y,
-                            history: fig.history.slice(0, -1),
-                        };
-                    }
-                    return fig;
-                })
+                            x: fig.history[fig.history.length - 1].x,
+                            y: fig.history[fig.history.length - 1].y,
+                            history: fig.history.slice(0, -1), // Удаляем последний элемент из истории
+                        }
+                        : fig
+                )
             );
         }
     }, [selectedId, rectangles, setRectangles, polygons, setPolygons]);
@@ -86,8 +88,9 @@ const MainPage = () => {
         <div className={classNames(`content-page`)}>
             <ObjectPalette setSelectedAction={setSelectedAction} selectedAction={selectedAction} setSelectedFigure={setSelectedFigure} selectedFigure={selectedFigure}
             />
+            {/* TODO: Do Widget for that when will be ready design */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: 10, gap: 10 }}>
-                <ActionButton selectedId={selectedId ?? undefined} onClick={() => handleUndoMove()}>Назад</ActionButton>
+                <ActionButton selectedId={selectedId ?? undefined} onClick={handleUndoMove}>Назад</ActionButton>
                 <ActionButton className='red' selectedId={selectedId ?? undefined} onClick={() => handleDelete()}>🗑️ Удалить</ActionButton>
                 <Select setScale={setScale} scale={scale} />
             </div>

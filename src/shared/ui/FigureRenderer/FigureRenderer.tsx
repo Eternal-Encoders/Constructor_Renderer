@@ -2,7 +2,7 @@ import { ActionType } from "entities/Figure/Action";
 import { Figure, Polygon, Rectangle } from "entities/Figure/Figure";
 import Konva from "konva";
 import { KonvaEventObject } from "konva/lib/Node";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Line, Rect, Transformer } from "react-konva";
 
 interface IFigureRendererProps {
@@ -20,6 +20,19 @@ const MAGNETIC_DISTANCE = 10;
 export const FigureRenderer = ({ className, figure, selectedId, selectedAction, setSelectedId, setRectangles, setPolygons }: IFigureRendererProps) => {
     const transformerRef = useRef<Konva.Transformer>(null);
     const selectedNodeRef = useRef<Konva.Node | null>(null);
+
+    const [isHovered, setIsHovered] = useState(false);
+
+    const onDragStart = (e: KonvaEventObject<DragEvent>) => {
+        const node = e.target;
+        setRectangles((prev) =>
+            prev.map((fig) =>
+                fig.id === node.id()
+                    ? { ...fig, history: [...fig.history, { x: fig.x, y: fig.y }] }
+                    : fig
+            )
+        );
+    };
 
     useEffect(() => {
         if (transformerRef.current) {
@@ -99,9 +112,12 @@ export const FigureRenderer = ({ className, figure, selectedId, selectedAction, 
         <>
             {figure.rectangles.map((fig) => (
                 <Rect
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    onDragStart={onDragStart}
                     key={fig.id}
                     {...fig}
-                    fill={selectedId === fig.id ? "lightblue" : "#00D2FF"}
+                    fill={(selectedId === fig.id) ? "lightblue" : "#00D2FF"}
                     stroke="black"
                     strokeWidth={1}
                     shadowBlur={1}
@@ -123,6 +139,9 @@ export const FigureRenderer = ({ className, figure, selectedId, selectedAction, 
             ))}
             {figure.polygons.map((pol) => (
                 <Line
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    onDragStart={onDragStart}
                     key={pol.id}
                     points={pol.points}
                     stroke="black"
