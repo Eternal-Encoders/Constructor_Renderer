@@ -25,7 +25,7 @@ export const FigureRenderer = ({ className, figure, selectedId, selectedAction, 
     const transformerRef = useRef<Konva.Transformer>(null);
     const selectedNodeRef = useRef<Konva.Node | null>(null);
 
-    const [isHovered, setIsHovered] = useState(false);
+    const [idHovered, setIdHovered] = useState<string | null>(null);
 
     useEffect(() => {
         if (transformerRef.current) {
@@ -230,21 +230,20 @@ export const FigureRenderer = ({ className, figure, selectedId, selectedAction, 
         <>
             {figure.rectangles.map((fig) => (
                 <Rect
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
+                    onMouseEnter={(evt) => setIdHovered(evt.target.id())}
+                    onMouseLeave={() => setIdHovered(null)}
                     onDragStart={onDragStart}
                     key={fig.id}
                     {...fig}
                     id={fig.id}
                     type={fig.type}
                     fill={(selectedId === fig.id) ? "lightblue" : "#00D2FF"}
-                    stroke="black"
-                    strokeWidth={1}
+                    stroke={idHovered === fig.id ? "blue" : "black"}
+                    strokeWidth={idHovered === fig.id ? 2 : 1}
                     shadowBlur={1}
                     draggable={selectedAction === ActionType.Cursor}
                     onDragMove={onDragMove}
                     onClick={(e) => {
-                        console.log(e);
                         if (selectedAction !== ActionType.Cursor) return;
                         e.cancelBubble = true;
                         setSelectedId(fig.id);
@@ -261,18 +260,18 @@ export const FigureRenderer = ({ className, figure, selectedId, selectedAction, 
             {figure.polygons.map((pol) => {
                 return (
                     <Line
-                        onMouseEnter={() => setIsHovered(true)}
-                        onMouseLeave={() => setIsHovered(false)}
+                        onMouseEnter={(evt) => setIdHovered(evt.target.id())}
+                        onMouseLeave={() => setIdHovered(null)}
                         onDragStart={onDragStart}
                         key={pol.id}
                         id={pol.id}
                         type={pol.type}
                         points={pol.points}
-                        stroke="black"
-                        strokeWidth={1}
+                        stroke={idHovered === pol.id ? "blue" : "black"}
+                        strokeWidth={idHovered === pol.id ? 2 : 1}
                         shadowBlur={1}
                         closed={pol.isClosed}
-                        fill={pol.isClosed ? "rgba(0,0,255,0.3)" : "transparent"}
+                        fill={"transparent"}
                         draggable={selectedAction === ActionType.Cursor}
                         onDragMove={onDragMove}
                         onClick={(e) => {
