@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { ActionType } from "entities/Figure/Action";
 import { FigureType, Polygon, Rectangle } from "entities/Figure/Figure";
 import { KonvaEventObject } from "konva/lib/Node";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Layer, Stage } from "react-konva";
 import { FigureRenderer } from "shared/ui/FigureRenderer/FigureRenderer";
 import cls from './Canvas.module.scss';
@@ -52,6 +52,7 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
     const [startPos, setStartPos] = useState<{ x: number, y: number; } | null>(null);
     const [tempRectangle, setTempRectangle] = useState<Rectangle | null>(null);
     const [tempLine, setTempLine] = useState<Polygon | null>(null);
+    const layerRef = useRef(null);
 
     const [points, setPoints] = useState<number[]>([]);
     const [isClosed, setIsClosed] = useState(false);
@@ -114,6 +115,8 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
                     setPolygons([...polygons, {
                         points, isClosed: true,
                         id: `${selectedFigure}-${Date.now()}`,
+                        x: [...points.filter((_, i) => i % 2 === 0).sort((a, b) => a - b)][0],
+                        y: [...points.filter((_, i) => i % 2 === 1).sort((a, b) => a - b)][0],
                         draggable: true, history: [], type: FigureType.Polygon
                     }]);
                     setTempLine(null);
@@ -158,6 +161,8 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
                 type: selectedFigure,
                 draggable: false,
                 history: [],
+                x: pos.x,
+                y: pos.y,
                 isClosed: isClosed,
                 points: [...points, pos.x, pos.y],
             });
@@ -209,8 +214,9 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
             scale={{ x: scale, y: scale }}
             draggable={selectedAction === ActionType.Drag}
         >
-            <Layer>
+            <Layer ref={layerRef}>
                 <FigureRenderer
+                    layerRef={layerRef}
                     figure={{
                         rectangles: [...rectangles,
                         ...(tempRectangle ? [tempRectangle] : [])],
