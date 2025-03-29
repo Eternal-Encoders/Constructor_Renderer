@@ -12,8 +12,8 @@ export interface Rectangle {
 export interface Polygon {
     id: string;
     type: FigureType.Polygon;
-    x: number;
-    y: number;
+    x?: number;
+    y?: number;
     points: number[];
     isClosed: boolean;
     draggable: boolean;
