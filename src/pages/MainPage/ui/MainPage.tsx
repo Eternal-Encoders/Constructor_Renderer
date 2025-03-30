@@ -21,40 +21,39 @@ const MainPage = () => {
 
     const handleUndoMove = useCallback(() => {
         if (!selectedId) return;
-
-        // Проверяем, принадлежит ли фигура прямоугольникам или полигонам
         const isRectangle = rectangles.some((fig) => fig.id === selectedId);
         const isPolygon = polygons.some((fig) => fig.id === selectedId);
 
         if (!isRectangle && !isPolygon) return;
 
         if (isPolygon) {
-            setPolygons((prev) =>
+            // setPolygons((prev) =>
+            //     prev.map((fig) => {
+            //         if (fig.id !== selectedId || fig.history.length === 0) return fig;
+            //         // Берём последнее состояние
+            //         const lastState = fig.history[fig.history.length - 1];
+
+            //         return {
+            //             ...fig,
+            //             points: [...lastState.points], // Восстанавливаем `points`
+            //             history: fig.history.slice(0, -1), // Убираем последний элемент из истории
+            //         };
+            //     })
+            // );
+        } else if (isRectangle) {
+            setRectangles((prev) =>
                 prev.map((fig) => {
                     if (fig.id !== selectedId || fig.history.length === 0) return fig;
-
                     // Берём последнее состояние
                     const lastState = fig.history[fig.history.length - 1];
 
                     return {
                         ...fig,
-                        points: [...lastState.points], // Восстанавливаем `points`
+                        x: lastState.x,
+                        y: lastState.y,
                         history: fig.history.slice(0, -1), // Убираем последний элемент из истории
                     };
                 })
-            );
-        } else if (isRectangle) {
-            setRectangles((prev) =>
-                prev.map((fig) =>
-                    fig.id === selectedId && fig.history.length > 0
-                        ? {
-                            ...fig,
-                            x: fig.history[fig.history.length - 1].x,
-                            y: fig.history[fig.history.length - 1].y,
-                            history: fig.history.slice(0, -1), // Удаляем последний элемент из истории
-                        }
-                        : fig
-                )
             );
         }
     }, [selectedId, rectangles, setRectangles, polygons, setPolygons]);
@@ -90,7 +89,7 @@ const MainPage = () => {
             />
             {/* TODO: Do Widget for that when will be ready design */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: 10, gap: 10 }}>
-                <ActionButton selectedId={selectedId ?? undefined} onClick={handleUndoMove}>Назад</ActionButton>
+                <ActionButton selectedId={selectedId ?? undefined} onClick={() => handleUndoMove()}>Назад</ActionButton>
                 <ActionButton className='red' selectedId={selectedId ?? undefined} onClick={() => handleDelete()}>🗑️ Удалить</ActionButton>
                 <Select setScale={setScale} scale={scale} />
             </div>

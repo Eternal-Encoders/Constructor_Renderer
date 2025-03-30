@@ -1,6 +1,7 @@
 import { ActionType } from "entities/Figure/Action";
 import { FigureType } from "entities/Figure/Figure";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+
 
 interface UseKeyboardShortcutsProps {
     selectedId: string | null;
@@ -15,8 +16,10 @@ export function useKeyboardShortcuts({
     setSelectedAction,
     setSelectedFigure,
 }: UseKeyboardShortcutsProps) {
+    const keyDownHandlerRef = useRef<((event: KeyboardEvent) => void) | null>(null);
+
     useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
+        keyDownHandlerRef.current = (event: KeyboardEvent) => {
             switch (event.code) {
                 case "Delete":
                     if (selectedId) handleDelete();
@@ -34,7 +37,7 @@ export function useKeyboardShortcuts({
                     setSelectedAction(ActionType.None);
                     break;
                 case "Space":
-                    event.preventDefault(); // Предотвращает прокрутку страницы
+                    event.preventDefault();
                     setSelectedAction(ActionType.Drag);
                     setSelectedFigure(FigureType.None);
                     break;
@@ -42,10 +45,19 @@ export function useKeyboardShortcuts({
                     break;
             }
         };
+    }, [selectedId, handleDelete, setSelectedAction, setSelectedFigure]);
+
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (keyDownHandlerRef.current) {
+                keyDownHandlerRef.current(event);
+            }
+        };
 
         window.addEventListener("keydown", handleKeyDown);
         return () => {
             window.removeEventListener("keydown", handleKeyDown);
         };
-    }, [selectedId, handleDelete, setSelectedAction, setSelectedFigure]);
+    }, []); // useEffect вызывается только один раз при монтировании
+
 }

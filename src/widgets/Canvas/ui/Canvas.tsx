@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { ActionType } from "entities/Figure/Action";
 import { FigureType, Polygon, Rectangle } from "entities/Figure/Figure";
+import { getRelativePointerPosition } from "helpers/getRelativePointerPosition";
 import { KonvaEventObject } from "konva/lib/Node";
 import { useEffect, useRef, useState } from "react";
 import { Layer, Stage } from "react-konva";
@@ -25,30 +26,6 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
     setSelectedId, setRectangles, scale, setScale, selectedAction }
     : ICanvasProps) => {
 
-    // Handler figure's movement to press on keys.
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (!selectedId) return;
-            event.preventDefault();
-
-            setRectangles((prev) =>
-                prev.map((fig) =>
-                    fig.id === selectedId
-                        ? {
-                            ...fig,
-                            history: [...fig.history, { x: fig.x, y: fig.y }], // Добавляем текущее положение в историю
-                            x: fig.x + (event.keyCode === 39 ? 1 : event.keyCode === 37 ? -1 : 0),
-                            y: fig.y + (event.keyCode === 40 ? 1 : event.keyCode === 38 ? -1 : 0),
-                        }
-                        : fig
-                )
-            );
-        };
-
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [selectedId, setRectangles]);
-
     const [startPos, setStartPos] = useState<{ x: number, y: number; } | null>(null);
     const [tempRectangle, setTempRectangle] = useState<Rectangle | null>(null);
     const [tempLine, setTempLine] = useState<Polygon | null>(null);
@@ -56,6 +33,60 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
 
     const [points, setPoints] = useState<number[]>([]);
     const [isClosed, setIsClosed] = useState(false);
+
+    // Handler figure's movement to press on keys.
+    useEffect(() => {
+        if (!selectedId) return;
+
+        const movement: Record<number, { x: number; y: number; }> = {
+            37: { x: -1, y: 0 }, // Влево
+            38: { x: 0, y: -1 }, // Вверх
+            39: { x: 1, y: 0 }, // Вправо
+            40: { x: 0, y: 1 }, // Вниз
+        };
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (!(event.keyCode in movement)) return;
+            event.preventDefault();
+
+            const { x, y } = movement[event.keyCode];
+
+            if (rectangles.some((fig) => fig.id === selectedId)) {
+                setRectangles((prev) =>
+                    prev.map((fig) =>
+                        fig.id === selectedId
+                            ? {
+                                ...fig,
+                                history: [...fig.history, { x: fig.x, y: fig.y }],
+                                x: fig.x + x,
+                                y: fig.y + y,
+                            }
+                            : fig
+                    )
+                );
+            } else if (polygons.some((fig) => fig.id === selectedId)) {
+                setPolygons((prev) =>
+                    prev.map((fig) => {
+                        if (fig.id === selectedId) {
+                            if (fig.x && fig.y) {
+                                return {
+                                    ...fig,
+                                    history: [...fig.history, { points: [...fig.points] }],
+                                    x: fig.x + x,
+                                    y: fig.y + y,
+                                };
+                            }
+                        }
+                        return fig;
+                    }
+                    )
+                );
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [selectedId, rectangles, polygons, setRectangles, setPolygons]);
 
     // Handler figure's temp cancel when press on Escape.
     useEffect(() => {
@@ -76,18 +107,6 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [selectedFigure]);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const getRelativePointerPosition = (stage: any) => {
-        const pointer = stage.getPointerPosition();
-        if (!pointer) return null;
-
-        const stagePos = stage.position();
-        return {
-            x: (pointer.x - stagePos.x) / scale,
-            y: (pointer.y - stagePos.y) / scale
-        };
-    };
-
     // Handler of downClick
     const onMouseDown = (event: KonvaEventObject<MouseEvent>) => {
         const stage = event.target.getStage();
@@ -98,7 +117,7 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
         if (selectedAction !== ActionType.None) return;
         if (!stage) return;
 
-        const pos = getRelativePointerPosition(stage);
+        const pos = getRelativePointerPosition(stage, scale);
         if (!pos) return;
 
         // Set start pos on what you clicked
@@ -110,13 +129,11 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
                 const [firstX, firstY] = points;
                 const distance = Math.hypot(pos.x - firstX, pos.y - firstY);
                 // Если первая точка близко находится с последней, тогда закрываем
-                if (distance < 3) {
+                if (distance < 3 / scale) {
                     // const closedPoints = [...points, points[points.length - 2], points[points.length - 1]];
                     setPolygons([...polygons, {
                         points, isClosed: true,
                         id: `${selectedFigure}-${Date.now()}`,
-                        x: [...points.filter((_, i) => i % 2 === 0).sort((a, b) => a - b)][0],
-                        y: [...points.filter((_, i) => i % 2 === 1).sort((a, b) => a - b)][0],
                         draggable: true, history: [], type: FigureType.Polygon
                     }]);
                     setTempLine(null);
@@ -137,7 +154,7 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
         const stage = event.target.getStage();
         if (!stage) return;
 
-        const pos = getRelativePointerPosition(stage);
+        const pos = getRelativePointerPosition(stage, scale);
         if (!pos) return;
 
         if (selectedFigure === FigureType.Rectangle) {
@@ -227,6 +244,7 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
                     setSelectedId={setSelectedId}
                     setRectangles={setRectangles}
                     setPolygons={setPolygons}
+                    scale={scale}
                 />
             </Layer>
         </Stage>
