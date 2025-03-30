@@ -26,7 +26,7 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
     setSelectedId, setRectangles, scale, setScale, selectedAction }
     : ICanvasProps) => {
 
-    const [startPos, setStartPos] = useState<{ x: number, y: number; } | null>(null);
+    const [startRectPos, setRectStartPos] = useState<{ x: number, y: number; } | null>(null);
     const [tempRectangle, setTempRectangle] = useState<Rectangle | null>(null);
     const [tempLine, setTempLine] = useState<Polygon | null>(null);
     const layerRef = useRef(null);
@@ -34,7 +34,7 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
     const [points, setPoints] = useState<number[]>([]);
     const [isClosed, setIsClosed] = useState(false);
 
-    // Handler figure's movement to press on keys.
+    // Обработчик для передвижения фигуры по нажатиям на клавиши
     useEffect(() => {
         if (!selectedId) return;
 
@@ -71,7 +71,7 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
                             if (fig.x && fig.y) {
                                 return {
                                     ...fig,
-                                    history: [...fig.history, { points: [...fig.points] }],
+                                    history: [...fig.history, { points: [...fig.points], x: fig.x, y: fig.y }],
                                     x: fig.x + x,
                                     y: fig.y + y,
                                 };
@@ -88,14 +88,15 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [selectedId, rectangles, polygons, setRectangles, setPolygons]);
 
-    // Handler figure's temp cancel when press on Escape.
+    // Отмена временных фигур при нажатии кнопки ESC
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === "Escape") {
                 if (selectedFigure === FigureType.Rectangle) {
                     setTempRectangle(null);
-                    setStartPos(null);
+                    setRectStartPos(null);
                 }
+                // TODO: Реализовать отдельные линии 
                 else if (selectedFigure === FigureType.Polygon) {
                     setTempLine(null);
                     setPoints([]);
@@ -107,7 +108,7 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [selectedFigure]);
 
-    // Handler of downClick
+    // Обработчик для нажатия кнопки мыши
     const onMouseDown = (event: KonvaEventObject<MouseEvent>) => {
         const stage = event.target.getStage();
         // If click on white stage then selectedId = null
@@ -122,7 +123,7 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
 
         // Set start pos on what you clicked
         if (selectedFigure === FigureType.Rectangle)
-            setStartPos(pos);
+            setRectStartPos(pos);
         else if (selectedFigure === FigureType.Polygon) {
             // Если есть как минимум две точки
             if (points.length >= 4) {
@@ -142,11 +143,34 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
                 }
             }
 
-            setPoints([...points, pos.x, pos.y]);
+            const snappedPoint = event.evt.shiftKey ? snapToAngle(points, pos.x, pos.y).points.slice(-2) : [pos.x, pos.y];
+            setPoints([...points, ...snappedPoint]);
         }
     };
 
-    // Handler of mouseMoving
+    const snapToAngle = (points: number[], x: number, y: number) => {
+        const [startX, startY] = [points[points.length - 2], points[points.length - 1]];
+        const dx = x - startX;
+        const dy = y - startY;
+        const angle = Math.round(Math.atan2(dy, dx) / (Math.PI / 4)) * (Math.PI / 4);
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        const snappedX = startX + Math.cos(angle) * distance;
+        const snappedY = startY + Math.sin(angle) * distance;
+
+        return {
+            id: "temp-line",
+            type: FigureType.Polygon as FigureType.Polygon,
+            draggable: false,
+            history: [],
+            x: snappedX,
+            y: snappedY,
+            isClosed: false,
+            points: [...points, snappedX, snappedY],
+        };
+    };
+
+    // Обработчик для движения мыши
     const onMouseMove = (event: KonvaEventObject<MouseEvent>) => {
         // Если выбранное действие - это ни ничего, то выходим 
         if (selectedAction !== ActionType.None) return;
@@ -157,36 +181,54 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
         const pos = getRelativePointerPosition(stage, scale);
         if (!pos) return;
 
-        if (selectedFigure === FigureType.Rectangle) {
-            if (!startPos) return;
-            setTempRectangle({
-                id: "temp-rectangle",
-                type: selectedFigure,
-                x: Math.min(startPos.x, pos.x),
-                y: Math.min(startPos.y, pos.y),
-                width: Math.abs(pos.x - startPos.x),
-                height: Math.abs(pos.y - startPos.y),
-                draggable: false,
-                history: [],
-            });
-        }
-
-        else if (selectedFigure === FigureType.Polygon) {
-            if (!points.length) return;
-            setTempLine({
-                id: "temp-line",
-                type: selectedFigure,
-                draggable: false,
-                history: [],
-                x: pos.x,
-                y: pos.y,
-                isClosed: isClosed,
-                points: [...points, pos.x, pos.y],
-            });
+        // Проверяем, зажат ли Shift
+        if (event.evt.shiftKey) {
+            if (selectedFigure === FigureType.Rectangle) {
+                if (!startRectPos) return;
+                setTempRectangle({
+                    id: "temp-rectangle",
+                    type: selectedFigure,
+                    x: Math.min(startRectPos.x, pos.x),
+                    y: Math.min(startRectPos.y, pos.y),
+                    width: Math.abs(pos.x - startRectPos.x),
+                    height: Math.abs(pos.y - startRectPos.y),
+                    draggable: false,
+                    history: [],
+                });
+            } else if (selectedFigure === FigureType.Polygon) {
+                if (!points.length) return;
+                setTempLine(snapToAngle(points, pos.x, pos.y));
+            }
+        } else {
+            if (selectedFigure === FigureType.Rectangle) {
+                if (!startRectPos) return;
+                setTempRectangle({
+                    id: "temp-rectangle",
+                    type: selectedFigure,
+                    x: Math.min(startRectPos.x, pos.x),
+                    y: Math.min(startRectPos.y, pos.y),
+                    width: Math.abs(pos.x - startRectPos.x),
+                    height: Math.abs(pos.y - startRectPos.y),
+                    draggable: false,
+                    history: [],
+                });
+            } else if (selectedFigure === FigureType.Polygon) {
+                if (!points.length) return;
+                setTempLine({
+                    id: "temp-line",
+                    type: selectedFigure,
+                    draggable: false,
+                    history: [],
+                    x: pos.x,
+                    y: pos.y,
+                    isClosed: isClosed,
+                    points: [...points, pos.x, pos.y],
+                });
+            }
         }
     };
 
-    // Handler of upClick
+    // Обработчик для отпускания кнопки мыши
     const onMouseUp = (event: KonvaEventObject<MouseEvent>) => {
         if (selectedAction !== ActionType.None) return;
 
@@ -196,7 +238,7 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
             if (tempRectangle.width !== undefined && tempRectangle.height !== undefined
                 && (tempRectangle.width < 5 || tempRectangle.height < 5)) {
                 setTempRectangle(null);
-                setStartPos(null);
+                setRectStartPos(null);
                 return;
             }
 
@@ -205,7 +247,7 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
                 id: `${selectedFigure}-${Date.now()}`
             }]);
             setTempRectangle(null);
-            setStartPos(null);
+            setRectStartPos(null);
         } else if (selectedFigure === FigureType.Polygon) {
             if (!tempLine) return;
             if (isClosed) {
