@@ -17,7 +17,7 @@ export interface Polygon {
     points: number[];
     isClosed: boolean;
     draggable: boolean;
-    history: { points: number[]; }[];
+    history: { x: number; y: number; }[];
 }
 
 export enum FigureType {
