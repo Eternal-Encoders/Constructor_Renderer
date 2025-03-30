@@ -27,19 +27,20 @@ const MainPage = () => {
         if (!isRectangle && !isPolygon) return;
 
         if (isPolygon) {
-            // setPolygons((prev) =>
-            //     prev.map((fig) => {
-            //         if (fig.id !== selectedId || fig.history.length === 0) return fig;
-            //         // Берём последнее состояние
-            //         const lastState = fig.history[fig.history.length - 1];
+            setPolygons((prev) =>
+                prev.map((fig) => {
+                    if (fig.id !== selectedId || fig.history.length === 0) return fig;
+                    // Берём последнее состояние
+                    const lastState = fig.history[fig.history.length - 1];
 
-            //         return {
-            //             ...fig,
-            //             points: [...lastState.points], // Восстанавливаем `points`
-            //             history: fig.history.slice(0, -1), // Убираем последний элемент из истории
-            //         };
-            //     })
-            // );
+                    return {
+                        ...fig,
+                        x: lastState.x,
+                        y: lastState.y,
+                        history: fig.history.slice(0, -1), // Убираем последний элемент из истории
+                    };
+                })
+            );
         } else if (isRectangle) {
             setRectangles((prev) =>
                 prev.map((fig) => {
@@ -57,7 +58,6 @@ const MainPage = () => {
             );
         }
     }, [selectedId, rectangles, setRectangles, polygons, setPolygons]);
-
 
     const handleDelete = useCallback(() => {
         if (!selectedId) return;
