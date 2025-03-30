@@ -24,6 +24,7 @@ export const FigureRenderer = ({ className, figure, selectedId, selectedAction, 
 
     const [idHovered, setIdHovered] = useState<string | null>(null);
 
+    // Добавление ссылок для трансформации
     useEffect(() => {
         if (transformerRef.current) {
             if (selectedId) {
@@ -39,12 +40,64 @@ export const FigureRenderer = ({ className, figure, selectedId, selectedAction, 
         }
     }, [selectedId]);
 
+    // Трансформация фигуры: Изменение размера, поворота фигуры
+    const onTransformEnd = (e: KonvaEventObject<Event>) => {
+        const node = e.target;
+
+        const scaleX = node.scaleX();
+        const scaleY = node.scaleY();
+
+        const newWidth = node.width() * scaleX;
+        const newHeight = node.height() * scaleY;
+
+        // Проверка на прямоугольник, т.к. у него type - rectangle, а у мног-ка undefined
+        if (node.attrs.type === FigureType.Rectangle) {
+            setRectangles((prev) =>
+                prev.map((fig) =>
+                    fig.id === node.id()
+                        ? {
+                            ...fig,
+                            x: node.x(),
+                            y: node.y(),
+                            width: newWidth,
+                            height: newHeight,
+                        }
+                        : fig
+                )
+            );
+        } else if (node.attrs.type === FigureType.Polygon) {
+            setPolygons((prev) =>
+                prev.map((fig: Polygon) =>
+                    fig.id === node.id()
+                        ? {
+                            id: fig.id,
+                            points: fig.points.map((p, i) =>
+                                i % 2 === 0 ? p * scaleX : p * scaleY // Масштабируем x и y координаты
+                            ),
+                            x: node.x(),
+                            y: node.y(),
+                            history: fig.history,
+                            isClosed: fig.isClosed,
+                            draggable: fig.draggable,
+                            type: fig.type,
+                        }
+                        : fig
+                )
+            );
+        }
+
+        // Сбрасываем scale после обновления стейта
+        node.scaleX(1);
+        node.scaleY(1);
+    };
+
+    // При перетаскивании фигуры сохранять в истории начальные координаты
     const onDragStart = (e: KonvaEventObject<DragEvent>) => {
         const node = e.target;
 
         if (node.attrs.type === FigureType.Rectangle) {
             setRectangles((prev) =>
-                prev.map((fig) =>
+                prev.map((fig: Rectangle) =>
                     fig.id === node.id()
                         ? { ...fig, history: [...fig.history, { x: fig.x, y: fig.y }] }
                         : fig
@@ -52,15 +105,20 @@ export const FigureRenderer = ({ className, figure, selectedId, selectedAction, 
             );
         } else if (node.attrs.type === FigureType.Polygon) {
             setPolygons((prev) =>
-                prev.map((fig) =>
-                    fig.id === node.id()
-                        ? { ...fig, history: [...fig.history, { points: fig.points }] }
-                        : fig
-                )
+                prev.map((fig: Polygon) => {
+                    if (fig.id !== node.id()) {
+                        return fig;
+                    }
+                    if (!(fig.x && fig.y)) {
+                        return { ...fig, history: [...fig.history, { x: 0, y: 0 }] };
+                    }
+                    return { ...fig, history: [...fig.history, { x: fig.x!, y: fig.y! }] };
+                })
             );
         }
     };
 
+    // Перемещение фигуры с логикой магнита
     const onDragMove = (e: KonvaEventObject<DragEvent>) => {
         if (selectedAction !== ActionType.Cursor) return;
 
@@ -114,56 +172,6 @@ export const FigureRenderer = ({ className, figure, selectedId, selectedAction, 
                 )
             );
         }
-    };
-
-    const onTransformEnd = (e: KonvaEventObject<Event>) => {
-        const node = e.target;
-
-        const scaleX = node.scaleX();
-        const scaleY = node.scaleY();
-
-        const newWidth = node.width() * scaleX;
-        const newHeight = node.height() * scaleY;
-
-        // Проверка на прямоугольник, т.к. у него type - rectangle, а у мног-ка undefined
-        if (node.attrs.type === FigureType.Rectangle) {
-            setRectangles((prev) =>
-                prev.map((fig) =>
-                    fig.id === node.id()
-                        ? {
-                            ...fig,
-                            x: node.x(),
-                            y: node.y(),
-                            width: newWidth,
-                            height: newHeight,
-                        }
-                        : fig
-                )
-            );
-        } else if (node.attrs.type === FigureType.Polygon) {
-            setPolygons((prev) =>
-                prev.map((fig: Polygon) =>
-                    fig.id === node.id()
-                        ? {
-                            id: fig.id,
-                            points: fig.points.map((p, i) =>
-                                i % 2 === 0 ? p * scaleX : p * scaleY // Масштабируем x и y координаты
-                            ),
-                            x: node.x(),
-                            y: node.y(),
-                            history: fig.history,
-                            isClosed: fig.isClosed,
-                            draggable: fig.draggable,
-                            type: fig.type,
-                        }
-                        : fig
-                )
-            );
-        }
-
-        // Сбрасываем scale после обновления стейта
-        node.scaleX(1);
-        node.scaleY(1);
     };
 
     return (
