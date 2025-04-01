@@ -38,7 +38,27 @@
     --font-weight-description: 400;
     --font-description: var(--font-weight-description) var(--font-size-description) / var(--font-line-description) var(--font-family-main);
 
+    // Размер шрифта Description-Header
+    --font-size-description-header: 12px;
+    --font-line-description-header: 16px;
+    --font-weight-description-header: 500;
+    --font-description-header: var(--font-weight-description-header) var(--font-size-description-header) / var(--font-line-description-header) var(--font-family-main);
+
     // Размеры
     --navbar-height: 84px;
+    --navbar-height-percent: 18%;
+    --panel-minWidth: 240px;
+    --panel-maxWidth: 360px;
+    --panel-width-percent: 20%;
+
+    // Цвет
+    --white: #fff;
+    --black: #000;
+
+    // Округление
+    --corner-radius-2: 6px;
+
+    // Границы
+    --border: 1px solid #C3C3D0;
 }
 
