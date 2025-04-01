@@ -1,0 +1,34 @@
+.LayersItems {
+    &__item {
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        border-radius: 6px;
+        padding: 8px 10px 8px 32px;
+
+        &_active {
+            background-color: var(--white);
+        }
+
+        margin-bottom: 6px;
+    }
+
+    li:last-of-type {
+        margin-bottom: 0;
+    }
+
+    &__title {
+        font: var(--font-description);
+        color: var(--highlights1-color);
+    }
+
+    &__leftIcon {
+        width: 14px;
+        height: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin-right: 4px;
+    }
+}

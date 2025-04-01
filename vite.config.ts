@@ -18,10 +18,13 @@ export default defineConfig({
       // ...
     },
 
-    // A minimatch pattern, or array of patterns, which specifies the files in the build the plugin should include.
+    // A minimatch pattern, or array of patterns, which specifies the files
+    //  in the build the plugin should include.
     include: "**/*.svg?react",
 
-    //  A minimatch pattern, or array of patterns, which specifies the files in the build the plugin should ignore. By default no files are ignored.
+    //  A minimatch pattern, or array of patterns, 
+    // which specifies the files in the build the plugin should ignore. 
+    // By default no files are ignored.
     exclude: "",
   }), react()],
   css: {
@@ -41,7 +44,8 @@ export default defineConfig({
       pages: "/src/pages",
       processes: "/src/processes",
       shared: "/src/shared",
-      widgets: "/src/widgets"
+      widgets: "/src/widgets",
+      features: "/src/features",
     },
   },
 });

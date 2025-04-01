@@ -1,0 +1,21 @@
+.InfoPanel {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg1-color);
+    border: var(--border);
+
+    &__save {
+        padding: 12px;
+        border-bottom: var(--border);
+    }
+
+    &__information {
+        padding: 12px;
+        border-bottom: var(--border);
+    }
+
+    &__settingsCanvas {
+        padding: 12px;
+        border-bottom: var(--border);
+    }
+}

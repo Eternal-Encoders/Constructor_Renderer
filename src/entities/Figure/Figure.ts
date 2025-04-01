@@ -12,15 +12,17 @@ export interface Rectangle {
 export interface Polygon {
     id: string;
     type: FigureType.Polygon;
+    x?: number;
+    y?: number;
     points: number[];
     isClosed: boolean;
     draggable: boolean;
-    history: { points: number[]; }[];
+    history: { x: number; y: number; }[];
 }
 
 export enum FigureType {
-    Rectangle = 'rectangle',
-    Polygon = 'polygon',
+    Rectangle = 'Rectangle',
+    Polygon = 'Polygon',
     None = 'none'
 }
 

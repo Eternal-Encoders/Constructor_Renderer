@@ -1,0 +1,5 @@
+.InfoPanel,
+.DropdownPanel {
+    min-width: var(--panel-minWidth);
+    max-width: var(--panel-maxWidth);
+}

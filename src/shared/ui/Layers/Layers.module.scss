@@ -1,0 +1,44 @@
+
+.Layers {
+    min-height: 26px;
+
+    &__dropdown {
+        display: flex;
+        align-items: center;
+        justify-content: left;
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+    }
+
+    &__title {
+        font: var(--font-description-header);
+        color: var(--highlights1-color);
+    }
+
+    &__leftIcon {
+        cursor: pointer;
+        width: 26px;
+        height: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__icon {
+
+        &_arrowDownMini {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &_arrowDownMini {
+            width: 14px;
+            height: 14px;
+        }
+    }
+}
