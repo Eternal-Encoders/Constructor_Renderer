@@ -1,0 +1,60 @@
+.DropdownPanel {
+    padding: 8px 0;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg1-color);
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 40px;
+        padding-left: 14px;
+
+        &_second {
+            justify-content: left;
+        }
+
+        &_border {
+            border-bottom: var(--border);
+        }
+    }
+
+    &__floors {
+        padding: 12px;
+        border-bottom: var(--border);
+    }
+
+    &__layers {
+        padding: 12px;
+    }
+
+    &__shrinkArea {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 46px;
+        height: 40px;
+    }
+
+    &__arrowDown,
+    &__arrowDownMini {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+
+        &Mini {
+            width: 14px;
+            height: 14px;
+        }
+    }
+
+    &__title {
+        font: var(--font-main);
+        color: var(--highlights1-color);
+    }
+}

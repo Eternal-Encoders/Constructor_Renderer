@@ -1,0 +1,46 @@
+.FloorLayers {
+
+    &__item {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        border-radius: 6px;
+        padding: 5px 10px;
+
+        &_active {
+            background-color: var(--bg2-color);
+        }
+    }
+
+    &__title {
+        font: var(--font-description);
+        color: var(--highlights1-color);
+    }
+
+    &__leftIcon {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__rightIcon,
+    &__icon_star {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__rightIcon {
+        margin-left: auto;
+        width: 26px;
+        height: 26px;  
+    }
+
+    &__icon_star {
+        width: 12px;
+        height: 12px;
+    }
+}
