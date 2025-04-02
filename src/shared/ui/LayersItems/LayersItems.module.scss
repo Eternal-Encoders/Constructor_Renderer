@@ -5,12 +5,12 @@
         justify-content: left;
         border-radius: 6px;
         padding: 8px 10px 8px 32px;
+        margin-bottom: 6px;
 
         &_active {
             background-color: var(--white);
         }
 
-        margin-bottom: 6px;
     }
 
     li:last-of-type {
