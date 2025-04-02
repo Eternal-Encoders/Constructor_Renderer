@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [svgr({
     // svgr options: https://react-svgr.com/docs/options/
     svgrOptions: {
+      svgo: false,
       plugins: ["@svgr/plugin-svgo", "@svgr/plugin-jsx"],
       svgoConfig: {
         floatPrecision: 2,
