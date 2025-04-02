@@ -21,10 +21,6 @@ export const ObjectPalette = ({ selectedFigure, setSelectedFigure, selectedActio
     <div className={classNames(cls.ObjectPalette)}>
       <ul role="list" className={classNames(cls.ObjectPalette__list)}>
         <li
-          onMouseDown={(event) => {
-            // onMouseDown(event);
-            return setSelectedFigure(FigureType.Rectangle);
-          }}
           className={classNames(cls.ObjectPalette__item, selectedFigure === FigureType.Rectangle
             ? cls.ObjectPalette__item_active
             : undefined)}
@@ -35,10 +31,6 @@ export const ObjectPalette = ({ selectedFigure, setSelectedFigure, selectedActio
           <Rectangle />
         </li>
         <li
-          onMouseDown={(event) => {
-            // onMouseDown(event);
-            return setSelectedFigure(FigureType.Polygon);
-          }}
           className={classNames(cls.ObjectPalette__item, selectedFigure === FigureType.Polygon
             ? cls.ObjectPalette__item_active
             : undefined)}
@@ -49,10 +41,6 @@ export const ObjectPalette = ({ selectedFigure, setSelectedFigure, selectedActio
           <Pen />
         </li>
         <li
-          onMouseDown={(event) => {
-            // onMouseDown(event);
-            return setSelectedAction(ActionType.Cursor);
-          }}
           className={classNames(cls.ObjectPalette__item, selectedAction === ActionType.Cursor
             ? cls.ObjectPalette__item_active
             : undefined)}
@@ -63,10 +51,6 @@ export const ObjectPalette = ({ selectedFigure, setSelectedFigure, selectedActio
           <Cursor />
         </li>
         <li
-          onMouseDown={(event) => {
-            // onMouseDown(event);
-            return setSelectedAction(ActionType.Drag);
-          }}
           className={classNames(cls.ObjectPalette__item, selectedAction === ActionType.Drag
             ? cls.ObjectPalette__item_active
             : undefined)}
