@@ -18,8 +18,7 @@ interface IFigureRendererProps {
   scale: number;
 }
 
-export const FigureRenderer = ({ 
-  className, figure, selectedId, selectedAction, 
+export const FigureRenderer = ({  figure, selectedId, selectedAction, 
   setSelectedId, setRectangles, setPolygons, layerRef, scale } : IFigureRendererProps) => {
   const transformerRef = useRef<Konva.Transformer>(null);
   const selectedNodeRef = useRef<Konva.Node | null>(null);

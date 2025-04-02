@@ -31,10 +31,10 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       "no-unused-vars": "warn",
+      "@typescript-eslint/no-unused-vars": "warn",
       '@stylistic/js/max-len': ["error", { "code": 120 }],
       '@stylistic/ts/indent': ['error', 2],
       '@stylistic/jsx/jsx-indent': ['error', 2],
-      "@typescript-eslint/no-unused-vars": "warn",
     },
   },
 );

@@ -23,7 +23,7 @@ interface ICanvasProps {
 }
 
 export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedId, selectedFigure,
-  setSelectedId, setRectangles, scale, setScale, selectedAction }
+  setSelectedId, setRectangles, scale, selectedAction }
 : ICanvasProps) => {
   const [startRectPos, setRectStartPos] = useState<{ x: number, y: number; } | null>(null);
   const [tempRectangle, setTempRectangle] = useState<Rectangle | null>(null);
@@ -228,7 +228,7 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
   };
 
   // Обработчик для отпускания кнопки мыши
-  const onMouseUp = (event: KonvaEventObject<MouseEvent>) => {
+  const onMouseUp = () => {
     if (selectedAction !== ActionType.None) return;
 
     if (selectedFigure === FigureType.Rectangle) {

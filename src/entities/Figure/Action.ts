@@ -1,5 +1,5 @@
 export enum ActionType {
-    Drag = 'drag',
-    Cursor = 'cursor',
-    None = 'none',
+  Drag = 'drag',
+  Cursor = 'cursor',
+  None = 'none',
 }
