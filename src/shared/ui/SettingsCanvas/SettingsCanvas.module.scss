@@ -17,6 +17,7 @@
         height: 28px;
         font: var(--font-description);
         color: var(--highlights1-color);
+
         &::placeholder{
             color: var(--highlights2-color);
         }
