@@ -10,15 +10,23 @@
     "lint:ts:fix": "eslint . --fix",
     "lint:scss": "npx stylelint \"**/*.scss\"",
     "lint:scss:fix": "npx stylelint \"**/*.scss\" --fix",
-    "preview": "vite preview"
+    "preview": "vite preview --mode production"
   },
   "dependencies": {
     "classnames": "^2.5.1",
+    "i18next": "^24.2.3",
     "konva": "^9.3.18",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-i18next": "^15.4.1",
     "react-konva": "^19.0.3",
     "react-router": "^7.3.0"
+  },
+  "dependenciesComments": {
+    "classnames": "Удобное удаление/добавление классов в компоненты",
+    "i18next": "Поддержка i18n",
+    "konva": "Рисование в веб-браузере",
+    "react": "Пакеты реакт с плагинами"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
@@ -34,6 +42,8 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
+    "i18next-browser-languagedetector": "^8.0.4",
+    "i18next-http-backend": "^3.0.2",
     "sass-embedded": "^1.85.1",
     "stylelint": "^16.15.0",
     "stylelint-config-standard-scss": "^14.0.0",
@@ -41,5 +51,29 @@
     "typescript-eslint": "^8.24.1",
     "vite": "^6.2.0",
     "vite-plugin-svgr": "^4.3.0"
+  },
+  "devDependenciesComments": {
+    "@eslint/js": "Анализ кода на соответствие установленным правилам, автоматическое исправление",
+    "@stylistic/eslint-plugin-js": "Расширение для eslint c форматированием",
+    "@stylistic/eslint-plugin-jsx": "Расширение для eslint c форматированием",
+    "@stylistic/eslint-plugin-ts": "Расширение для eslint c форматированием",
+    "@svgr/plugin-jsx": "Transform SVGs into React components",
+    "@svgr/plugin-svgo": "Transform SVGs into React components",
+    "@types/react": "Типизация для реакта",
+    "@types/react-dom": "Типизация для реакта",
+    "@vitejs/plugin-react-swc": "Speed up Vite dev server, A fast Fast Refresh, Enable automatic JSX runtime",
+    "eslint": "Анализ кода на соответствие установленным правилам, автоматическое исправление",
+    "eslint-plugin-react-hooks": "ESLint plugin enforces the Rules of Hooks",
+    "eslint-plugin-react-refresh": "Validate that your components can safely be updated with Fast Refresh.",
+    "globals": "Global identifiers from different JavaScript environments",
+    "i18next-browser-languagedetector": "Пакет для определения языка браузера",
+    "i18next-http-backend": "Асинхронно чанками подгружать только тот язык, который нам нужен",
+    "sass-embedded": "This package is an alternative to the sass package, который быстрее",
+    "stylelint": "CSS linter that helps you avoid errors and enforce conventions.",
+    "stylelint-config-standard-scss": "The standard shareable SCSS config for Stylelint.",
+    "typescript": "Добавление строгой типизации, интерфейсов, типов в JS",
+    "typescript-eslint": "ESLINT plugin for TypeScript",
+    "vite": "Инструмент для сборки веб приложения",
+    "vite-plugin-svgr": "Поддержка svgr для вита"
   }
 }
