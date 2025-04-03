@@ -14,17 +14,14 @@
   },
   "dependencies": {
     "classnames": "^2.5.1",
-    "i18next": "^24.2.3",
     "konva": "^9.3.18",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-i18next": "^15.4.1",
     "react-konva": "^19.0.3",
     "react-router": "^7.3.0"
   },
   "dependenciesComments": {
     "classnames": "Удобное удаление/добавление классов в компоненты",
-    "i18next": "Поддержка i18n",
     "konva": "Рисование в веб-браузере",
     "react": "Пакеты реакт с плагинами"
   },
@@ -42,8 +39,6 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
-    "i18next-browser-languagedetector": "^8.0.4",
-    "i18next-http-backend": "^3.0.2",
     "sass-embedded": "^1.85.1",
     "stylelint": "^16.15.0",
     "stylelint-config-standard-scss": "^14.0.0",
@@ -66,8 +61,6 @@
     "eslint-plugin-react-hooks": "ESLint plugin enforces the Rules of Hooks",
     "eslint-plugin-react-refresh": "Validate that your components can safely be updated with Fast Refresh.",
     "globals": "Global identifiers from different JavaScript environments",
-    "i18next-browser-languagedetector": "Пакет для определения языка браузера",
-    "i18next-http-backend": "Асинхронно чанками подгружать только тот язык, который нам нужен",
     "sass-embedded": "This package is an alternative to the sass package, который быстрее",
     "stylelint": "CSS linter that helps you avoid errors and enforce conventions.",
     "stylelint-config-standard-scss": "The standard shareable SCSS config for Stylelint.",

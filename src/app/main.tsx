@@ -5,9 +5,6 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
 import { ErrorBoundary } from './providers/ErrorBoundary';
 
-// import i18n (needs to be bundled ;)) 
-import 'shared/config/i18n/i18n';
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ErrorBoundary>
