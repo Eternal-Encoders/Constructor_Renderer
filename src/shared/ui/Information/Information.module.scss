@@ -22,6 +22,7 @@
         font: var(--font-description);
         color: var(--highlights1-color);
         padding: 8px 10px;
+
         &::placeholder{
             color: var(--highlights2-color);
         }
