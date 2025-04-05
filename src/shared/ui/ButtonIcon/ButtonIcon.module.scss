@@ -1,0 +1,16 @@
+.ButtonIcon {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    border-radius: var(--corner-radius-2, 6px);
+    border: var(--border);
+    background: var(--white);
+
+    &:hover {
+        background: var(--bg1-color);
+    }
+}

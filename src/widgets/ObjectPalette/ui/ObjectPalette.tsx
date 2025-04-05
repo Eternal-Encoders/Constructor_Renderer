@@ -8,56 +8,50 @@ import { FigureType } from 'entities/Figure/Figure';
 import cls from "./ObjectPalette.module.scss";
 
 interface IObjectPaletteProps {
+  className?: string
   selectedFigure: FigureType;
   selectedAction: ActionType;
   setSelectedFigure: (figure: FigureType) => void;
   setSelectedAction: (action: ActionType) => void;
 }
 
-export const ObjectPalette = ({ selectedFigure, setSelectedFigure, selectedAction, setSelectedAction }
+export const ObjectPalette = ({ className, selectedFigure, setSelectedFigure, selectedAction, setSelectedAction }
 : IObjectPaletteProps) => {
 
+  const setActive = (actionType: ActionType, figureType: FigureType) => {
+    setSelectedAction(actionType);
+    setSelectedFigure(figureType);
+  }
+
+  const classNamesFigure = (figureType: FigureType) => 
+    classNames(cls.ObjectPalette__item, selectedFigure === figureType
+    && cls.ObjectPalette__item_active);
+
+  const classNamesAction = (actionType: ActionType) => 
+    classNames(cls.ObjectPalette__item, selectedAction === actionType
+      && cls.ObjectPalette__item_active);
+
   return (
-    <div className={classNames(cls.ObjectPalette)}>
+    <div className={classNames(cls.ObjectPalette, className)}>
       <ul role="list" className={classNames(cls.ObjectPalette__list)}>
         <li
-          className={classNames(cls.ObjectPalette__item, selectedFigure === FigureType.Rectangle
-            ? cls.ObjectPalette__item_active
-            : undefined)}
-          onClick={() => {
-            setSelectedAction(ActionType.None);
-            setSelectedFigure(FigureType.Rectangle);
-          }}>
-          <Rectangle />
-        </li>
-        <li
-          className={classNames(cls.ObjectPalette__item, selectedFigure === FigureType.Polygon
-            ? cls.ObjectPalette__item_active
-            : undefined)}
-          onClick={() => {
-            setSelectedAction(ActionType.None);
-            setSelectedFigure(FigureType.Polygon);
-          }}>
-          <Pen />
-        </li>
-        <li
-          className={classNames(cls.ObjectPalette__item, selectedAction === ActionType.Cursor
-            ? cls.ObjectPalette__item_active
-            : undefined)}
-          onClick={() => {
-            setSelectedFigure(FigureType.None);
-            setSelectedAction(ActionType.Cursor);
-          }}>
+          className={classNamesAction(ActionType.Cursor)}
+          onClick={() => setActive(ActionType.Cursor, FigureType.None)}>
           <Cursor />
         </li>
         <li
-          className={classNames(cls.ObjectPalette__item, selectedAction === ActionType.Drag
-            ? cls.ObjectPalette__item_active
-            : undefined)}
-          onClick={() => {
-            setSelectedFigure(FigureType.None);
-            setSelectedAction(ActionType.Drag);
-          }}>
+          className={classNamesFigure(FigureType.Polygon)}
+          onClick={() => setActive(ActionType.None, FigureType.Polygon)}>
+          <Pen />
+        </li>
+        <li
+          className={classNamesFigure(FigureType.Rectangle)}
+          onClick={() => setActive(ActionType.None, FigureType.Rectangle)}>
+          <Rectangle />
+        </li>
+        <li
+          className={classNamesAction(ActionType.Drag)}
+          onClick={() => setActive(ActionType.Drag, FigureType.None)}>
           <Hand />
         </li>
       </ul>

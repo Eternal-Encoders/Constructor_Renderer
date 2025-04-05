@@ -54,11 +54,15 @@
     // Цвет
     --white: #fff;
     --black: #000;
+    --overlay-color: rgba(0, 0, 0, 0.5);
 
     // Округление
     --corner-radius-2: 6px;
 
     // Границы
     --border: 1px solid #C3C3D0;
+
+    // z - Индексы
+    --modal-z-index: 10;
 }
 

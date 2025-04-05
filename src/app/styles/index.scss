@@ -3,10 +3,13 @@
 @use "themes/normal.scss" as *;
 @use "themes/dark.scss" as *;
 
-.app {
+body {
   font: var(--font-main);
-  background: var(--bg2-color);
   color: var(--primary1-color);
+}
+
+.app {
+  background: var(--bg2-color);
   min-height: 100vh;
 }
 
