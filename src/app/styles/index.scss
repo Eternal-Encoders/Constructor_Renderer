@@ -13,12 +13,6 @@ body {
   min-height: 100vh;
 }
 
-.noselect {
-  -webkit-touch-callout: none; /* iOS Safari */ /* Safari */ /* Konqueror HTML */ /* Firefox */ /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
-}
-
 .content-page {
   display: flex; 
   justify-content: center; 
@@ -26,4 +20,10 @@ body {
   align-items: center;
   background: #fff;
   overflow: hidden;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */ /* Safari */ /* Konqueror HTML */ /* Firefox */ /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
