@@ -16,6 +16,7 @@ export function useTheme(): UseThemeResult {
   if (theme === undefined) {
     throw new Error("theme is not defined in ThemeContext");
   }
+  document.body.className = theme;
   const toggleTheme = () => {
     const newTheme = theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT;
     setTheme(newTheme);

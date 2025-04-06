@@ -1,0 +1,104 @@
+.ButtonIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    outline: var(--outline);
+    outline-offset: var(--outline-offset, -2px);
+    border-radius: var(--corner-radius-2, 6px);
+    background: var(--white, #fff);
+    color: var(--highlights1-color, #262626);
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
+    border: none;
+
+    &:hover {
+        background: var(--hover, rgb(0 0 0 / 6%));
+    }
+
+    &:focus {
+        outline: var(--outline-bold);
+    }
+
+    &:active {
+        background: var(--pressed, rgb(0 0 0 / 12%));
+
+        &:focus {
+            outline: var(--outline);
+        }
+    }
+
+    &:disabled {
+        background: var(--bg2-color, #F8F8FB);
+        color: var(--weak1-color, #BDBDBD);
+        outline: var(--outline);
+    }
+}
+
+.tiny {
+    width: 26px;
+    height: 26px;
+    padding: 7px;
+}
+
+.small {
+    width: 30px;
+    height: 30px;
+    padding: 8px;
+}
+
+.medium {
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+}
+
+.link {
+    outline: none;
+    background: none;
+
+    &:hover {
+        outline: none;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &:active {
+        outline: none;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &:disabled {
+        outline: none;
+        background: none;
+    }
+}
+
+.fill {
+    outline: none;
+
+    &:hover {
+        outline: none;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &:active {
+        outline: none;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &:disabled {
+        outline: none;
+    }
+}

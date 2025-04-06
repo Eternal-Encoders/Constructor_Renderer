@@ -9,7 +9,7 @@ import { Actions } from "widgets/Actions";
 import { Canvas } from "widgets/Canvas";
 import { DropdownPanel } from "widgets/DropdownPanel";
 import { InfoPanel } from "widgets/InfoPanel";
-import { ObjectPalette } from "widgets/ObjectPalette";
+import { SelectorItems } from "widgets/SelectorItems";
 import cls from "./MainPage.module.scss";
 
 const MainPage = () => {
@@ -86,19 +86,7 @@ const MainPage = () => {
   useCtrlWheelZoom({ scale, setScale });
 
   return (
-    <div className={classNames(`content-page`)}>
-      <ObjectPalette 
-        setSelectedAction={setSelectedAction} 
-        selectedAction={selectedAction} 
-        setSelectedFigure={setSelectedFigure} 
-        selectedFigure={selectedFigure}
-      />
-      <Actions 
-        handleUndoMove={handleUndoMove} 
-        handleDelete={handleDelete} 
-        selectedId={selectedId} 
-        setScale={setScale} 
-        scale={scale}/>
+    <div className={classNames(`content-page`, cls.MainPage)}>
       <div style={{display: 'flex'}}>
         <DropdownPanel className={classNames(cls.DropdownPanel)}/>
         <Canvas
@@ -114,8 +102,21 @@ const MainPage = () => {
           selectedAction={selectedAction}
           setSelectedId={setSelectedId}
         />
+        <Actions 
+          className={classNames(cls.Actions)}
+          handleUndoMove={handleUndoMove} 
+          selectedId={selectedId} 
+          setScale={setScale} 
+          scale={scale}/>
         <InfoPanel className={classNames(cls.InfoPanel)}/>
       </div>
+      <SelectorItems
+        selectedFigure={selectedFigure}
+        selectedAction={selectedAction}
+        setSelectedAction={setSelectedAction}
+        setSelectedFigure={setSelectedFigure}
+        className={classNames(cls.SelectorItems)}
+      />
     </div>
   );
 };

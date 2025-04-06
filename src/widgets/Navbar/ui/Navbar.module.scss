@@ -5,7 +5,8 @@
     display: flex;
     align-items: center;
     padding: 41px 24px 33px 16px;
-    border: var(--border);
+    outline: var(--outline);
+    outline-offset: var(--outline-offset, -2px);
 }
 
 .links {

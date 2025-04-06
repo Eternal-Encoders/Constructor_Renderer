@@ -44,6 +44,12 @@
     --font-weight-description-header: 500;
     --font-description-header: var(--font-weight-description-header) var(--font-size-description-header) / var(--font-line-description-header) var(--font-family-main);
 
+    // Размер шрифта small
+    --font-size-small: 12px;
+    --font-line-small: 14px;
+    --font-weight-small: 400;
+    --font-small: var(--font-weight-small) var(--font-size-small) / var(--font-line-small) var(--font-family-main);
+
     // Размеры
     --navbar-height: 84px;
     --navbar-height-percent: 18%;
@@ -54,11 +60,31 @@
     // Цвет
     --white: #fff;
     --black: #000;
+    --overlay-color: rgb(0 0 0 / 50%);
+    --outline-color: #C3C3D0;
+    --border-color: #C3C3D0;
 
     // Округление
     --corner-radius-2: 6px;
 
     // Границы
-    --border: 1px solid #C3C3D0;
+    --border: 1px solid var(--border-color, #C3C3D0);
+    --border-bold: 2px solid var(--highlights2-color, #60636C);
+    --outline: 1px solid var(--outline-color, #C3C3D0);
+    --outline-offset: -1px;
+    --outline-bold: 2px solid var(--highlights2-color, #60636C);
+    --outline-bold-offset: -2px;
+    --box-shadow: -1px -1px 0px 0px var(--outline-color, #C3C3D0), 1px 1px 0px 0px var(--outline-color, #C3C3D0);
+    --box-shadow-bold: -1px -1px 0px 1px var(--highlights2-color, #60636C), 1px 1px 0px 1px var(--highlights2-color, #60636C);
+
+    // z - Индексы
+    --modal-z-index: 10;
+    --actions-z-index: 5;
+    --figures-z-index: 5;
+
+    // Состояния
+    --hover: rgb(0 0 0 / 6%);
+    --pressed: rgb(0 0 0 / 12%);
+    --disabled: var(--bg2-color, #F8F8FB);
 }
 

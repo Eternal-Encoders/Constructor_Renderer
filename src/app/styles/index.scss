@@ -3,17 +3,18 @@
 @use "themes/normal.scss" as *;
 @use "themes/dark.scss" as *;
 
-.app {
+body {
   font: var(--font-main);
-  background: var(--bg2-color);
   color: var(--primary1-color);
+}
+
+.app {
+  background: var(--bg2-color);
   min-height: 100vh;
 }
 
-.noselect {
-  -webkit-touch-callout: none; /* iOS Safari */ /* Safari */ /* Konqueror HTML */ /* Firefox */ /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
+.app-navbar {
+  margin-bottom: 12px;
 }
 
 .content-page {
@@ -21,6 +22,12 @@
   justify-content: center; 
   flex-direction: column; 
   align-items: center;
-  background: #fff;
+  background: var(--white);
   overflow: hidden;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */ /* Safari */ /* Konqueror HTML */ /* Firefox */ /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }

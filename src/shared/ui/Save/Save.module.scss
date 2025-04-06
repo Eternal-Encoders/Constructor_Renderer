@@ -8,7 +8,8 @@
         height: 32px;
         color: var(--highlights1-color);
         background-color: var(--white);
-        border: var(--border);
+        outline: var(--outline);
+        outline-offset: var(--outline-offset, -2px);
         border-radius: var(--corner-radius-2);
     }
 

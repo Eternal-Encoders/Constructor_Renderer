@@ -1,0 +1,17 @@
+.LockIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 26px;
+    height: 26px;
+    padding: 7px;
+    aspect-ratio: 1/1;
+    background: transparent;
+    outline: none;
+    border-radius: var(--corner-radius-2, 6px);
+    border: none;
+
+    &:hover {
+        background: var(--hover, rgb(0 0 0 / 6%));
+    }
+}
