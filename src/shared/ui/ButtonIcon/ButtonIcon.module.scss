@@ -13,7 +13,7 @@
     border: none;
 
     &:hover {
-        background: var(--hover, rgba(0, 0, 0, 0.06));
+        background: var(--hover, rgb(0 0 0 / 6%));
     }
 
     &:focus {
@@ -21,7 +21,7 @@
     }
 
     &:active {
-        background: var(--pressed, rgba(0, 0, 0, 0.12));
+        background: var(--pressed, rgb(0 0 0 / 12%));
 
         &:focus {
             outline: var(--outline);

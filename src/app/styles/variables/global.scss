@@ -60,7 +60,7 @@
     // Цвет
     --white: #fff;
     --black: #000;
-    --overlay-color: rgba(0, 0, 0, 0.5);
+    --overlay-color: rgb(0 0 0 / 50%);
     --outline-color: #C3C3D0;
     --border-color: #C3C3D0;
 
@@ -83,8 +83,8 @@
     --figures-z-index: 5;
 
     // Состояния
-    --hover: rgba(0, 0, 0, 0.06);
-    --pressed: rgba(0, 0, 0, 0.12);
+    --hover: rgb(0 0 0 / 6%);
+    --pressed: rgb(0 0 0 / 12%);
     --disabled: var(--bg2-color, #F8F8FB);
 }
 

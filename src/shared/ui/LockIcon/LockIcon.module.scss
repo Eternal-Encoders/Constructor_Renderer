@@ -12,6 +12,6 @@
     border: none;
 
     &:hover {
-        background: var(--hover, rgba(0, 0, 0, 0.06));
+        background: var(--hover, rgb(0 0 0 / 6%));
     }
 }

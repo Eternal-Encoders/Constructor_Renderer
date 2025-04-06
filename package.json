@@ -23,6 +23,8 @@
     "react-router": "^7.3.0"
   },
   "dependenciesComments": {
+    "@reduxjs/toolkit": "State management",
+    "react-redux": "State management for react",
     "classnames": "Удобное удаление/добавление классов в компоненты",
     "konva": "Рисование в веб-браузере",
     "react": "Пакеты реакт с плагинами"
