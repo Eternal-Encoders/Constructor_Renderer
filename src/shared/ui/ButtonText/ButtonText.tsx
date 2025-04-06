@@ -15,9 +15,9 @@ export const ButtonText = (props: IButtonTextProps) => {
   const { 
     className, 
     children, 
+    iconLeft,
     size = "small", 
     type = "default",
-    iconLeft,
     disabled = false
   } = props;
 

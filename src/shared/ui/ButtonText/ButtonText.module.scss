@@ -7,6 +7,7 @@
     border-radius: var(--corner-radius-2, 6px);
     background: var(--white, #fff);
     color: var(--highlights1-color, #262626);
+    flex-shrink: 0;
 
     &__leftIcon {
         display: flex;

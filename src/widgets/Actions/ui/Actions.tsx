@@ -13,11 +13,27 @@ interface IActionsProps {
 export const Actions = ({ className, handleUndoMove, selectedId, setScale, scale }: IActionsProps) => {
   return (
     <div className={classNames(cls.Actions, {}, [className])}>
-      <ButtonIcon onClick={handleUndoMove} disabled={!selectedId}>
+      <ButtonIcon 
+        onClick={handleUndoMove} 
+        disabled={!selectedId} 
+        size="medium"
+      >
         ↶
       </ButtonIcon>
-      <ButtonIcon disabled={Math.floor(scale) >= 3} onClick={() => setScale(scale + 0.1)}>+</ButtonIcon>
-      <ButtonIcon disabled={Math.floor(scale) <= 0.1} onClick={() => setScale(scale - 0.1)}>-</ButtonIcon>
+      <ButtonIcon 
+        disabled={Math.floor(scale) >= 3} 
+        onClick={() => setScale(scale + 0.1)} 
+        size="medium"
+      >
+        +
+      </ButtonIcon>
+      <ButtonIcon 
+        disabled={Math.floor(scale) <= 0.1} 
+        onClick={() => setScale(scale - 0.1)} 
+        size="medium"
+      >
+        -
+      </ButtonIcon>
     </div>
   );
 };
