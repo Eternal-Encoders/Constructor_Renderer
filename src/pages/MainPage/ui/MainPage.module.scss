@@ -8,15 +8,15 @@
     max-width: var(--panel-max-width);
 }
 
-.ObjectPalette {
-    position: relative;
-    z-index: 9999;
-    bottom: 24px;
+.SelectorItems {
+    position: absolute;
+    z-index: var(--actions-z-index);
+    bottom: 27px;
 }
 
 .Actions {
     position: absolute;
-    z-index: 9999;
+    z-index: var(--actions-z-index);
     right: 256px;
     top: 8px;
 }
