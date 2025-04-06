@@ -8,7 +8,7 @@ function App() {
 
   return (
     <div className={classNames(`app ${theme} noselect`)}>
-      <Navbar marginBottom={12} />
+      <Navbar className='app-navbar'/>
       <AppRouter />
     </div>
   );
