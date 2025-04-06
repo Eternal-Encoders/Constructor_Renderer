@@ -13,12 +13,16 @@ body {
   min-height: 100vh;
 }
 
+.app-navbar {
+  margin-bottom: 12px;
+}
+
 .content-page {
   display: flex; 
   justify-content: center; 
   flex-direction: column; 
   align-items: center;
-  background: #fff;
+  background: var(--white);
   overflow: hidden;
 }
 
