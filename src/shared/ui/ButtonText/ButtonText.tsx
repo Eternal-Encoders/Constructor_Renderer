@@ -15,7 +15,7 @@ export const ButtonText = (props: IButtonTextProps) => {
   const { 
     className, 
     children, 
-    size = "medium", 
+    size = "small", 
     type = "default",
     iconLeft,
     disabled = false
@@ -26,7 +26,10 @@ export const ButtonText = (props: IButtonTextProps) => {
       className={classNames(cls.ButtonText, cls[size], cls[type], [className])}
       disabled={disabled}
     >
-      <div className={classNames(cls.ButtonText__leftIcon)}>{iconLeft}</div>
+      <div className={classNames(size === "small" ? cls.ButtonText__leftIcon : cls.ButtonText__leftIcon_medium)}
+      >
+        {iconLeft}
+      </div>
       <div className={classNames(cls.ButtonText__text)}>{children}</div>
     </button>
   );
