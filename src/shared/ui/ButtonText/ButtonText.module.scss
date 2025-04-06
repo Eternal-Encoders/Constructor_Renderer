@@ -1,0 +1,57 @@
+.ButtonText {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: var(--border);
+    border-radius: var(--corner-radius-2, 6px);
+    background: var(--white, #fff);
+    font: var(--font-button-text);
+    color: var(--highlights1-color, #262626);
+
+    &__leftIcon {
+        display: flex;
+        width: 14px;
+        height: 14px;
+        justify-content: center;
+        align-items: center;
+        margin-right: 4px;
+    }
+
+    &:hover {
+        background: var(--hover, rgba(0, 0, 0, 0.06));
+    }
+
+    &:active {
+        background: var(--pressed, rgba(0, 0, 0, 0.12));
+    }
+
+    &:focus {
+        border: var(--border-bold);
+    }
+
+    &:disabled {
+        background: var(--bg2-color, #F8F8FB);
+        color: var(--weak1-color, #BDBDBD);
+    }
+}
+
+.small {
+    height: 32px;
+    padding: 8px 12px;
+}
+
+.medium {
+    height: 40px;
+    padding: 10px 14px;
+}
+
+.link {
+    border: none;
+    background: none;
+}
+
+.fill {
+    border: none;
+}
+
