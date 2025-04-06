@@ -7,8 +7,9 @@
     padding: 7px;
     aspect-ratio: 1/1;
     background: transparent;
-    border: none;
+    outline: none;
     border-radius: var(--corner-radius-2, 6px);
+    border: none;
 
     &:hover {
         background: var(--hover, rgba(0, 0, 0, 0.06));

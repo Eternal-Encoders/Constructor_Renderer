@@ -9,7 +9,7 @@ import { Actions } from "widgets/Actions";
 import { Canvas } from "widgets/Canvas";
 import { DropdownPanel } from "widgets/DropdownPanel";
 import { InfoPanel } from "widgets/InfoPanel";
-import { ObjectPalette } from "widgets/ObjectPalette";
+import { SelectorItems } from "widgets/SelectorItems";
 import cls from "./MainPage.module.scss";
 
 const MainPage = () => {
@@ -110,12 +110,12 @@ const MainPage = () => {
           scale={scale}/>
         <InfoPanel className={classNames(cls.InfoPanel)}/>
       </div>
-      <ObjectPalette 
-        className={classNames(cls.ObjectPalette)}
-        setSelectedAction={setSelectedAction} 
-        selectedAction={selectedAction} 
-        setSelectedFigure={setSelectedFigure} 
+      <SelectorItems
         selectedFigure={selectedFigure}
+        selectedAction={selectedAction}
+        setSelectedAction={setSelectedAction}
+        setSelectedFigure={setSelectedFigure}
+        className={classNames(cls.SelectorItems)}
       />
     </div>
   );

@@ -16,13 +16,13 @@
         }
 
         &_border {
-            border-bottom: var(--border);
+            border-bottom: var(--outline);
         }
     }
 
     &__floors {
         padding: 12px;
-        border-bottom: var(--border);
+        border-bottom: var(--outline);
     }
 
     &__layers {
