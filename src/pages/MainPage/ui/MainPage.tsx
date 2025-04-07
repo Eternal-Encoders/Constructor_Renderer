@@ -90,7 +90,6 @@ const MainPage = () => {
       <div style={{display: 'flex'}}>
         <DropdownPanel className={classNames(cls.DropdownPanel)}/>
         <Canvas
-          className={classNames(cls.Canvas)}
           scale={scale}
           setScale={setScale}
           setPolygons={setPolygons}
