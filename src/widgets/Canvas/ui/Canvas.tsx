@@ -2,6 +2,7 @@ import classNames from "classnames";
 import { ActionType } from "entities/Figure/Action";
 import { FigureType, Polygon, Rectangle } from "entities/Figure/Figure";
 import { getRelativePointerPosition } from "helpers/getRelativePointerPosition";
+import { useWindowSize } from "helpers/hooks/useWindowSize";
 import { KonvaEventObject } from "konva/lib/Node";
 import { useEffect, useRef, useState } from "react";
 import { Layer, Stage } from "react-konva";
@@ -22,16 +23,48 @@ interface ICanvasProps {
   setSelectedId: (id: string | null) => void;
 }
 
-export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedId, selectedFigure,
-  setSelectedId, setRectangles, scale, selectedAction }
-: ICanvasProps) => {
+export const Canvas = (props: ICanvasProps) => {
+  const { 
+    className, 
+    polygons, 
+    setPolygons, 
+    rectangles, 
+    selectedId, 
+    selectedFigure,
+    setSelectedId, 
+    setRectangles, 
+    scale, 
+    selectedAction 
+  } = props;
+
   const [startRectPos, setRectStartPos] = useState<{ x: number, y: number; } | null>(null);
   const [tempRectangle, setTempRectangle] = useState<Rectangle | null>(null);
   const [tempLine, setTempLine] = useState<Polygon | null>(null);
+  const [width, height] = useWindowSize();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const stageRef = useRef<any>(null);
   const layerRef = useRef(null);
+  // const backgroundRef = useRef(null);
 
   const [points, setPoints] = useState<number[]>([]);
   const [isClosed, setIsClosed] = useState(false);
+
+  // Set background color of Canvas
+  useEffect(() => {
+    if (stageRef.current) {
+      // Apply CSS background to stage container
+      const container = stageRef.current.container();
+      container.style.backgroundColor = '#F8F8FB';
+    }
+  }, []);
+  
+  // Handler to reset background position on stage drag
+  // const handleDragMove = () => {
+  //   if (backgroundRef.current) {
+  //     backgroundRef.current.absolutePosition({ x: 0, y: 0 });
+  //   }
+  // };
 
   // Обработчик для передвижения фигуры по нажатиям на клавиши
   useEffect(() => {
@@ -261,18 +294,18 @@ export const Canvas = ({ className, polygons, setPolygons, rectangles, selectedI
   };
 
   const navbarHeight = 84;
-  const objectPaletteHeight = 84;
-  const someSpaceHeight = 30;
+  const topGapHeight = 12;
+  const bottomGapHeight = 12;
   const leftPanel = 240;
   const rightPanel = 240;
-  // const someSpaceWidth = 2;
 
   return (
     <Stage
       className={classNames(cls.Stage, selectedAction === ActionType.Drag ? cls['grab_active'] : null, [className])}
-      // onWheel={onWheel}
-      height={window.innerHeight - navbarHeight - objectPaletteHeight - someSpaceHeight}
-      width={window.innerWidth - leftPanel - rightPanel}
+      ref={stageRef}
+      // onDragMove={handleDragMove}
+      height={height - navbarHeight - topGapHeight - bottomGapHeight}
+      width={width - leftPanel - rightPanel}
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
