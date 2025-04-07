@@ -1,0 +1,36 @@
+.ExpandableSectionHeader {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: left;
+    outline-offset: var(--outline-offset, -2px);
+    background: var(--white, #fff);
+    color: var(--highlights1-color, #262626);
+    flex-shrink: 0;
+    border: none;
+
+    &__leftIcon,
+    &__rightIcon {
+        display: flex;
+        width: 12px;
+        height: 12px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__leftIcon {
+        margin-right: 9px;
+    }
+
+    &__rightIcon {
+        margin-left: auto;
+    }
+}
+
+.small {
+    width: 200px;
+    height: 26px;
+    padding: 7px;
+
+    font: var(--font-description);
+}
