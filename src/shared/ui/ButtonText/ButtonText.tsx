@@ -1,7 +1,9 @@
 import classNames from "classnames";
 import cls from "./ButtonText.module.scss";
 
-interface IButtonTextProps {
+type HTMLButtonProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type" | "size">
+
+interface IButtonTextProps extends HTMLButtonProps {
   className?: string;
   children: React.ReactNode
   size?: "small" | "medium"
@@ -18,18 +20,22 @@ export const ButtonText = (props: IButtonTextProps) => {
     iconLeft,
     size = "small", 
     type = "default",
-    disabled = false
+    disabled = false,
+    ...otherProps
   } = props;
 
   return (
     <button 
+      {...otherProps}
       className={classNames(cls.ButtonText, cls[size], cls[type], [className])}
       disabled={disabled}
     >
-      <div className={classNames(size === "small" ? cls.ButtonText__leftIcon : cls.ButtonText__leftIcon_medium)}
+      {iconLeft && <div className={classNames(size === "small" 
+        ? cls.ButtonText__leftIcon 
+        : cls.ButtonText__leftIcon_medium)}
       >
         {iconLeft}
-      </div>
+      </div>}
       <div className={classNames(cls.ButtonText__text)}>{children}</div>
     </button>
   );

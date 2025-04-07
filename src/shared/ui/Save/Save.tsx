@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { ActionButton } from "../ActionButton/ActionButton";
+import { ButtonText } from "../ButtonText/ButtonText";
 import cls from "./Save.module.scss";
 
 interface ISaveProps {
@@ -17,10 +17,9 @@ export const Save = ({ className }: ISaveProps) => {
           {new Date().toLocaleString()}
         </div>
       </div>
-      <ActionButton onClick={() => { console.log('Saved!'); }}
-        className={classNames(cls.Save__button)}>
+      <ButtonText className={classNames(cls.Save__button)}>
         Сохранить
-      </ActionButton>
+      </ButtonText>
     </div>
   );
 };

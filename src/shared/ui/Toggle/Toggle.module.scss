@@ -59,3 +59,14 @@ $toggle-size: $toggle-height - ($toggle-gutter * 2);
     }
   }
 }
+
+.text {
+  color: var(--highlights1-color);
+  font: var(--font-description);
+  margin-right: auto;
+}
+
+.ToggleWrapper {
+  display: flex;
+  width: 100%;
+}

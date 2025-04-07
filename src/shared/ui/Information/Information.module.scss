@@ -15,27 +15,6 @@
         color: var(--highlights1-color);
     }
 
-    &__textarea,
-    &__input {
-        min-width: 216px;
-        width: 100%;
-        font: var(--font-description);
-        color: var(--highlights1-color);
-        padding: 8px 10px;
-
-        &::placeholder{
-            color: var(--highlights2-color);
-        }
-    }
-
-    &__textarea {
-        height: 64px;
-    }
-
-    &__input {
-        height: 32px;
-    }
-
     &__synonyms, 
     &__description {
         height: 87px;

@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { LoginModal } from "features/AuthByUsername";
 import { useCallback, useState } from "react";
+import { ButtonText } from "shared/ui/ButtonText/ButtonText";
 import cls from "./Navbar.module.scss";
 
 interface INavbarProps {
@@ -20,11 +21,11 @@ export const Navbar = ({ className }: INavbarProps) => {
 
   return (
     <div className={classNames(cls.Navbar, {}, [className])}>
-      <button 
+      <ButtonText 
         onClick={onShowModal} 
         className={classNames(cls.links, {}, [className])}>
         Войти
-      </button>
+      </ButtonText>
       <LoginModal
         isOpen={isAuthModal}
         onClose={onCloseModal}

@@ -10,6 +10,7 @@ interface IExpandableSectionHeaderProps {
   type?: "default" | "stroke"
   expandable?: boolean
   iconRight?: React.ReactNode | string
+  title: string
 }
 
 export const ExpandableSectionHeader = (props: IExpandableSectionHeaderProps) => {
@@ -22,26 +23,30 @@ export const ExpandableSectionHeader = (props: IExpandableSectionHeaderProps) =>
     iconRight,
     expandable = true,
     size = "small", 
-    type = "default"
+    type = "default",
+    title
   } = props;
 
   return (
-    <button 
-      className={classNames(cls.ExpandableSectionHeader, cls[size], cls[type], [className])}
-      onClick={() => setIsExpanded((prev) => !prev)}
-    >
-      {expandable && <div className={classNames(cls.ExpandableSectionHeader__leftIcon)}
+    <>
+      <div 
+        className={classNames(cls.ExpandableSectionHeader, cls[size], cls[type], [className])}
+        onClick={() => setIsExpanded((prev) => !prev)}
       >
-        {isExpanded ? <ArrowRight transform='rotate(90)'/> : <ArrowRight/>}
-      </div>}
-      <div className={classNames(cls.ExpandableSectionHeader__text)}
-      >
-        {children}
+        {expandable && <div className={classNames(cls.ExpandableSectionHeader__leftIcon)}
+        >
+          {isExpanded ? <ArrowRight transform='rotate(90)'/> : <ArrowRight/>}
+        </div>}
+        <div className={classNames(cls.ExpandableSectionHeader__text)}
+        >
+          {title}
+        </div>
+        {iconRight && <div className={classNames(cls.ExpandableSectionHeader__rightIcon)}
+        >
+          {iconRight}
+        </div>}
       </div>
-      {iconRight && <div className={classNames(cls.ExpandableSectionHeader__rightIcon)}
-      >
-        {iconRight}
-      </div>}
-    </button>
+      {isExpanded && children}
+    </>
   );
 };
