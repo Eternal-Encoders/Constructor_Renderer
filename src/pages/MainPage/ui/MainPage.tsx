@@ -90,7 +90,6 @@ const MainPage = () => {
       <div style={{display: 'flex'}}>
         <DropdownPanel className={classNames(cls.DropdownPanel)}/>
         <Canvas
-          className={classNames(cls.Canvas)}
           scale={scale}
           setScale={setScale}
           setPolygons={setPolygons}
@@ -111,11 +110,11 @@ const MainPage = () => {
         <InfoPanel className={classNames(cls.InfoPanel)}/>
       </div>
       <SelectorItems
+        className={classNames(cls.SelectorItems)}
         selectedFigure={selectedFigure}
         selectedAction={selectedAction}
         setSelectedAction={setSelectedAction}
         setSelectedFigure={setSelectedFigure}
-        className={classNames(cls.SelectorItems)}
       />
     </div>
   );
