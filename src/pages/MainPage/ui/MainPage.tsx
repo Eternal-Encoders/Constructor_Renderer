@@ -111,11 +111,11 @@ const MainPage = () => {
         <InfoPanel className={classNames(cls.InfoPanel)}/>
       </div>
       <SelectorItems
+        className={classNames(cls.SelectorItems)}
         selectedFigure={selectedFigure}
         selectedAction={selectedAction}
         setSelectedAction={setSelectedAction}
         setSelectedFigure={setSelectedFigure}
-        className={classNames(cls.SelectorItems)}
       />
     </div>
   );
