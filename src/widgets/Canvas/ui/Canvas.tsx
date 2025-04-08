@@ -180,6 +180,7 @@ export const Canvas = (props: ICanvasProps) => {
     }
   };
 
+  // Обработчик для доведения линии
   const snapToAngle = (points: number[], x: number, y: number) => {
     const [startX, startY] = [points[points.length - 2], points[points.length - 1]];
     const dx = x - startX;

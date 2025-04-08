@@ -11,7 +11,7 @@ interface IInputProps extends HTMLInputProps {
   iconLeft?: React.ReactNode | string
   iconRight?: React.ReactNode | string
   value?:string
-  onChange?: (event: string) => void
+  onChange?: (event: string | File) => void
 }
 
 export const Input = memo((props: IInputProps) => {
@@ -29,7 +29,12 @@ export const Input = memo((props: IInputProps) => {
   } = props;
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange?.(event.target.value);
+    if (type === "file") {
+      if (!event.target.files) return;
+      onChange?.(event.target.files?.[0]);
+    } else {
+      onChange?.(event.target.value);
+    }
   };
 
   return (

@@ -1,5 +1,3 @@
-import Compas from 'assets/Compas.svg?react';
-import Star from 'assets/Star.svg?react';
 import classNames from "classnames";
 import { useState } from 'react';
 import cls from "./FloorLayers.module.scss";
@@ -14,7 +12,7 @@ export const FloorLayers = ({ className }: IFloorLayersProps) => {
 
   return (
     <ul className={classNames(cls.FloorLayers, {}, [className])}>
-      <li onClick={() => setIsActive(!isActive)} 
+      {/* <li onClick={() => setIsActive(!isActive)} 
         className={classNames(cls.FloorLayers__item, isActive && cls.FloorLayers__item_active)}
       >
         <div className={classNames(cls.FloorLayers__leftIcon)}
@@ -50,7 +48,7 @@ export const FloorLayers = ({ className }: IFloorLayersProps) => {
             <Star/>
           </div>
         </div>
-      </li>
+      </li> */}
     </ul>
   );
 };

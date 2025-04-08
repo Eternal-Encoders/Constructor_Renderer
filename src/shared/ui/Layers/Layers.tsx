@@ -1,6 +1,5 @@
 import ArrowDownMini from 'assets/ArrowDownMini.svg?react';
 import classNames from "classnames";
-import { LayersItems } from "../LayersItems/LayersItems";
 import cls from "./Layers.module.scss";
 
 interface ILayersProps {
@@ -23,7 +22,7 @@ export const Layers = ({ className }: ILayersProps) => {
           Слои
         </h4>
       </header>
-      {!isCollapsed && <LayersItems/>}
+      {/* {!isCollapsed && <LayersItems/>} */}
     </div>
   );
 };

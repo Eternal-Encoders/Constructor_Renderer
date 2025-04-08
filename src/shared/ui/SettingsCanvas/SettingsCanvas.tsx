@@ -1,5 +1,7 @@
 import Plus from 'assets/Plus.svg?react';
 import classNames from "classnames";
+import { ImageUploader } from 'entities/Image/ui/ImageUploader';
+import { Input } from '../Input/Input';
 import cls from "./SettingsCanvas.module.scss";
 
 interface ISettingsCanvasProps {
@@ -25,7 +27,7 @@ export const SettingsCanvas = ({ className }: ISettingsCanvasProps) => {
               <Plus/>
             </div>
           </header>
-          <input className={classNames(cls.SettingsCanvas__input)} type="color" placeholder="" />
+          <ImageUploader className={classNames(cls.Section__input)}/>
         </section>
         <section className={classNames(cls.Section, cls.SettingsCanvas__section, cls.SettingsCanvas__backgroundFill)}>
           <header className={classNames(cls.Section__header)} style={{ marginBottom: '8px' }}>
@@ -36,7 +38,7 @@ export const SettingsCanvas = ({ className }: ISettingsCanvasProps) => {
               <Plus/>
             </div>
           </header>
-          <input className={classNames(cls.SettingsCanvas__input)} type="color" placeholder="" />
+          <Input type="color" placeholder=""  className={classNames(cls.Section__input)}/>
         </section>
       </div>
     </div>

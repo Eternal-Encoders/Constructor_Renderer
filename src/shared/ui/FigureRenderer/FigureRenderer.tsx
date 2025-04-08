@@ -1,10 +1,12 @@
 import { ActionType } from "entities/Figure/Action";
 import { Figure, FigureType, Polygon, Rectangle } from "entities/Figure/Figure";
+import { getImageSrc } from "entities/Image/model/selectors/getImageSrc/getImageSrc";
 import { getMagneticPosition } from "helpers/getMagneticPosition";
 import Konva from "konva";
 import { KonvaEventObject } from "konva/lib/Node";
 import { useEffect, useRef, useState } from "react";
-import { Line, Rect, Transformer } from "react-konva";
+import { Image as KonvaImage, Line, Rect, Transformer } from "react-konva";
+import { useSelector } from "react-redux";
 
 interface IFigureRendererProps {
   className?: string;
@@ -176,8 +178,42 @@ export const FigureRenderer = ({  figure, selectedId, selectedAction,
     }
   };
 
+  const imageSrc = useSelector(getImageSrc);
+  const [imageObj, setImageObj] = useState<HTMLImageElement | null>(null);
+
+  // Загружаем изображение
+  useEffect(() => {
+    if (!imageSrc) {
+      setImageObj(null);
+      return;
+    }
+
+    const img = new window.Image();
+    img.src = imageSrc;
+    img.onload = () => setImageObj(img);
+  }, [imageSrc]);
+
   return (
     <>
+      {imageObj && (
+        <>
+          <KonvaImage
+            image={imageObj}
+            onClick={(e) => {
+              if (selectedAction !== ActionType.Cursor) return;
+              e.cancelBubble = true;
+              // setSelectedId(fig.id);
+              selectedNodeRef.current = e.target;
+            }}
+            ref={(node) => {
+              selectedNodeRef.current = node;
+            }}
+            x={100}
+            y={100}
+            draggable={selectedAction === ActionType.Cursor}
+          />
+        </>
+      )}
       {figure.rectangles.map((fig) => (
         <Rect
           onMouseEnter={(evt) => setIdHovered(evt.target.id())}
