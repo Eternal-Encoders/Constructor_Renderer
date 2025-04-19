@@ -1,6 +1,8 @@
 import { ActionType } from "entities/Figure/Action";
 import { Figure, FigureType, Polygon, Rectangle } from "entities/Figure/Figure";
+import { getImageOpacity } from "entities/Image/model/selectors/getImageOpacity/getImageOpacity";
 import { getImageSrc } from "entities/Image/model/selectors/getImageSrc/getImageSrc";
+import { getImageVisibility } from "entities/Image/model/selectors/getImageVisibility/getImageVisibility";
 import { getMagneticPosition } from "helpers/getMagneticPosition";
 import Konva from "konva";
 import { KonvaEventObject } from "konva/lib/Node";
@@ -24,7 +26,7 @@ export const FigureRenderer = ({  figure, selectedId, selectedAction,
   setSelectedId, setRectangles, setPolygons, layerRef, scale } : IFigureRendererProps) => {
   const transformerRef = useRef<Konva.Transformer>(null);
   const selectedNodeRef = useRef<Konva.Node | null>(null);
-
+  
   const [idHovered, setIdHovered] = useState<string | null>(null);
 
   // Добавление ссылок для трансформации
@@ -179,7 +181,10 @@ export const FigureRenderer = ({  figure, selectedId, selectedAction,
   };
 
   const imageSrc = useSelector(getImageSrc);
+  const imageVisibility = useSelector(getImageVisibility);
+  const imageOpacity = useSelector(getImageOpacity);
   const [imageObj, setImageObj] = useState<HTMLImageElement | null>(null);
+  const [imagePosition, setImagePosition] = useState<{ x: number; y: number } | null>(null);
 
   // Загружаем изображение
   useEffect(() => {
@@ -188,9 +193,35 @@ export const FigureRenderer = ({  figure, selectedId, selectedAction,
       return;
     }
 
-    const img = new window.Image();
+    const img = new Image();
+
     img.src = imageSrc;
-    img.onload = () => setImageObj(img);
+    img.onload = () => {
+      setImageObj(img);
+      const stage = layerRef.current?.parent;
+      if (stage) {
+        const scale = stage.scaleX(); // предполагаем, что scaleX == scaleY
+        const position = stage.position();
+        const containerSize = {
+          width: stage.width(),
+          height: stage.height(),
+        };
+  
+        // Центр видимой части канвы в мировых координатах
+        const worldCenterX = (containerSize.width / 2 - position.x) / scale;
+        const worldCenterY = (containerSize.height / 2 - position.y) / scale;
+
+        // С учётом размеров изображения
+        const x = worldCenterX - img.width / 2;
+        const y = worldCenterY - img.height / 2;
+
+        setImagePosition({ x, y });
+      }
+    };
+    return () => {
+      setImageObj(null);
+      setImagePosition(null);
+    };
   }, [imageSrc]);
 
   return (
@@ -199,17 +230,19 @@ export const FigureRenderer = ({  figure, selectedId, selectedAction,
         <>
           <KonvaImage
             image={imageObj}
+            visible={imageVisibility}
+            opacity={imageOpacity}
             onClick={(e) => {
               if (selectedAction !== ActionType.Cursor) return;
-              e.cancelBubble = true;
+              e.cancelBubble = true; 
               // setSelectedId(fig.id);
               selectedNodeRef.current = e.target;
             }}
             ref={(node) => {
               selectedNodeRef.current = node;
             }}
-            x={100}
-            y={100}
+            x={imagePosition?.x}
+            y={imagePosition?.y}
             draggable={selectedAction === ActionType.Cursor}
           />
         </>

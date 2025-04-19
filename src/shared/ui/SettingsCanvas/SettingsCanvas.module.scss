@@ -18,6 +18,18 @@
         display: flex;
         align-items: center;   
         justify-content: space-between;
+
+        &_background {
+            align-items: start;   
+            flex-direction: column;
+        }
+    }
+
+    &__content {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     &__title {
@@ -27,14 +39,10 @@
 
     &__input {
         max-width: 226px;
-    }
-}
 
-.Plus {
-    cursor: pointer;
-    width: 14px;
-    height: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+        &_file,
+        &_background {
+            opacity: 0;
+        }
+    }
 }

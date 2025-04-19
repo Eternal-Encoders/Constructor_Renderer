@@ -13,7 +13,6 @@ import { SelectorItems } from "widgets/SelectorItems";
 import cls from "./MainPage.module.scss";
 
 const MainPage = () => {
-
   const [polygons, setPolygons] = useState<Polygon[]>([]);
   const [rectangles, setRectangles] = useState<Rectangle[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);

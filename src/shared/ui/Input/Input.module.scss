@@ -16,6 +16,10 @@ textarea, input {
     flex-shrink: 0;
     outline: none;
 
+    &__wrapper {
+        cursor: pointer;
+    }
+
     &__leftIcon,
     &__rightIcon {
         display: flex;
@@ -31,6 +35,12 @@ textarea, input {
 
     &__rightIcon {
         margin-left: auto;
+    }
+
+    &__text {
+        opacity: 0;
+        position: absolute;
+        z-index: -1;
     }
 
     &::placeholder{

@@ -1,4 +1,6 @@
 import classNames from "classnames";
+import { getBackgroundHEXCode } from "entities/Background/model/selectors/getBackgroundHEXCode/getBackgroundHEXCode";
+import { getBackgroundOpacity } from "entities/Background/model/selectors/getBackgroundOpacity/getBackgroundOpacity";
 import { ActionType } from "entities/Figure/Action";
 import { FigureType, Polygon, Rectangle } from "entities/Figure/Figure";
 import { getRelativePointerPosition } from "helpers/getRelativePointerPosition";
@@ -6,6 +8,7 @@ import { useWindowSize } from "helpers/hooks/useWindowSize";
 import { KonvaEventObject } from "konva/lib/Node";
 import { useEffect, useRef, useState } from "react";
 import { Layer, Stage } from "react-konva";
+import { useSelector } from "react-redux";
 import { FigureRenderer } from "shared/ui/FigureRenderer/FigureRenderer";
 import cls from './Canvas.module.scss';
 
@@ -50,21 +53,18 @@ export const Canvas = (props: ICanvasProps) => {
   const [points, setPoints] = useState<number[]>([]);
   const [isClosed, setIsClosed] = useState(false);
 
-  // Set background color of Canvas
+  const bgcHEXCode = useSelector(getBackgroundHEXCode);
+  const bgOpacity = useSelector(getBackgroundOpacity);
+
+  // Set CSS background when component mounts
   useEffect(() => {
     if (stageRef.current) {
       // Apply CSS background to stage container
       const container = stageRef.current.container();
-      container.style.backgroundColor = '#F8F8FB';
+      container.style.backgroundColor = bgcHEXCode;
+      container.style.opacity = bgOpacity;
     }
-  }, []);
-  
-  // Handler to reset background position on stage drag
-  // const handleDragMove = () => {
-  //   if (backgroundRef.current) {
-  //     backgroundRef.current.absolutePosition({ x: 0, y: 0 });
-  //   }
-  // };
+  }, [bgcHEXCode, bgOpacity]);
 
   // Обработчик для передвижения фигуры по нажатиям на клавиши
   useEffect(() => {

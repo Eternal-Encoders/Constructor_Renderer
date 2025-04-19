@@ -1,11 +1,12 @@
 import classNames from "classnames";
-import { memo, useRef } from "react";
+import { forwardRef, memo } from "react";
 import cls from "./Input.module.scss";
 
 type HTMLInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "value" | "onChange">
 
 interface IInputProps extends HTMLInputProps {
   className?: string;
+  children?: React.ReactNode
   size?: "small"
   type?: string
   iconLeft?: React.ReactNode | string
@@ -14,11 +15,10 @@ interface IInputProps extends HTMLInputProps {
   onChange?: (event: string | File) => void
 }
 
-export const Input = memo((props: IInputProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-  
+export const Input = memo(forwardRef<HTMLInputElement, IInputProps>((props, ref) => {  
   const { 
-    className, 
+    className,
+    children, 
     iconLeft,
     iconRight,
     size = "small", 
@@ -28,39 +28,67 @@ export const Input = memo((props: IInputProps) => {
     ...otherProps
   } = props;
 
-  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (type === "file") {
-      if (!event.target.files) return;
-      onChange?.(event.target.files?.[0]);
-    } else {
-      onChange?.(event.target.value);
-    }
+  const onChangeFileHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
+    onChange?.(event.target.files?.[0]);
   };
 
-  return (
-    <div 
-      onClick={() => inputRef.current?.focus()}
-      className={classNames(cls.Input, cls[size], [className])}
-    >
-      {iconLeft && <div className={classNames(cls.Input__leftIcon)}
-      >
-        {iconLeft}
-      </div>}
-      <label className={classNames(cls.Input__wrapper)}
-      >
+  const onChangeValueHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.value) return;
+    onChange?.(event.target.value);
+  };
+
+
+  const onChangeInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onChange?.(event.target.value);
+  };
+
+  const layoutByType = (handler: (event: React.ChangeEvent<HTMLInputElement>) => void) => {
+    return (
+      <label className={classNames(cls.Input__wrapper)}>
+        {children}
         <input 
           {...otherProps} 
-          ref={inputRef}
+          ref={ref}
           type={type} 
           value={value} 
-          onChange={onChangeHandler} 
+          onChange={handler} 
           className={classNames(cls.Input__text)} 
         />
-      </label>
-      {iconRight && <div className={classNames(cls.Input__rightIcon)}
-      >
-        {iconRight}
-      </div>}
-    </div>
+      </label> 
+    );
+  }
+  
+  return (
+    type === 'file' ?       
+      layoutByType(onChangeFileHandler)
+      :    
+      type === 'color' ?
+        layoutByType(onChangeValueHandler)
+        :
+        <div 
+          onClick={() => (ref as React.RefObject<HTMLInputElement>)?.current?.focus()}
+          className={classNames(cls.Input, cls[size], [className])}
+        >
+          {iconLeft && <div className={classNames(cls.Input__leftIcon)}
+          >
+            {iconLeft}
+          </div>}
+          <label className={classNames(cls.Input__wrapper)}>
+            {children}
+            <input 
+              {...otherProps} 
+              ref={ref}
+              type={type} 
+              value={value} 
+              onChange={onChangeInputHandler} 
+              className={classNames(cls.Input__text)} 
+            />
+          </label>
+          {iconRight && <div className={classNames(cls.Input__rightIcon)}
+          >
+            {iconRight}
+          </div>}
+        </div>
   );
-});
+}));

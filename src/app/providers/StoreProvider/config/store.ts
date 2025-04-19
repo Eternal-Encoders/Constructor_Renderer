@@ -1,4 +1,5 @@
 import { configureStore, ReducersMapObject } from '@reduxjs/toolkit';
+import { backgroundReducer } from 'entities/Background';
 import { counterReducer } from 'entities/Counter';
 import { imageReducer } from 'entities/Image';
 import { userReducer } from 'entities/User';
@@ -10,6 +11,7 @@ export function createReduxStore(initialState?: StateSchema) {
     counter: counterReducer,
     user: userReducer,
     image: imageReducer,
+    background: backgroundReducer
   }
 
   return configureStore<StateSchema>({
