@@ -3,6 +3,14 @@ import { getBackgroundHEXCode } from "entities/Background/model/selectors/getBac
 import { getBackgroundOpacity } from "entities/Background/model/selectors/getBackgroundOpacity/getBackgroundOpacity";
 import { ActionType } from "entities/Figure/Action";
 import { FigureType, Polygon, Rectangle } from "entities/Figure/Figure";
+// eslint-disable-next-line @stylistic/js/max-len
+import { getLayoutBottomGapHeight } from "entities/Layout/model/selectors/getLayoutBottomGapHeight/getLayoutBottomGapHeight";
+// eslint-disable-next-line @stylistic/js/max-len
+import { getLayoutLeftPanelWidth } from "entities/Layout/model/selectors/getLayoutLeftPanelWidth/getLayoutLeftPanelWidth";
+import { getLayoutNavbarHeight } from "entities/Layout/model/selectors/getLayoutNavbarHeight/getLayoutNavbarHeight";
+// eslint-disable-next-line @stylistic/js/max-len
+import { getLayoutRightPanelWidth } from "entities/Layout/model/selectors/getLayoutRightPanelWidth/getLayoutRightPanelWidth";
+import { getLayoutTopGapHeight } from "entities/Layout/model/selectors/getLayoutTopGapHeight/getLayoutTopGapHeight";
 import { getRelativePointerPosition } from "helpers/getRelativePointerPosition";
 import { useWindowSize } from "helpers/hooks/useWindowSize";
 import { KonvaEventObject } from "konva/lib/Node";
@@ -294,11 +302,11 @@ export const Canvas = (props: ICanvasProps) => {
 
   };
 
-  const navbarHeight = 84;
-  const topGapHeight = 12;
-  const bottomGapHeight = 12;
-  const leftPanel = 240;
-  const rightPanel = 240;
+  const navbarHeight = useSelector(getLayoutNavbarHeight);
+  const topGapHeight = useSelector(getLayoutTopGapHeight);
+  const bottomGapHeight = useSelector(getLayoutBottomGapHeight);
+  const leftPanelWidth = useSelector(getLayoutLeftPanelWidth);
+  const rightPanelWidth = useSelector(getLayoutRightPanelWidth);
 
   return (
     <Stage
@@ -306,7 +314,7 @@ export const Canvas = (props: ICanvasProps) => {
       ref={stageRef}
       // onDragMove={handleDragMove}
       height={height - navbarHeight - topGapHeight - bottomGapHeight}
-      width={width - leftPanel - rightPanel}
+      width={width - leftPanelWidth - rightPanelWidth}
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}

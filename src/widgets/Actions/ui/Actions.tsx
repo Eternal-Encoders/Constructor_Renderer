@@ -1,4 +1,7 @@
 import classNames from "classnames";
+// eslint-disable-next-line @stylistic/js/max-len
+import { getLayoutRightPanelWidth } from "entities/Layout/model/selectors/getLayoutRightPanelWidth/getLayoutRightPanelWidth";
+import { useSelector } from "react-redux";
 import { ButtonIcon } from "shared/ui/ButtonIcon/ButtonIcon";
 import cls from "./Actions.module.scss";
 
@@ -11,8 +14,10 @@ interface IActionsProps {
 }
 
 export const Actions = ({ className, handleUndoMove, selectedId, setScale, scale }: IActionsProps) => {
+  const reduxWidth = useSelector(getLayoutRightPanelWidth);
+
   return (
-    <div className={classNames(cls.Actions, {}, [className])}>
+    <div style={{ right: `${16 + reduxWidth}px` }} className={classNames(cls.Actions, {}, [className])}>
       <ButtonIcon 
         onClick={handleUndoMove} 
         disabled={!selectedId} 
