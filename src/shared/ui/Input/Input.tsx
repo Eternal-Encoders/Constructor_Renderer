@@ -53,7 +53,7 @@ export const Input = memo(forwardRef<HTMLInputElement, IInputProps>((props, ref)
           type={type} 
           value={value} 
           onChange={handler} 
-          className={classNames(cls.Input__text)} 
+          className={classNames(cls.Input__text_hidden)} 
         />
       </label> 
     );
