@@ -8,6 +8,7 @@ export interface Rectangle {
   height?: number;
   draggable: boolean;
   history: { x: number; y: number; }[];
+  redoHistory?: { x: number; y: number; }[];
 }
 
 export interface Polygon {
@@ -20,6 +21,7 @@ export interface Polygon {
   isClosed: boolean;
   draggable: boolean;
   history: { x: number; y: number; }[];
+  redoHistory?: { x: number; y: number; }[];
 }
 
 export enum FigureType {
