@@ -4,9 +4,11 @@ import classNames from "classnames";
 import { backgroundActions } from 'entities/Background/model/slice/backgroundSlice';
 import { BackgroundUploader } from 'entities/Background/ui/BackgroundUploader';
 import { imageActions } from 'entities/Image/model/slice/imageSlice';
+// eslint-disable-next-line @stylistic/js/max-len
+import { getLayoutRightPanelWidth } from 'entities/Layout/model/selectors/getLayoutRightPanelWidth/getLayoutRightPanelWidth';
 import { getShorterIfOverflow } from 'helpers/getShorterIfOverflow';
 import { WheelEvent } from 'react';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import cls from "./OpacitySettings.module.scss";
 
 interface IOpacitySettingsProps {
@@ -18,11 +20,11 @@ interface IOpacitySettingsProps {
   isToggleRemovable?: boolean;
   isToggleVisible?: boolean;
   isToggleOpacity?: boolean;
-  isContentFullSize?: boolean;
 }
 
 export const OpacitySettings = (props: IOpacitySettingsProps) => {
   const dispatch = useDispatch();
+  const layoutRightPanelWidth = useSelector(getLayoutRightPanelWidth);
 
   const {
     className,
@@ -33,7 +35,6 @@ export const OpacitySettings = (props: IOpacitySettingsProps) => {
     isToggleRemovable = true,
     isToggleVisible = true,
     isToggleOpacity = true,
-    isContentFullSize = false,
   } = props;
 
   const isBackground = !src;
@@ -74,10 +75,14 @@ export const OpacitySettings = (props: IOpacitySettingsProps) => {
   const convertToPercent = (value: number) => `${(value * 100).toFixed(0)}`;
 
   const handleNameChange = (name: string) => {
-    if (!isContentFullSize){
-      return getShorterIfOverflow(name, 6);
+    if (layoutRightPanelWidth <= 260){
+      return getShorterIfOverflow(name, 7);
+    } else if (layoutRightPanelWidth <= 300){
+      return getShorterIfOverflow(name, 14);
+    } else if (layoutRightPanelWidth <= 340){
+      return getShorterIfOverflow(name, 18);
     } 
-    return getShorterIfOverflow(name, 20);
+    return getShorterIfOverflow(name, 28);
   }
     
   const handleBackgroundChange = (str: string) => {
@@ -106,6 +111,7 @@ export const OpacitySettings = (props: IOpacitySettingsProps) => {
         </div>
         <div className={classNames(cls.Opacity__text)} style={{ padding: "8px 10px 8px 4px" }}>
           <input 
+            title={name}
             style={{width: '100%'}}
             type='text' 
             value={handleNameChange(name)} 

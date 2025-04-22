@@ -72,7 +72,6 @@ export const SettingsCanvas = ({ className }: ISettingsCanvasProps) => {
             isToggleRemovable={false}
             isToggleVisible={false}
             isToggleOpacity={false}
-            isContentFullSize
           />
         </section>
       </div>
