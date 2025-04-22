@@ -1,6 +1,7 @@
 export interface Rectangle {
   id: string;
   type: FigureType.Rectangle;
+  index?: number;
   x: number;
   y: number;
   width?: number;
@@ -12,6 +13,7 @@ export interface Rectangle {
 export interface Polygon {
   id: string;
   type: FigureType.Polygon;
+  index?: number;
   x?: number;
   y?: number;
   points: number[];

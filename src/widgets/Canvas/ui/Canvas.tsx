@@ -8,6 +8,8 @@ import { getLayoutBottomGapHeight } from "entities/Layout/model/selectors/getLay
 // eslint-disable-next-line @stylistic/js/max-len
 import { getLayoutLeftPanelWidth } from "entities/Layout/model/selectors/getLayoutLeftPanelWidth/getLayoutLeftPanelWidth";
 import { getLayoutNavbarHeight } from "entities/Layout/model/selectors/getLayoutNavbarHeight/getLayoutNavbarHeight";
+ 
+import { layersActions } from "entities/Layers/model/slice/layersSlice";
 // eslint-disable-next-line @stylistic/js/max-len
 import { getLayoutRightPanelWidth } from "entities/Layout/model/selectors/getLayoutRightPanelWidth/getLayoutRightPanelWidth";
 import { getLayoutTopGapHeight } from "entities/Layout/model/selectors/getLayoutTopGapHeight/getLayoutTopGapHeight";
@@ -16,7 +18,7 @@ import { useWindowSize } from "helpers/hooks/useWindowSize";
 import { KonvaEventObject } from "konva/lib/Node";
 import { useEffect, useRef, useState } from "react";
 import { Layer, Stage } from "react-konva";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FigureRenderer } from "shared/ui/FigureRenderer/FigureRenderer";
 import cls from './Canvas.module.scss';
 
@@ -55,7 +57,8 @@ export const Canvas = (props: ICanvasProps) => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const stageRef = useRef<any>(null);
-  const layerRef = useRef(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const layerRef = useRef<any>(null);
   // const backgroundRef = useRef(null);
 
   const [points, setPoints] = useState<number[]>([]);
@@ -177,6 +180,11 @@ export const Canvas = (props: ICanvasProps) => {
             id: `${selectedFigure}-${Date.now()}`,
             draggable: true, history: [], type: FigureType.Polygon
           }]);
+          dispatch(layersActions.setLayersPolygon({
+            points, isClosed: true,
+            id: `${selectedFigure}-${Date.now()}`,
+            draggable: true, history: [], type: FigureType.Polygon
+          }));
           setTempLine(null);
           setPoints([]);
           return;
@@ -269,6 +277,8 @@ export const Canvas = (props: ICanvasProps) => {
     }
   };
 
+  const dispatch = useDispatch();
+
   // Обработчик для отпускания кнопки мыши
   const onMouseUp = () => {
     if (selectedAction !== ActionType.None) return;
@@ -287,19 +297,24 @@ export const Canvas = (props: ICanvasProps) => {
         ...tempRectangle,
         id: `${selectedFigure}-${Date.now()}`
       }]);
+      dispatch(layersActions.setLayersRectangle({
+        ...tempRectangle,
+        id: `${selectedFigure}-${Date.now()}`
+      }));
       setTempRectangle(null);
       setRectStartPos(null);
-    } else if (selectedFigure === FigureType.Polygon) {
-      if (!tempLine) return;
-      if (isClosed) {
-        setPolygons((prev) => [...prev, { ...tempLine, id: `${selectedFigure}-${Date.now()}` }]);
-        setTempLine(null);
-        setPoints([]);
-        setIsClosed(false);
-      }
-
-    }
-
+    } 
+    // else if (selectedFigure === FigureType.Polygon) {
+    //   if (!tempLine) return;
+    //   if (isClosed) {
+    //     console.log(1);
+    //     setPolygons((prev) => [...prev, { ...tempLine, id: `${selectedFigure}-${Date.now()}` }]);
+    //     dispatch(layersActions.setLayersPolygon({ ...tempLine, id: `${selectedFigure}-${Date.now()}` }));
+    //     setTempLine(null);
+    //     setPoints([]);
+    //     setIsClosed(false);
+    //   }
+    // }
   };
 
   const navbarHeight = useSelector(getLayoutNavbarHeight);
@@ -307,6 +322,8 @@ export const Canvas = (props: ICanvasProps) => {
   const bottomGapHeight = useSelector(getLayoutBottomGapHeight);
   const leftPanelWidth = useSelector(getLayoutLeftPanelWidth);
   const rightPanelWidth = useSelector(getLayoutRightPanelWidth);
+
+  console.log(layerRef.current?.children);
 
   return (
     <Stage

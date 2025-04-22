@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import { Input } from "../Input/Input";
 import { TextArea } from "../TextArea/TextArea";
-import { Toggle } from "../Toggle/Toggle";
 import cls from "./Information.module.scss";
 
 interface IInformationProps {
@@ -32,9 +31,9 @@ export const Information = ({ className }: IInformationProps) => {
         </h4>
       </header>
       <div className={classNames(cls.Information__content)}>
-        <section className={classNames(cls.Section, cls.Information__button)} style={{ marginBottom: '8px' }}>
+        {/* <section className={classNames(cls.Section, cls.Information__button)} style={{ marginBottom: '8px' }}>
           <Toggle text="Активно"/>
-        </section>
+        </section> */}
         <section className={classNames(cls.Section, cls.Information__section, cls.Information__name)} 
           style={{ marginBottom: '8px' }}>
           <h5 className={classNames(cls.Section__title)} 
