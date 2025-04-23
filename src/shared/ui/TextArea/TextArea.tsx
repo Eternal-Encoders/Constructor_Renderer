@@ -7,8 +7,6 @@ type HTMLTextAreaProps = Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>,
 interface ITextAreaProps extends HTMLTextAreaProps {
   className?: string;
   size?: "small"
-  iconLeft?: React.ReactNode | string
-  iconRight?: React.ReactNode | string
   value?:string
   onChange?: (event: string) => void
 }
@@ -18,8 +16,6 @@ export const TextArea = memo((props: ITextAreaProps) => {
   
   const { 
     className, 
-    iconLeft,
-    iconRight,
     size = "small", 
     value,
     onChange,
@@ -35,10 +31,6 @@ export const TextArea = memo((props: ITextAreaProps) => {
       onClick={() => textAreaRef.current?.focus()}
       className={classNames(cls.TextArea, cls[size], [className])}
     >
-      {iconLeft && <div className={classNames(cls.TextArea__leftIcon)}
-      >
-        {iconLeft}
-      </div>}
       <label className={classNames(cls.TextArea__wrapper)}
       >
         <textarea 
@@ -49,10 +41,6 @@ export const TextArea = memo((props: ITextAreaProps) => {
           className={classNames(cls.TextArea__text)} 
         />
       </label>
-      {iconRight && <div className={classNames(cls.TextArea__rightIcon)}
-      >
-        {iconRight}
-      </div>}
     </div>
   );
 });
