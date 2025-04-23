@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import { useState } from 'react';
 import cls from "./FloorLayers.module.scss";
 
 interface IFloorLayersProps {
@@ -7,8 +6,8 @@ interface IFloorLayersProps {
 }
 
 export const FloorLayers = ({ className }: IFloorLayersProps) => {
-  const [isActive, setIsActive] = useState(true);
-  const [isFavourite, setIsFavourite] = useState(false);
+  // const [isActive, setIsActive] = useState(true);
+  // const [isFavourite, setIsFavourite] = useState(false);
 
   return (
     <ul className={classNames(cls.FloorLayers, {}, [className])}>

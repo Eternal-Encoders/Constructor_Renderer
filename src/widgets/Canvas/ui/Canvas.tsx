@@ -62,7 +62,7 @@ export const Canvas = (props: ICanvasProps) => {
   // const backgroundRef = useRef(null);
 
   const [points, setPoints] = useState<number[]>([]);
-  const [isClosed, setIsClosed] = useState(false);
+  const isClosed = false;
 
   const bgcHEXCode = useSelector(getBackgroundHEXCode);
   const bgOpacity = useSelector(getBackgroundOpacity);

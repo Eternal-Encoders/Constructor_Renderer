@@ -11,7 +11,7 @@ interface ILayersItemsProps {
 export const LayersItems = ({ className }: ILayersItemsProps) => {
   const figures = useSelector(getLayersFigures);
 
-  const isActive = true;
+  // const isActive = true;
   return (
     <ul className={classNames(cls.LayersItems, {}, [className])}>
       {figures && figures.map((layer) => (
