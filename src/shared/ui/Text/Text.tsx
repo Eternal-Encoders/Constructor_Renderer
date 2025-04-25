@@ -24,7 +24,7 @@ export const Text = (props: ITextProps) => {
 
   return (
     <div className={classNames(cls.Text, { [cls[theme]]: true }, [className])}>
-      {title && <p className={cls.title}>{title}</p>}
+      {title && <h4 className={cls.title}>{title}</h4>}
       {text && <p className={cls.text}>{text}</p>}
     </div>
   );

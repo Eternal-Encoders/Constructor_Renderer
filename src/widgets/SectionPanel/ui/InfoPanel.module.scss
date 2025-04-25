@@ -1,0 +1,29 @@
+.InfoPanel {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg1-color);
+    outline: var(--outline);
+    outline-offset: var(--outline-offset, -2px);
+    position: relative;
+
+    &__save {
+        padding: 12px;
+        border-bottom: var(--outline);
+    }
+
+    &__information {
+        padding: 12px;
+        border-bottom: var(--outline);
+    }
+}
+
+.Resizer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 5px;
+    cursor: ew-resize;
+    background-color: transparent;
+    z-index: 10;
+}

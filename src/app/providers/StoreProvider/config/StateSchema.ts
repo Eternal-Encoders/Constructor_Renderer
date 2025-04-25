@@ -1,5 +1,5 @@
-import { BackgroundSchema } from "entities/Background";
 import { CounterSchema } from "entities/Counter";
+import { FillSchema } from "entities/Fill";
 import { ImageSchema } from "entities/Image";
 import { LayersSchema } from "entities/Layers";
 import { LayoutSchema } from "entities/Layout";
@@ -9,8 +9,8 @@ import { LoginSchema } from "features/AuthByUsername";
 export interface StateSchema {
   counter: CounterSchema;
   user: UserSchema;
+  fill: FillSchema;
   image: ImageSchema;
-  background: BackgroundSchema;
   layout: LayoutSchema;
   layers: LayersSchema;
   loginForm: LoginSchema;

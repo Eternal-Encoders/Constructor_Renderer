@@ -1,11 +1,10 @@
 import ClosedEyeSmall from 'assets/ClosedEyeSmall.svg?react';
 import OpenEyeSmall from 'assets/OpenEyeSmall.svg?react';
 import classNames from "classnames";
-import { backgroundActions } from 'entities/Background/model/slice/backgroundSlice';
-import { BackgroundUploader } from 'entities/Background/ui/BackgroundUploader';
+import { FillUploader } from 'entities/Fill';
+import { fillActions } from 'entities/Fill/model/slice/fillSlice';
 import { imageActions } from 'entities/Image/model/slice/imageSlice';
-// eslint-disable-next-line @stylistic/js/max-len
-import { getLayoutRightPanelWidth } from 'entities/Layout/model/selectors/getLayoutRightPanelWidth/getLayoutRightPanelWidth';
+import { getLayoutRightPanelWidth } from 'entities/Layout';
 import { getShorterIfOverflow } from 'helpers/getShorterIfOverflow';
 import { WheelEvent } from 'react';
 import { useDispatch, useSelector } from "react-redux";
@@ -37,38 +36,26 @@ export const OpacitySettings = (props: IOpacitySettingsProps) => {
     isToggleOpacity = true,
   } = props;
 
-  const isBackground = !src;
+  const isFill = !src;
   const hexCode = !src ? name : '';
 
   const onWheel = (e: WheelEvent<HTMLDivElement>) => {
     e.stopPropagation();
     if (e.deltaY > 0) {
       if (opacity <= 0.05) return;
-      // if (isBackground) 
-      //   dispatch(backgroundActions.setBackgroundOpacity(opacity - 0.1));
-      // else 
       dispatch(imageActions.setImageOpacity(opacity - 0.1));
     } else if (e.deltaY < 0) {
       if (opacity >= 0.95) return;
-      // if (isBackground) 
-      //   dispatch(backgroundActions.setBackgroundOpacity(opacity + 0.1));
-      // else 
       dispatch(imageActions.setImageOpacity(opacity + 0.1));
     }
     return;
   }
 
   const clear = () => {
-    // if (isBackground) 
-    //   dispatch(backgroundActions.clearBackground());
-    // else 
     dispatch(imageActions.clearImage());
   }
 
   const toggleVisibility = () => {
-    // if (isBackground) 
-    //   dispatch(backgroundActions.setBackgroundVisibility(!isOpened));
-    // else 
     dispatch(imageActions.setImageVisibility(!isOpened));
   }
 
@@ -88,7 +75,7 @@ export const OpacitySettings = (props: IOpacitySettingsProps) => {
   const handleBackgroundChange = (str: string) => {
     // Валидируем hex-код, разрешаем только # и 0-9, a-f, A-F, до 7 символов
     if (/^#?[0-9A-Fa-f]{0,6}$/.test(str.replace('#', ''))) {
-      dispatch(backgroundActions.setBackgroundHEXCode(str.startsWith('#') ? str : `#${str}`));
+      dispatch(fillActions.setFillHEXCode(str.startsWith('#') ? str : `#${str}`));
     }
   };
 
@@ -100,9 +87,9 @@ export const OpacitySettings = (props: IOpacitySettingsProps) => {
             &&
             <img src={src} className={classNames(cls.Opacity__img)} />
           }
-          {isBackground
+          {isFill
             && 
-            <BackgroundUploader children={
+            <FillUploader children={
               <img className={classNames(cls.Opacity__img)} style={{ backgroundColor: hexCode }} 
               />
             }

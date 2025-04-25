@@ -35,7 +35,7 @@ export const DropdownPanel = ({ className }: IDropdownPanelProps) => {
       <div
         className={cls.Resizer}
         onMouseDown={handleMouseDown}
-        style={{ right: 0, left: "auto" }} // 👉 переместим на правую границу
+        style={{ right: 0, left: "auto" }}
       />
       <div className={classNames(cls.DropdownPanel__content)}>
         <section className={classNames(cls.DropdownPanel__header)} style={{ marginBottom: '12px' }}>

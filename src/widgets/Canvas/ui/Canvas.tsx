@@ -1,18 +1,15 @@
 import classNames from "classnames";
-import { getBackgroundHEXCode } from "entities/Background/model/selectors/getBackgroundHEXCode/getBackgroundHEXCode";
-import { getBackgroundOpacity } from "entities/Background/model/selectors/getBackgroundOpacity/getBackgroundOpacity";
 import { ActionType } from "entities/Figure/Action";
 import { FigureType, Polygon, Rectangle } from "entities/Figure/Figure";
-// eslint-disable-next-line @stylistic/js/max-len
-import { getLayoutBottomGapHeight } from "entities/Layout/model/selectors/getLayoutBottomGapHeight/getLayoutBottomGapHeight";
-// eslint-disable-next-line @stylistic/js/max-len
-import { getLayoutLeftPanelWidth } from "entities/Layout/model/selectors/getLayoutLeftPanelWidth/getLayoutLeftPanelWidth";
-import { getLayoutNavbarHeight } from "entities/Layout/model/selectors/getLayoutNavbarHeight/getLayoutNavbarHeight";
- 
+import { getFillHEXCode, getFillOpacity } from "entities/Fill";
 import { layersActions } from "entities/Layers/model/slice/layersSlice";
-// eslint-disable-next-line @stylistic/js/max-len
-import { getLayoutRightPanelWidth } from "entities/Layout/model/selectors/getLayoutRightPanelWidth/getLayoutRightPanelWidth";
-import { getLayoutTopGapHeight } from "entities/Layout/model/selectors/getLayoutTopGapHeight/getLayoutTopGapHeight";
+import {
+  getLayoutBottomGapHeight,
+  getLayoutLeftPanelWidth,
+  getLayoutNavbarHeight,
+  getLayoutRightPanelWidth,
+  getLayoutTopGapHeight
+} from "entities/Layout";
 import { getRelativePointerPosition } from "helpers/getRelativePointerPosition";
 import { useWindowSize } from "helpers/hooks/useWindowSize";
 import { KonvaEventObject } from "konva/lib/Node";
@@ -64,8 +61,8 @@ export const Canvas = (props: ICanvasProps) => {
   const [points, setPoints] = useState<number[]>([]);
   const isClosed = false;
 
-  const bgcHEXCode = useSelector(getBackgroundHEXCode);
-  const bgOpacity = useSelector(getBackgroundOpacity);
+  const bgcHEXCode = useSelector(getFillHEXCode);
+  const bgOpacity = useSelector(getFillOpacity);
 
   // Set CSS background when component mounts
   useEffect(() => {
