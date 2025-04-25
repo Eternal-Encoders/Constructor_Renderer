@@ -5,6 +5,7 @@ import { imageReducer } from 'entities/Image';
 import { layersReducer } from 'entities/Layers';
 import { layoutReducer } from 'entities/Layout';
 import { userReducer } from 'entities/User';
+import { loginReducer } from 'features/AuthByUsername';
 import { StateSchema } from './StateSchema';
 
 export function createReduxStore(initialState?: StateSchema) {
@@ -15,7 +16,8 @@ export function createReduxStore(initialState?: StateSchema) {
     image: imageReducer,
     background: backgroundReducer,
     layout: layoutReducer,
-    layers: layersReducer
+    layers: layersReducer,
+    loginForm: loginReducer,
   }
 
   return configureStore<StateSchema>({
@@ -24,3 +26,8 @@ export function createReduxStore(initialState?: StateSchema) {
     preloadedState: initialState
   })
 }
+
+export const store = createReduxStore()
+export type AppStore = typeof store
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch

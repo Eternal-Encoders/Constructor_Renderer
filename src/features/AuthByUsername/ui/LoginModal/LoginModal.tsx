@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { Modal } from "shared/ui/Modal/Modal";
 import { LoginForm } from "../LoginForm/LoginForm";
 
-interface ILoginModalProps {
+interface ILoginModalProps { 
   className?: string;
   isOpen: boolean;
   onClose: () => void;
