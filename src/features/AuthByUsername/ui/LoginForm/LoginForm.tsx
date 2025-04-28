@@ -10,11 +10,12 @@ import { Text, TextTheme } from "shared/ui/Text/Text";
 import { loginActions } from "../../model/slice/loginSlice";
 import cls from "./LoginForm.module.scss";
 
-interface ILoginFormProps {
+export interface ILoginFormProps {
   className?: string;
+  isOpen?: boolean;
 }
 
-export const LoginForm = memo(({ className }: ILoginFormProps) => {
+const LoginForm = memo(({ className, isOpen }: ILoginFormProps) => {
   const dispatch = useAppDispatch();
   const {email, password, isLoading, error} = useSelector(getLogin);
 
@@ -38,6 +39,7 @@ export const LoginForm = memo(({ className }: ILoginFormProps) => {
       {error && <Text text={error} theme={TextTheme.ERROR} className={cls.error}/>}
       <Input
         onChange={onChangeUsername} 
+        autoFocus
         value={email}
         type="login" 
         placeholder="Введите email"
@@ -58,3 +60,5 @@ export const LoginForm = memo(({ className }: ILoginFormProps) => {
     </div>
   );
 });
+
+export default LoginForm;

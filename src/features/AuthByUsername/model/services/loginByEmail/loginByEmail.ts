@@ -17,7 +17,8 @@ export const loginByEmail = createAsyncThunk<User, LoginByEmailProps, { rejectVa
   "login/loginByEmail",
   async (authData, thunkAPI) => {
     try {
-      const response = await axios.post<User>('http://localhost:8000/login', authData);
+      const response = await axios.post<User>
+      ('eternal-encoders-constructor-adminapi-d766.twc1.net/user/login', authData);
 
       if (!response.data) {
         throw new Error();

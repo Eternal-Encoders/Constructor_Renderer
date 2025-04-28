@@ -40,7 +40,7 @@ export const Information = ({ className }: IInformationProps) => {
             style={{ marginBottom: '8px' }}>
             Название
           </h5>
-          <Input className={classNames(cls.Information__input)}/>
+          <Input className={classNames(cls.Information__input)} />
         </section>
         <section className={classNames(cls.Section, cls.Information__section, cls.Information__description)} 
           style={{ marginBottom: '8px' }}>

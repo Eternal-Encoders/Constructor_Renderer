@@ -1,18 +1,19 @@
 import classNames from "classnames";
-import { forwardRef, memo } from "react";
+import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from "react";
 import cls from "./Input.module.scss";
 
 type HTMLInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "value" | "onChange">
 
 interface IInputProps extends HTMLInputProps {
   className?: string;
-  children?: React.ReactNode
-  size?: "small"
-  type?: string
-  iconLeft?: React.ReactNode | string
-  iconRight?: React.ReactNode | string
-  value?:string
-  onChange?: (event: string | File) => void
+  children?: React.ReactNode;
+  size?: "small";
+  type?: string;
+  autoFocus?: boolean,
+  iconLeft?: React.ReactNode | string;
+  iconRight?: React.ReactNode | string;
+  value?:string;
+  onChange?: (event: string | File) => void;
 }
 
 export const Input = memo(forwardRef<HTMLInputElement, IInputProps>((props, ref) => {  
@@ -21,12 +22,26 @@ export const Input = memo(forwardRef<HTMLInputElement, IInputProps>((props, ref)
     children, 
     iconLeft,
     iconRight,
+    autoFocus,
     size = "small", 
     type = "text",
     value,
     onChange,
     ...otherProps
   } = props;
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+
+  useImperativeHandle(ref, () => inputRef.current!, []);
+
+  useEffect(() => {
+    if (autoFocus) {
+      setIsFocused(true);
+      inputRef.current?.focus();
+    }
+  }, [autoFocus]);
 
   const onChangeFileHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
@@ -38,7 +53,6 @@ export const Input = memo(forwardRef<HTMLInputElement, IInputProps>((props, ref)
     onChange?.(event.target.value);
   };
 
-
   const onChangeInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChange?.(event.target.value);
   };
@@ -49,7 +63,8 @@ export const Input = memo(forwardRef<HTMLInputElement, IInputProps>((props, ref)
         {children}
         <input 
           {...otherProps} 
-          ref={ref}
+          autoFocus={isFocused}
+          ref={inputRef}
           type={type} 
           value={value} 
           onChange={handler} 
@@ -78,7 +93,8 @@ export const Input = memo(forwardRef<HTMLInputElement, IInputProps>((props, ref)
             {children}
             <input 
               {...otherProps} 
-              ref={ref}
+              autoFocus={isFocused}
+              ref={inputRef}
               type={type} 
               value={value} 
               onChange={onChangeInputHandler} 
