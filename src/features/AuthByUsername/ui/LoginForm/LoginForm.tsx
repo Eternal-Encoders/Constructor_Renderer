@@ -1,4 +1,4 @@
-import { useAppDispatch } from "app/providers/StoreProvider/config/hooks";
+import { useAppDispatch } from "app/providers/StoreProvider/lib/hooks/useAppDispatch";
 import classNames from "classnames";
 import { loginByEmail } from "features/AuthByUsername/model/services/loginByEmail/loginByEmail";
 import { memo, useCallback } from "react";
@@ -16,13 +16,14 @@ import cls from "./LoginForm.module.scss";
 
 export interface ILoginFormProps {
   className?: string;
+  onSuccess: () => void;
 }
 
 const initialReducers: ReducersList = {
   'loginForm': loginReducer
 }
 
-const LoginForm = memo(({ className }: ILoginFormProps) => {
+const LoginForm = memo(({ className, onSuccess }: ILoginFormProps) => {
   const dispatch = useAppDispatch();
 
   const email = useSelector(getLoginEmail); 
@@ -41,8 +42,11 @@ const LoginForm = memo(({ className }: ILoginFormProps) => {
   }, [dispatch]);
 
   const onLoginClick = useCallback(async () => {
-    dispatch(loginByEmail({ email, password }));
-  }, [dispatch, email, password]);
+    const result = await dispatch(loginByEmail({ email, password }));
+    if (result.meta.requestStatus === 'fulfilled') {
+      onSuccess();
+    }
+  }, [dispatch, email, onSuccess, password]);
 
   return (
     <DynamicModuleLoader removeAfterUnmount reducers={initialReducers}>
