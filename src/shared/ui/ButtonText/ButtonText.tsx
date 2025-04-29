@@ -23,11 +23,17 @@ export const ButtonText = (props: IButtonTextProps) => {
     disabled = false,
     ...otherProps
   } = props;
+  
+  const mods: Record<string, boolean> = {
+    [cls[size]]: true,
+    [cls[type]]: true,
+    [cls.disabled]: disabled
+  };
 
   return (
     <button 
       {...otherProps}
-      className={classNames(cls.ButtonText, cls[size], cls[type], [className])}
+      className={classNames(cls.ButtonText, mods, [className])}
       disabled={disabled}
     >
       {iconLeft && <div className={classNames(size === "small" 

@@ -1,0 +1,31 @@
+.Section {
+    margin-bottom: 8px;
+    
+    &__header {
+        display: flex;
+        align-items: center;   
+        justify-content: space-between;
+        margin-bottom: 8px;
+
+        &_background {
+            align-items: start;   
+            flex-direction: column;
+        }
+    }
+
+    &__content {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__input {
+        max-width: 226px;
+
+        &_file,
+        &_background {
+            opacity: 0;
+        }
+    }
+}

@@ -5,15 +5,14 @@ import { useCtrlWheelZoom } from "helpers/hooks/useCtrlWheelZoom";
 import { useKeyboardShortcuts } from "helpers/hooks/useKeyboardShortcuts";
 import { useMiddleMouseHold } from "helpers/hooks/useMiddleMouseHold";
 import { useCallback, useState } from "react";
-import { Actions } from "widgets/Actions";
+import { Actions } from "shared/ui/Actions/ui/Actions";
+import { SelectorItems } from "shared/ui/SelectorItems/ui/SelectorItems";
 import { Canvas } from "widgets/Canvas";
 import { DropdownPanel } from "widgets/DropdownPanel";
-import { InfoPanel } from "widgets/InfoPanel";
-import { SelectorItems } from "widgets/SelectorItems";
+import { InfoPanel } from "widgets/SectionPanel";
 import cls from "./MainPage.module.scss";
 
 const MainPage = () => {
-
   const [polygons, setPolygons] = useState<Polygon[]>([]);
   const [rectangles, setRectangles] = useState<Rectangle[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);

@@ -64,6 +64,8 @@
     --outline-color: #C3C3D0;
     --border-color: #C3C3D0;
     --box-shadow-color: #C3C3D0;
+    --red-light: #ee0303;
+    --red-dark: #ce0707;
 
     // Округление
     --corner-radius-1: 2px;
@@ -85,8 +87,8 @@
     --figures-z-index: 5;
 
     // Состояния
-    --hover: rgb(0 0 0 / 6%);
-    --pressed: rgb(0 0 0 / 12%);
+    --hover: #F0F0F0;
+    --pressed: #E0E0E0;
     --disabled: var(--bg2-color, #F8F8FB);
 }
 

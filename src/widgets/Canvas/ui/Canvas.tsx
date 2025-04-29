@@ -1,11 +1,21 @@
 import classNames from "classnames";
 import { ActionType } from "entities/Figure/Action";
 import { FigureType, Polygon, Rectangle } from "entities/Figure/Figure";
+import { getFillHEXCode, getFillOpacity } from "entities/Fill";
+import { layersActions } from "entities/Layers/model/slice/layersSlice";
+import {
+  getLayoutBottomGapHeight,
+  getLayoutLeftPanelWidth,
+  getLayoutNavbarHeight,
+  getLayoutRightPanelWidth,
+  getLayoutTopGapHeight
+} from "entities/Layout";
 import { getRelativePointerPosition } from "helpers/getRelativePointerPosition";
 import { useWindowSize } from "helpers/hooks/useWindowSize";
 import { KonvaEventObject } from "konva/lib/Node";
 import { useEffect, useRef, useState } from "react";
 import { Layer, Stage } from "react-konva";
+import { useDispatch, useSelector } from "react-redux";
 import { FigureRenderer } from "shared/ui/FigureRenderer/FigureRenderer";
 import cls from './Canvas.module.scss';
 
@@ -44,27 +54,25 @@ export const Canvas = (props: ICanvasProps) => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const stageRef = useRef<any>(null);
-  const layerRef = useRef(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const layerRef = useRef<any>(null);
   // const backgroundRef = useRef(null);
 
   const [points, setPoints] = useState<number[]>([]);
-  const [isClosed, setIsClosed] = useState(false);
+  const isClosed = false;
 
-  // Set background color of Canvas
+  const bgcHEXCode = useSelector(getFillHEXCode);
+  const bgOpacity = useSelector(getFillOpacity);
+
+  // Set CSS background when component mounts
   useEffect(() => {
     if (stageRef.current) {
       // Apply CSS background to stage container
       const container = stageRef.current.container();
-      container.style.backgroundColor = '#F8F8FB';
+      container.style.backgroundColor = bgcHEXCode;
+      container.style.opacity = bgOpacity;
     }
-  }, []);
-  
-  // Handler to reset background position on stage drag
-  // const handleDragMove = () => {
-  //   if (backgroundRef.current) {
-  //     backgroundRef.current.absolutePosition({ x: 0, y: 0 });
-  //   }
-  // };
+  }, [bgcHEXCode, bgOpacity]);
 
   // Обработчик для передвижения фигуры по нажатиям на клавиши
   useEffect(() => {
@@ -169,6 +177,11 @@ export const Canvas = (props: ICanvasProps) => {
             id: `${selectedFigure}-${Date.now()}`,
             draggable: true, history: [], type: FigureType.Polygon
           }]);
+          dispatch(layersActions.setLayersPolygon({
+            points, isClosed: true,
+            id: `${selectedFigure}-${Date.now()}`,
+            draggable: true, history: [], type: FigureType.Polygon
+          }));
           setTempLine(null);
           setPoints([]);
           return;
@@ -180,6 +193,7 @@ export const Canvas = (props: ICanvasProps) => {
     }
   };
 
+  // Обработчик для доведения линии
   const snapToAngle = (points: number[], x: number, y: number) => {
     const [startX, startY] = [points[points.length - 2], points[points.length - 1]];
     const dx = x - startX;
@@ -260,6 +274,8 @@ export const Canvas = (props: ICanvasProps) => {
     }
   };
 
+  const dispatch = useDispatch();
+
   // Обработчик для отпускания кнопки мыши
   const onMouseUp = () => {
     if (selectedAction !== ActionType.None) return;
@@ -278,26 +294,33 @@ export const Canvas = (props: ICanvasProps) => {
         ...tempRectangle,
         id: `${selectedFigure}-${Date.now()}`
       }]);
+      dispatch(layersActions.setLayersRectangle({
+        ...tempRectangle,
+        id: `${selectedFigure}-${Date.now()}`
+      }));
       setTempRectangle(null);
       setRectStartPos(null);
-    } else if (selectedFigure === FigureType.Polygon) {
-      if (!tempLine) return;
-      if (isClosed) {
-        setPolygons((prev) => [...prev, { ...tempLine, id: `${selectedFigure}-${Date.now()}` }]);
-        setTempLine(null);
-        setPoints([]);
-        setIsClosed(false);
-      }
-
-    }
-
+    } 
+    // else if (selectedFigure === FigureType.Polygon) {
+    //   if (!tempLine) return;
+    //   if (isClosed) {
+    //     console.log(1);
+    //     setPolygons((prev) => [...prev, { ...tempLine, id: `${selectedFigure}-${Date.now()}` }]);
+    //     dispatch(layersActions.setLayersPolygon({ ...tempLine, id: `${selectedFigure}-${Date.now()}` }));
+    //     setTempLine(null);
+    //     setPoints([]);
+    //     setIsClosed(false);
+    //   }
+    // }
   };
 
-  const navbarHeight = 84;
-  const topGapHeight = 12;
-  const bottomGapHeight = 12;
-  const leftPanel = 240;
-  const rightPanel = 240;
+  const navbarHeight = useSelector(getLayoutNavbarHeight);
+  const topGapHeight = useSelector(getLayoutTopGapHeight);
+  const bottomGapHeight = useSelector(getLayoutBottomGapHeight);
+  const leftPanelWidth = useSelector(getLayoutLeftPanelWidth);
+  const rightPanelWidth = useSelector(getLayoutRightPanelWidth);
+
+  console.log(layerRef.current?.children);
 
   return (
     <Stage
@@ -305,7 +328,7 @@ export const Canvas = (props: ICanvasProps) => {
       ref={stageRef}
       // onDragMove={handleDragMove}
       height={height - navbarHeight - topGapHeight - bottomGapHeight}
-      width={width - leftPanel - rightPanel}
+      width={width - leftPanelWidth - rightPanelWidth}
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}

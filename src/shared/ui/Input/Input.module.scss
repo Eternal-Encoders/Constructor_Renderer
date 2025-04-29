@@ -5,16 +5,16 @@ textarea, input {
 
 .Input {
     cursor: text;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    text-align: left;
     border-radius: var(--corner-radius-1, 2px);
     border: var(--border);
     background: var(--white, #fff);
     color: var(--highlights1-color, #262626);
     flex-shrink: 0;
     outline: none;
+
+    &__wrapper {
+        cursor: pointer;
+    }
 
     &__leftIcon,
     &__rightIcon {
@@ -33,6 +33,16 @@ textarea, input {
         margin-left: auto;
     }
 
+    &__text {
+        width: 100%;
+
+        &_hidden {
+            opacity: 0;
+            position: absolute;
+            z-index: -1;
+        }
+    }
+
     &::placeholder{
         color: var(--highlights2-color);
     }
@@ -48,6 +58,5 @@ textarea, input {
     width: 100%;
     height: 32px;
     padding: 8px 10px;
-
     font: var(--font-description);
 }

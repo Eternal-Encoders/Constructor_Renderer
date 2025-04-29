@@ -1,0 +1,19 @@
+.title {
+    font: var(--font-description-header);
+    color: var(--highlights1-color);
+}
+
+.text {
+    font: var(--font-description);
+    color: var(--highlights2-color);
+}
+
+.error {
+    .title {
+         color: var(--red-light);
+    }
+
+    .text {
+        color: var(--red-dark);
+    }
+}

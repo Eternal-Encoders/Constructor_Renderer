@@ -2,10 +2,10 @@
 /// <reference types="vite-plugin-svgr/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_IS_DEV: boolean
-  // more env variables...
+  readonly VITE_IS_DEV: boolean;
+  readonly VITE_API_DOMAIN: string;
 }
   
 interface ImportMeta {
-  readonly env: ImportMetaEnv
+  readonly env: ImportMetaEnv;
 }

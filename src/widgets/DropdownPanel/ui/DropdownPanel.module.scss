@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: column;
     background-color: var(--bg1-color);
+    position: relative;
 
     &__header {
         display: flex;
@@ -57,4 +58,15 @@
         font: var(--font-main);
         color: var(--highlights1-color);
     }
+}
+
+.Resizer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 5px;
+    cursor: ew-resize;
+    background-color: transparent;
+    z-index: 10;
 }

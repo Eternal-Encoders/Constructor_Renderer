@@ -1,6 +1,6 @@
 import ArrowDownMini from 'assets/ArrowDownMini.svg?react';
 import classNames from "classnames";
-import { LayersItems } from "../LayersItems/LayersItems";
+import { LayersItems } from '../LayersItems/LayersItems';
 import cls from "./Layers.module.scss";
 
 interface ILayersProps {
@@ -11,7 +11,7 @@ export const Layers = ({ className }: ILayersProps) => {
   const isCollapsed = false;
 
   return (
-    <div className={classNames(cls.Layers, {}, [className])}>
+    <div className={classNames(cls.Layers, {}, [className])} >
       <header className={classNames(cls.Layers__dropdown)} style={{marginBottom: 8}}>
         <div className={classNames(cls.Layers__leftIcon)} style={{marginRight: 2}}>
           <div className={classNames(cls.Layers__icon_arrowDownMini)}

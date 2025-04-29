@@ -1,0 +1,9 @@
+.SectionPanel {
+    padding: 12px;
+    border-bottom: var(--outline);
+
+    &__header {
+        height: 26px;
+        margin-bottom: 8px;
+    }
+}
