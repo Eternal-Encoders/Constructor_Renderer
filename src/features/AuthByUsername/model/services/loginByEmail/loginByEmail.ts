@@ -18,7 +18,7 @@ export const loginByEmail = createAsyncThunk<User, LoginByEmailProps, { rejectVa
   async (authData, thunkAPI) => {
     try {
       const response = await axios.post<User>
-      ('eternal-encoders-constructor-adminapi-d766.twc1.net/user/login', authData);
+      (import.meta.env.VITE_API_DOMAIN, authData);
 
       if (!response.data) {
         throw new Error();

@@ -5,8 +5,8 @@ import { imageReducer } from 'entities/Image';
 import { layersReducer } from 'entities/Layers';
 import { layoutReducer } from 'entities/Layout';
 import { userReducer } from 'entities/User';
-import { loginReducer } from 'features/AuthByUsername';
 import { StateSchema } from './StateSchema';
+import { createReducerManager } from './reducerManager';
 
 export function createReduxStore(initialState?: StateSchema) {
 
@@ -16,15 +16,22 @@ export function createReduxStore(initialState?: StateSchema) {
     image: imageReducer,
     fill: fillReducer,
     layout: layoutReducer,
-    layers: layersReducer,
-    loginForm: loginReducer,
+    layers: layersReducer
   }
 
-  return configureStore<StateSchema>({
-    reducer: rootReducers,
+  const reducerManager = createReducerManager(rootReducers);
+
+  const store = configureStore<StateSchema>({
+    reducer: reducerManager.reduce,
     devTools: import.meta.env.VITE_IS_DEV,
-    preloadedState: initialState
-  })
+    preloadedState: initialState,
+  });
+
+  // @ts-expect-error make one more type after
+  // TODO: ts-expect-error
+  store.reducerManager = reducerManager;
+
+  return store;
 }
 
 export const store = createReduxStore()

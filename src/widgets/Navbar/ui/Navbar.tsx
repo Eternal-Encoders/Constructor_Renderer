@@ -46,10 +46,10 @@ export const Navbar = ({ className }: INavbarProps) => {
         className={classNames(cls.links, {}, [className])}>
         Войти
       </ButtonText>
-      <LoginModal 
+      {isAuthModal && <LoginModal 
         isOpen={isAuthModal}
         onClose={onCloseModal}
-      />
+      />}
     </div>
   );
 };
