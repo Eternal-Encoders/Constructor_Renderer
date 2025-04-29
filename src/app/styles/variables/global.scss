@@ -85,9 +85,12 @@
     --modal-z-index: 10;
     --actions-z-index: 5;
     --figures-z-index: 5;
+    --above-dropdown-z-index: 2;
+    --dropdown-z-index: 1;
 
     // Состояния
     --hover: #F0F0F0;
+    --hover-dark: #C3C3D0;
     --pressed: #E0E0E0;
     --disabled: var(--bg2-color, #F8F8FB);
 }
