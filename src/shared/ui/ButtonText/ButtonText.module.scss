@@ -1,4 +1,5 @@
 .ButtonText {
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,15 +13,30 @@
     border: none;
 
     &__leftIcon {
+        margin-right: 4px;
+
+        &_medium {
+            margin-right: 6px;
+        }
+    }
+
+    &__rightIcon {
+        margin-left: 4px;
+
+        &_medium {
+            margin-left: 36px;
+        }
+    }
+
+    &__leftIcon,
+    &__rightIcon {
         display: flex;
         width: 14px;
         height: 14px;
         justify-content: center;
         align-items: center;
-        margin-right: 4px;
 
         &_medium {
-            margin-right: 6px;
             width: 20px;
             height: 20px;
         }
@@ -46,6 +62,7 @@
         background: var(--bg2-color, #F8F8FB);
         color: var(--weak1-color, #BDBDBD);
         outline: var(--outline);
+        cursor: default;
     }
 }
 
@@ -84,6 +101,7 @@
     &:disabled {
         outline: none;
         background: none;
+        cursor: default;
     }
 }
 
@@ -108,5 +126,10 @@
 
     &:disabled {
         outline: none;
+        cursor: default;
     }
+}
+
+.bold {
+    font-weight: 700;
 }

@@ -1,0 +1,35 @@
+.BuildingHeader {
+    padding: 12px;
+    height: 64px;
+    border: var(--border, 1px solid #C3C3D0);
+    border-radius: var(--corner-radius-3, 8px);
+    background: var(--bg2-color, #F8F8FB); 
+    margin: 0;
+
+    &__list {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+    }
+
+    &__content {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__leftSide {
+        display: flex;
+    }
+}
+
+.SettingsIcon {
+    cursor: pointer;
+    display: flex;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 1/1; 
+    border-radius: var(--corner-radius-2, 6px);
+}

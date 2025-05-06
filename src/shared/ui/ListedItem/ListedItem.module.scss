@@ -5,7 +5,7 @@
     text-align: left;
     border-radius: var(--corner-radius-2, 6px);
     outline-offset: var(--outline-offset, -2px);
-    background: var(--white, #fff);
+    background: transparent;
     color: var(--highlights1-color, #262626);
     flex-shrink: 0;
     border: none;
@@ -75,4 +75,8 @@
         outline: none;
         background: none;
     }
+}
+
+.selected {
+    background: var(--white, #fff);
 }

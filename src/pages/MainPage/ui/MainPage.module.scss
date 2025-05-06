@@ -1,7 +1,9 @@
-.MainPage {
+.ConstructorCategory {
     position: relative;
+    border: var(--border);
+    border-radius: 6px;
 }
-
+ 
 .InfoPanel,
 .DropdownPanel {
     min-width: var(--panel-min-width);

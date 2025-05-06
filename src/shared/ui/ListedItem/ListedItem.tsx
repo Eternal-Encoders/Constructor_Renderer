@@ -1,13 +1,16 @@
 import classNames from "classnames";
 import cls from "./ListedItem.module.scss";
 
-interface IListedItemProps {
+type HTMLButtonProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type" | "size">
+
+interface IListedItemProps extends HTMLButtonProps {
   className?: string;
-  children: React.ReactNode
-  size?: "small"
-  type?: "default" | "stroke"
-  iconLeft?: React.ReactNode | string
-  iconRight?: React.ReactNode | string
+  children: React.ReactNode;
+  size?: "small";
+  type?: "default" | "stroke";
+  iconLeft?: React.ReactNode | string;
+  iconRight?: React.ReactNode | string;
+  selected?: boolean;
 }
 
 export const ListedItem = (props: IListedItemProps) => {
@@ -18,12 +21,15 @@ export const ListedItem = (props: IListedItemProps) => {
     iconLeft,
     iconRight,
     size = "small", 
-    type = "default"
+    type = "default",
+    selected = false,
+    ...otherProps
   } = props;
 
   return (
     <button 
-      className={classNames(cls.ListedItem, cls[size], cls[type], [className])}
+      {...otherProps}
+      className={classNames(cls.ListedItem, cls[size], cls[type], [className], {[cls.selected]: selected})}
     >
       {iconLeft && <div className={classNames(cls.ListedItem__leftIcon)}
       >

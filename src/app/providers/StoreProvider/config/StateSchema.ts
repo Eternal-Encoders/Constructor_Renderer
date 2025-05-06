@@ -1,11 +1,15 @@
 import { EnhancedStore, Reducer, ReducersMapObject, UnknownAction } from "@reduxjs/toolkit";
 import { CounterSchema } from "entities/Counter";
 import { FillSchema } from "entities/Fill";
+import { FloorSchema } from "entities/Floors/model/types/floorSchema";
 import { ImageSchema } from "entities/Image";
-import { LayersSchema } from "entities/Layers";
+import { LayerSchema } from "entities/Layers";
 import { LayoutSchema } from "entities/Layout";
+import { NavigationSchema } from "entities/Navigation";
 import { UserSchema } from "entities/User";
-import { LoginSchema } from "features/AuthByUsername";
+import { AddFloorSchema } from "features/AddFloor";
+import { LoginSchema } from "features/AuthByMail";
+import { RegisterSchema } from "features/RegisterByMail";
 
 export interface StateSchema {
   counter: CounterSchema;
@@ -13,10 +17,14 @@ export interface StateSchema {
   fill: FillSchema;
   image: ImageSchema;
   layout: LayoutSchema;
-  layers: LayersSchema;
+  layers: LayerSchema;
+  floors: FloorSchema[];
+  navigation: NavigationSchema;
 
   // Асинхронные редюсеры
   loginForm?: LoginSchema | undefined; 
+  registerForm?: RegisterSchema | undefined; 
+  addFloorForm?: AddFloorSchema | undefined; 
 }
 
 export type StateSchemaKey = keyof StateSchema;

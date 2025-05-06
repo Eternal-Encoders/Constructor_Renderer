@@ -1,14 +1,13 @@
 import ArrowDown from 'assets/ArrowDown.svg?react';
 import ArrowDownMini from 'assets/ArrowDownMini.svg?react';
 import classNames from "classnames";
-// eslint-disable-next-line @stylistic/js/max-len
-import { getLayoutLeftPanelWidth } from 'entities/Layout/model/selectors/getLayoutLeftPanelWidth/getLayoutLeftPanelWidth';
+import { Floors } from 'entities/Floors/ui/Floors/Floors';
+import { Layers } from 'entities/Layers/ui/Layers/Layers';
+import { getLayoutLeftPanelWidth } from 'entities/Layout';
 import { layoutActions } from 'entities/Layout/model/slice/layoutSlice';
 import { useResizablePanel } from 'helpers/hooks/useResizablePanel';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Floors } from 'shared/ui/Floors/Floors';
-import { Layers } from 'shared/ui/Layers/Layers';
 import cls from "./DropdownPanel.module.scss";
 
 interface IDropdownPanelProps {
@@ -42,6 +41,7 @@ export const DropdownPanel = ({ className }: IDropdownPanelProps) => {
     return () => {
       dispatch(layoutActions.setLayoutLeftPanel(240))
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCollapsed]);
 
 
@@ -93,7 +93,8 @@ export const DropdownPanel = ({ className }: IDropdownPanelProps) => {
           </section>
           <section className={classNames(cls.DropdownPanel__layers)}>
             <Layers />
-          </section></>}
+          </section>
+        </>}
       </div>
     </div>
   );

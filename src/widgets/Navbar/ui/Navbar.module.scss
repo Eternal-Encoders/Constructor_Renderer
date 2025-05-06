@@ -2,14 +2,24 @@
     width: 100%;
     height: var(--navbar-height);
     background: var(--bg2-color);
-    display: flex;
-    align-items: center;
-    padding: 41px 24px 33px 16px;
+    padding: 16px;
     outline: var(--outline);
     outline-offset: var(--outline-offset, -2px);
+
+    &__content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+    }
+}
+
+.registerLink {
+    margin-right: 10px;
 }
 
 .links {
+    display: flex;
     margin-left: auto;
 }
 
@@ -26,4 +36,8 @@
     &:hover {
         color: var(--highlights1-color);
     }
+}
+
+.Logo {
+    margin-right: auto;
 }

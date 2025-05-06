@@ -9,6 +9,8 @@ interface IButtonTextProps extends HTMLButtonProps {
   size?: "small" | "medium"
   type?: "default" | "link" | "fill"
   iconLeft?: React.ReactNode | string
+  iconRight?: React.ReactNode | string
+  bold?: boolean;
   disabled?: boolean
 }
 
@@ -18,8 +20,10 @@ export const ButtonText = (props: IButtonTextProps) => {
     className, 
     children, 
     iconLeft,
+    iconRight,
     size = "small", 
     type = "default",
+    bold = false,
     disabled = false,
     ...otherProps
   } = props;
@@ -27,7 +31,8 @@ export const ButtonText = (props: IButtonTextProps) => {
   const mods: Record<string, boolean> = {
     [cls[size]]: true,
     [cls[type]]: true,
-    [cls.disabled]: disabled
+    [cls.disabled]: disabled,
+    [cls.bold]: bold,
   };
 
   return (
@@ -43,6 +48,12 @@ export const ButtonText = (props: IButtonTextProps) => {
         {iconLeft}
       </div>}
       <div className={classNames(cls.ButtonText__text)}>{children}</div>
+      {iconRight && <div className={classNames(size === "small" 
+        ? cls.ButtonText__rightIcon 
+        : cls.ButtonText__rightIcon_medium)}
+      >
+        {iconRight}
+      </div>}
     </button>
   );
 };

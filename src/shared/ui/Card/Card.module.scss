@@ -1,0 +1,31 @@
+.Card {
+    width: 360px;
+    height: 788px;
+    border-radius: var(--corner-radius-3, 8px);
+    border: var(--border, 1px solid #C3C3D0);
+    background: var(--bg1-color, #EDEDF5);
+
+    &__header {
+        padding: 0 12px;
+        border-bottom: var(--border);
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        padding-top: 12px;
+    }
+
+    &__title {
+        height: 26px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font: var(--font-functional);
+        color: var(--highlights1-color, #262626);
+    }
+
+    &__list {
+        padding: 8px 12px;
+    }
+}

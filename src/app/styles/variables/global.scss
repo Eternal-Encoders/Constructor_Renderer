@@ -1,6 +1,12 @@
 :root {
     // Основной шрифт
     --font-family-main: lab grotesque, "Times New Roman", serif;
+
+    // Размер шрифта Functional
+    --font-size-functional: 12px;
+    --font-line-functional: 16px;
+    --font-weight-functional: 700;
+    --font-functional: var(--font-weight-functional) var(--font-size-functional) / var(--font-line-functional) var(--font-family-main);
     
     // Размер шрифта L
     --font-size-l: 24px;
@@ -70,6 +76,7 @@
     // Округление
     --corner-radius-1: 2px;
     --corner-radius-2: 6px;
+    --corner-radius-3: 8px;
 
     // Границы
     --border: 1px solid var(--border-color, #C3C3D0);

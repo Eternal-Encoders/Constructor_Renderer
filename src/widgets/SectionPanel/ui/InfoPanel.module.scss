@@ -3,7 +3,6 @@
     flex-direction: column;
     background-color: var(--bg1-color);
     outline: var(--outline);
-    outline-offset: var(--outline-offset, -2px);
     position: relative;
 
     &__save {

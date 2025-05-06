@@ -1,11 +1,15 @@
 import classNames from "classnames";
 import { ActionType } from "entities/Figure/Action";
 import { FigureType, Polygon, Rectangle } from "entities/Figure/Figure";
+import { getNavigationCategory, getNavigationSubCategory } from "entities/Navigation";
+import { ENavigationCategory, ENavigationSubCategory } from "entities/Navigation/model/types/navigationSchema";
 import { useCtrlWheelZoom } from "helpers/hooks/useCtrlWheelZoom";
 import { useKeyboardShortcuts } from "helpers/hooks/useKeyboardShortcuts";
 import { useMiddleMouseHold } from "helpers/hooks/useMiddleMouseHold";
 import { useCallback, useState } from "react";
+import { useSelector } from "react-redux";
 import { Actions } from "shared/ui/Actions/ui/Actions";
+import { Card } from "shared/ui/Card/Card";
 import { SelectorItems } from "shared/ui/SelectorItems/ui/SelectorItems";
 import { Canvas } from "widgets/Canvas";
 import { DropdownPanel } from "widgets/DropdownPanel";
@@ -19,6 +23,9 @@ const MainPage = () => {
   const [selectedFigure, setSelectedFigure] = useState<FigureType>(FigureType.None);
   const [selectedAction, setSelectedAction] = useState<ActionType>(ActionType.Cursor);
   const [scale, setScale] = useState<number>(1);
+
+  const selectedCategory = useSelector(getNavigationCategory);
+  const selectedSubCategory = useSelector(getNavigationSubCategory);
 
   const handleUndoMove = useCallback(() => {
     if (!selectedId) return;
@@ -84,39 +91,50 @@ const MainPage = () => {
     
   useCtrlWheelZoom({ scale, setScale });
 
-  return (
-    <div className={classNames(`content-page`, cls.MainPage)}>
-      <div style={{display: 'flex'}}>
-        <DropdownPanel className={classNames(cls.DropdownPanel)}/>
-        <Canvas
-          scale={scale}
-          setScale={setScale}
-          setPolygons={setPolygons}
-          polygons={polygons}
-          setRectangles={setRectangles}
-          rectangles={rectangles}
-          selectedId={selectedId ?? undefined}
-          selectedFigure={selectedFigure}
-          selectedAction={selectedAction}
-          setSelectedId={setSelectedId}
-        />
-        <Actions 
-          className={classNames(cls.Actions)}
-          handleUndoMove={handleUndoMove} 
-          selectedId={selectedId} 
-          setScale={setScale} 
-          scale={scale}/>
-        <InfoPanel className={classNames(cls.InfoPanel)}/>
-      </div>
-      <SelectorItems
-        className={classNames(cls.SelectorItems)}
-        selectedFigure={selectedFigure}
-        selectedAction={selectedAction}
-        setSelectedAction={setSelectedAction}
-        setSelectedFigure={setSelectedFigure}
-      />
-    </div>
-  );
+  switch (selectedCategory) {
+    case ENavigationCategory.Constructor:
+      return (
+        <div className={classNames(`content-page`, cls.ConstructorCategory)}>
+          <div style={{display: 'flex'}}>
+            <DropdownPanel className={classNames(cls.DropdownPanel)}/>
+            <Canvas
+              scale={scale}
+              setScale={setScale}
+              setPolygons={setPolygons}
+              polygons={polygons}
+              setRectangles={setRectangles}
+              rectangles={rectangles}
+              selectedId={selectedId ?? undefined}
+              selectedFigure={selectedFigure}
+              selectedAction={selectedAction}
+              setSelectedId={setSelectedId}
+            />
+            <Actions 
+              className={classNames(cls.Actions)}
+              handleUndoMove={handleUndoMove} 
+              selectedId={selectedId} 
+              setScale={setScale} 
+              scale={scale}/>
+            <InfoPanel className={classNames(cls.InfoPanel)}/>
+          </div>
+          <SelectorItems
+            className={classNames(cls.SelectorItems)}
+            selectedFigure={selectedFigure}
+            selectedAction={selectedAction}
+            setSelectedAction={setSelectedAction}
+            setSelectedFigure={setSelectedFigure}
+          />
+        </div>
+      );
+  }
+
+  switch (selectedSubCategory) {
+    case ENavigationSubCategory.ProjectSelection:
+      return (
+        <Card/>
+      );
+  }
+
 };
 
 export default MainPage;
