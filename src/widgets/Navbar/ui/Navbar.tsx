@@ -73,8 +73,7 @@ export const Navbar = ({ className }: INavbarProps) => {
     <div className={classNames(cls.Navbar, {}, [className])}>
       <div className={classNames(cls.Navbar__content)}>
         <div className={classNames(cls.Logo)}>
-          <LogoIcon/>
-          <div style={{marginRight: '10px'}}></div>
+          <LogoIcon style={{marginRight: 10}}/>
           <LogoText fill="#262626"/>
         </div>
         <div className={classNames(cls.links)}>
