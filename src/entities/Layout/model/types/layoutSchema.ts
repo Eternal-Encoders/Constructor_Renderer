@@ -1,7 +1,9 @@
 export interface LayoutSchema {
+  rightGap: number;
+  leftGap: number;
+  topGap: number;
+  bottomGap: number;
   navbarHeight: number;
-  topGapHeight: number;
-  bottomGapHeight: number;
   leftPanelWidth: number;
   rightPanelWidth: number;
 }
