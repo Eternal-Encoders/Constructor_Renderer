@@ -1,140 +1,60 @@
-import classNames from "classnames";
-import { ActionType } from "entities/Figure/Action";
-import { FigureType, Polygon, Rectangle } from "entities/Figure/Figure";
-import { getNavigationCategory, getNavigationSubCategory } from "entities/Navigation";
-import { ENavigationCategory, ENavigationSubCategory } from "entities/Navigation/model/types/navigationSchema";
-import { useCtrlWheelZoom } from "helpers/hooks/useCtrlWheelZoom";
-import { useKeyboardShortcuts } from "helpers/hooks/useKeyboardShortcuts";
-import { useMiddleMouseHold } from "helpers/hooks/useMiddleMouseHold";
-import { useCallback, useState } from "react";
+import { useAppDispatch } from "app/providers/StoreProvider/lib/hooks/useAppDispatch";
+import { Building } from "entities/Building/ui/Building/Building";
+import { getNavigationCategory } from "entities/Navigation";
+import { ENavigationCategory } from "entities/Navigation/model/types/navigationSchema";
+import { fetchProject } from "entities/Project";
+import { Project } from "entities/Project/ui/Project/Project";
+import { fetchUserInfo, FetchUserInfoResponse } from "entities/User/api/fetchUserInfo/fetchUserInfo";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Actions } from "shared/ui/Actions/ui/Actions";
-import { Card } from "shared/ui/Card/Card";
-import { SelectorItems } from "shared/ui/SelectorItems/ui/SelectorItems";
-import { Canvas } from "widgets/Canvas";
-import { DropdownPanel } from "widgets/DropdownPanel";
-import { InfoPanel } from "widgets/SectionPanel";
-import cls from "./MainPage.module.scss";
+import { Breadcrumbs } from "shared/ui/Breadcrumbs/Breadcrumbs";
+import { BuildingHeader } from "shared/ui/BuildingHeader/BuildingHeader";
+import { Constructor } from "shared/ui/Constructor/Constructor";
+import { Navbar } from "widgets/Navbar";
+import cls from './MainPage.module.scss';
 
 const MainPage = () => {
-  const [polygons, setPolygons] = useState<Polygon[]>([]);
-  const [rectangles, setRectangles] = useState<Rectangle[]>([]);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [selectedFigure, setSelectedFigure] = useState<FigureType>(FigureType.None);
-  const [selectedAction, setSelectedAction] = useState<ActionType>(ActionType.Cursor);
-  const [scale, setScale] = useState<number>(1);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    (async () => {
+      const fetchedUserInfoResult = await dispatch(fetchUserInfo());
+      if (fetchedUserInfoResult.meta.requestStatus === 'fulfilled') {
+        const userPayload = fetchedUserInfoResult!.payload as FetchUserInfoResponse;;
+        await dispatch(fetchProject(userPayload.selected_project_id));
+      }
+    })()
+  }, [dispatch]);
 
   const selectedCategory = useSelector(getNavigationCategory);
-  const selectedSubCategory = useSelector(getNavigationSubCategory);
-
-  const handleUndoMove = useCallback(() => {
-    if (!selectedId) return;
-    const isRectangle = rectangles.some((fig) => fig.id === selectedId);
-    const isPolygon = polygons.some((fig) => fig.id === selectedId);
-
-    if (!isRectangle && !isPolygon) return;
-
-    if (isPolygon) {
-      setPolygons((prev) =>
-        prev.map((fig) => {
-          if (fig.id !== selectedId || fig.history.length === 0) return fig;
-          // Берём последнее состояние
-          const lastState = fig.history[fig.history.length - 1];
-
-          return {
-            ...fig,
-            x: lastState.x,
-            y: lastState.y,
-            history: fig.history.slice(0, -1), // Убираем последний элемент из истории
-          };
-        })
-      );
-    } else if (isRectangle) {
-      setRectangles((prev) =>
-        prev.map((fig) => {
-          if (fig.id !== selectedId || fig.history.length === 0) return fig;
-          // Берём последнее состояние
-          const lastState = fig.history[fig.history.length - 1];
-
-          return {
-            ...fig,
-            x: lastState.x,
-            y: lastState.y,
-            history: fig.history.slice(0, -1), // Убираем последний элемент из истории
-          };
-        })
-      );
-    }
-  }, [selectedId, rectangles, setRectangles, polygons, setPolygons]);
-
-  const handleDelete = useCallback(() => {
-    if (!selectedId) return;
-    if (polygons.some((fig) => fig.id === selectedId)) {
-      setPolygons((prev) => prev.filter((fig) => fig.id !== selectedId));
-    } else if (rectangles.some((fig) => fig.id === selectedId)) {
-      setRectangles((prev) => prev.filter((fig) => fig.id !== selectedId));
-    }
-    setSelectedId(null);
-  }, [polygons, rectangles, selectedId]);
   
-  useKeyboardShortcuts({
-    selectedId,
-    handleDelete,
-    setSelectedAction,
-    setSelectedFigure,
-  });
-    
-  useMiddleMouseHold((action, figure) => {
-    setSelectedAction(action);
-    setSelectedFigure(figure);
-  });
-    
-  useCtrlWheelZoom({ scale, setScale });
-
-  switch (selectedCategory) {
-    case ENavigationCategory.Constructor:
-      return (
-        <div className={classNames(`content-page`, cls.ConstructorCategory)}>
-          <div style={{display: 'flex'}}>
-            <DropdownPanel className={classNames(cls.DropdownPanel)}/>
-            <Canvas
-              scale={scale}
-              setScale={setScale}
-              setPolygons={setPolygons}
-              polygons={polygons}
-              setRectangles={setRectangles}
-              rectangles={rectangles}
-              selectedId={selectedId ?? undefined}
-              selectedFigure={selectedFigure}
-              selectedAction={selectedAction}
-              setSelectedId={setSelectedId}
-            />
-            <Actions 
-              className={classNames(cls.Actions)}
-              handleUndoMove={handleUndoMove} 
-              selectedId={selectedId} 
-              setScale={setScale} 
-              scale={scale}/>
-            <InfoPanel className={classNames(cls.InfoPanel)}/>
-          </div>
-          <SelectorItems
-            className={classNames(cls.SelectorItems)}
-            selectedFigure={selectedFigure}
-            selectedAction={selectedAction}
-            setSelectedAction={setSelectedAction}
-            setSelectedFigure={setSelectedFigure}
-          />
-        </div>
-      );
+  const chosenCategory = () => {
+    switch (selectedCategory) {
+      case ENavigationCategory.BuildingSelection:
+        return (
+          <Building/>
+        );
+      case ENavigationCategory.Constructor:
+        return (
+          <Constructor/>
+        );
+      case ENavigationCategory.ProjectSelection:
+        return (
+          <Project/>
+        );
+    }
   }
 
-  switch (selectedSubCategory) {
-    case ENavigationSubCategory.ProjectSelection:
-      return (
-        <Card/>
-      );
-  }
-
+  return (
+    <div className={cls.MainPage}>
+      <Navbar className={cls.MainPage__navbar}/>
+      <BuildingHeader className={cls.MainPage__building_header}/>
+      <Breadcrumbs className={cls.MainPage__breadcrumbs}/>
+      {chosenCategory()}
+    </div>
+  );
+        
 };
-
+      
 export default MainPage;

@@ -63,6 +63,9 @@
     --panel-max-width: 360px;
     --panel-width-percent: 20%;
 
+    // Кастомные размеры
+    --card-height: calc(788px - var(--padding-bottom));
+
     // Цвет
     --white: #fff;
     --black: #000;
@@ -100,5 +103,13 @@
     --hover-dark: #C3C3D0;
     --pressed: #E0E0E0;
     --disabled: var(--bg2-color, #F8F8FB);
+
+    // Ограничения
+    --padding-bottom: 80px;
+
+    // Responsive
+    @media (min-height >= 1200px) {
+        --padding-bottom: -100px;
+    }
 }
 

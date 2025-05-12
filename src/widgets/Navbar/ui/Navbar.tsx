@@ -1,12 +1,13 @@
-import LogoIcon from 'assets/LogoIcon.svg?react';
-import LogoText from 'assets/LogoText.svg?react';
 import classNames from "classnames";
+import { navigationActions } from 'entities/Navigation/model/slice/navigationSlice';
+import { ENavigationCategory } from 'entities/Navigation/model/types/navigationSchema';
 import { getUserAuthData, userActions } from "entities/User";
 import { LoginModal } from "features/AuthByMail";
 import { RegisterModal } from "features/RegisterByMail";
 import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ButtonText } from "shared/ui/ButtonText/ButtonText";
+import { Logo } from "shared/ui/Logo/Logo";
 import cls from "./Navbar.module.scss";
 
 interface INavbarProps {
@@ -43,12 +44,35 @@ export const Navbar = ({ className }: INavbarProps) => {
     return (
       <div className={classNames(cls.Navbar, {}, [className])}>
         <div className={classNames(cls.Navbar__content)}>
-          <div className={classNames(cls.Logo)}>
-            <LogoIcon style={{marginRight: 10}}/>
-            <LogoText fill="#262626"/>
-          </div>
+          <Logo/>
           <div className={classNames(cls.links)}>
+            <div style={{display: 'flex', gap: 16, marginRight: 28}}>
+              <ButtonText 
+                size='medium' 
+                type='link' 
+                className={classNames({[cls.selected] : true})}
+                onClick={() => dispatch(navigationActions.setCategory(ENavigationCategory.ProjectSelection ))}
+              >
+                Проекты
+              </ButtonText>
+              <ButtonText 
+                size='medium' 
+                type='link' 
+                className={classNames({[cls.selected] : false})}
+              >
+                Документация
+              </ButtonText>
+              <ButtonText 
+                size='medium' 
+                type='link' 
+                className={classNames({[cls.selected] : false})}
+              >
+                Поддержка
+              </ButtonText>
+            </div>
             <ButtonText 
+              size='medium' 
+              type='link'
               onClick={onShowRegisterModal}
               className={classNames(cls.registerLink)} 
             >
@@ -59,6 +83,8 @@ export const Navbar = ({ className }: INavbarProps) => {
               onClose={onRegisterCloseModal}
             />
             <ButtonText 
+              size='medium' 
+              type='link' 
               onClick={onLogout} 
             >
               Выйти
@@ -72,12 +98,35 @@ export const Navbar = ({ className }: INavbarProps) => {
   return (
     <div className={classNames(cls.Navbar, {}, [className])}>
       <div className={classNames(cls.Navbar__content)}>
-        <div className={classNames(cls.Logo)}>
-          <LogoIcon style={{marginRight: 10}}/>
-          <LogoText fill="#262626"/>
-        </div>
+        <Logo/>
         <div className={classNames(cls.links)}>
+          <div style={{display: 'flex', gap: 16, marginRight: 28}}>
+            <ButtonText 
+              size='medium' 
+              type='link' 
+              className={classNames({[cls.selected] : true})}
+              onClick={() => dispatch(navigationActions.setCategory(ENavigationCategory.ProjectSelection ))}
+            >
+              Проекты
+            </ButtonText>
+            <ButtonText 
+              size='medium' 
+              type='link' 
+              className={classNames({[cls.selected] : false})}
+            >
+              Документация
+            </ButtonText>
+            <ButtonText 
+              size='medium' 
+              type='link' 
+              className={classNames({[cls.selected] : false})}
+            >
+              Поддержка
+            </ButtonText>
+          </div>
           <ButtonText 
+            size='medium' 
+            type='default'
             onClick={onShowRegisterModal}
             className={classNames(cls.registerLink)} 
           >
@@ -88,6 +137,8 @@ export const Navbar = ({ className }: INavbarProps) => {
             onClose={onRegisterCloseModal}
           />
           <ButtonText 
+            size='medium' 
+            type='default' 
             onClick={onShowAuthModal} 
           >
             Войти

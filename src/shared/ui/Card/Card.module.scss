@@ -1,6 +1,6 @@
 .Card {
     width: 360px;
-    height: 788px;
+    height: var(--card-height);
     border-radius: var(--corner-radius-3, 8px);
     border: var(--border, 1px solid #C3C3D0);
     background: var(--bg1-color, #EDEDF5);

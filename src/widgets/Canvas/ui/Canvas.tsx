@@ -5,6 +5,8 @@ import { getFillHEXCode, getFillOpacity } from "entities/Fill";
 import { layersActions } from "entities/Layers/model/slice/layersSlice";
 import {
   getLayoutBottomGap,
+  getLayoutBreadCrumbsHeight,
+  getLayoutHeaderHeight,
   getLayoutLeftGap,
   getLayoutLeftPanelWidth,
   getLayoutNavbarHeight,
@@ -317,6 +319,8 @@ export const Canvas = (props: ICanvasProps) => {
   };
 
   const navbarHeight = useSelector(getLayoutNavbarHeight);
+  const breadCrumbsHeight = useSelector(getLayoutBreadCrumbsHeight);
+  const headerHeight = useSelector(getLayoutHeaderHeight);
   const leftPanelWidth = useSelector(getLayoutLeftPanelWidth);
   const rightPanelWidth = useSelector(getLayoutRightPanelWidth);
   const topGap = useSelector(getLayoutTopGap);
@@ -331,7 +335,7 @@ export const Canvas = (props: ICanvasProps) => {
       className={classNames(cls.Stage, selectedAction === ActionType.Drag ? cls['grab_active'] : null, [className])}
       ref={stageRef}
       // onDragMove={handleDragMove}
-      height={height - navbarHeight - topGap - bottomGap}
+      height={height - navbarHeight - topGap - bottomGap - breadCrumbsHeight - headerHeight}
       width={width - leftPanelWidth - rightPanelWidth - leftGap - rightGap}
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}

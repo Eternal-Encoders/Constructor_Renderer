@@ -3,17 +3,6 @@ export interface Coordinates {
   y: number;
 }
   
-export interface CreateBuildingDto {
-  project_id: string;
-  name: string;
-  displayable_name: string;
-  url: string;
-  latitude: number;
-  longitude: number;
-  image?: CreateImageDto;
-  gps?: GPS;
-}
-  
 export interface CreateImageDto {
   url: string;
   name?: string | null;

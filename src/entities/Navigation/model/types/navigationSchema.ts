@@ -4,11 +4,8 @@ export enum ENavigationCategory {
   Modules = 'Модули',
   Constructor = 'Конструктор',
   Privileges = 'Привелегии',
-  None = ''
-}
-
-export enum ENavigationSubCategory {
   ProjectSelection = 'Выбор проекта',
+  BuildingSelection = 'Конструктор - выбор здания',
   None = ''
 }
 
@@ -18,7 +15,7 @@ export interface NavigationSchema {
   ENavigationCategory.Modules | 
   ENavigationCategory.Constructor | 
   ENavigationCategory.Privileges | 
+  ENavigationCategory.ProjectSelection |
+  ENavigationCategory.BuildingSelection |
   ENavigationCategory.None;
-
-  selectedSubCategory: ENavigationSubCategory.ProjectSelection | ENavigationSubCategory.None;
 }

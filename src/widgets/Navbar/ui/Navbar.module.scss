@@ -38,6 +38,11 @@
     }
 }
 
-.Logo {
-    margin-right: auto;
+.title {
+    font: var(--font-secondary);
+    color: var(--highlights1-color);
+}
+
+.selected {
+    font-weight: 700;
 }

@@ -14,6 +14,7 @@ interface IInputProps extends HTMLInputProps {
   iconRight?: React.ReactNode | string;
   value?:string;
   onChange?: (event: string | File) => void;
+  onLeftIconClicked?: () => void;
 }
 
 export const Input = memo(forwardRef<HTMLInputElement, IInputProps>((props, ref) => {  
@@ -27,6 +28,7 @@ export const Input = memo(forwardRef<HTMLInputElement, IInputProps>((props, ref)
     type = "text",
     value,
     onChange,
+    onLeftIconClicked,
     ...otherProps
   } = props;
 
@@ -84,8 +86,12 @@ export const Input = memo(forwardRef<HTMLInputElement, IInputProps>((props, ref)
         <div 
           onClick={() => (ref as React.RefObject<HTMLInputElement>)?.current?.focus()}
           className={classNames(cls.Input, cls[size], [className])}
+          style={iconLeft ? {display: 'flex'} : undefined}
         >
-          {iconLeft && <div className={classNames(cls.Input__leftIcon)}
+          {iconLeft && <div 
+            onClick={onLeftIconClicked}
+            className={classNames(cls.Input__leftIcon)}
+            style={onLeftIconClicked ? {cursor: 'pointer'} : undefined}
           >
             {iconLeft}
           </div>}

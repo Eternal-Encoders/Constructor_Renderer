@@ -1,24 +1,17 @@
-.ConstructorCategory {
-    position: relative;
-    border: var(--border);
-    border-radius: 6px;
-}
- 
-.InfoPanel,
-.DropdownPanel {
-    min-width: var(--panel-min-width);
-    max-width: var(--panel-max-width);
-}
+.MainPage {
+  min-height: 100vh;
+  background: var(--bg2-color);
+  padding: 0 30px 16px;
 
-.SelectorItems {
-    position: absolute;
-    z-index: var(--actions-z-index);
-    bottom: 27px;
-}
+  &__navbar {
+    margin-bottom: 16px;
+  }
 
-.Actions {
-    position: absolute;
-    z-index: var(--actions-z-index);
-    right: 256px;
-    top: 8px;
+  &__breadcrumbs {
+    margin-bottom: 8px;
+  }
+  
+  &__building_header {
+    margin-bottom: 8px;
+  }
 }

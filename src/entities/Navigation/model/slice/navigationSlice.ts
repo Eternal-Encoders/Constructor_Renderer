@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ENavigationCategory, ENavigationSubCategory, NavigationSchema } from '../types/navigationSchema';
+import { ENavigationCategory, NavigationSchema } from '../types/navigationSchema';
 
 const initialState: NavigationSchema = {
-  selectedCategory: ENavigationCategory.None,
-  selectedSubCategory: ENavigationSubCategory.None
+  selectedCategory: ENavigationCategory.ProjectSelection,
 }
 
 const navigationSlice = createSlice({
@@ -13,14 +12,8 @@ const navigationSlice = createSlice({
     setCategory: (state, action: PayloadAction<ENavigationCategory>) => {
       state.selectedCategory = action.payload;
     },
-    setSubCategory: (state, action: PayloadAction<ENavigationSubCategory>) => {
-      state.selectedSubCategory = action.payload;
-    },
     clearCategory: (state) => {
       state.selectedCategory = ENavigationCategory.None;
-    },
-    clearSubCategory: (state) => {
-      state.selectedSubCategory = ENavigationSubCategory.None;
     },
   }
 })

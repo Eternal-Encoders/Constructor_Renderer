@@ -18,7 +18,8 @@ export const registerByEmail = createAsyncThunk<string, RegisterByEmailProps, { 
   "register/registerByEmail",
   async (authData, thunkAPI) => {
     try {
-      const response = await axios.post<string>(`${import.meta.env.VITE_API_DOMAIN}/user/register`, authData);
+      const response = await axios.post<string>
+      (`${import.meta.env.VITE_API_DOMAIN}/user/register`, authData);
 
       if (!response.data) {
         throw new Error();

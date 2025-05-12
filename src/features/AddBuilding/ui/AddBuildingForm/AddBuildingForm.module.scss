@@ -1,0 +1,22 @@
+.AddBuildingForm {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+.title {
+    margin-bottom: 10px;
+}
+
+.input {
+    margin-bottom: 10px;
+}
+
+.addBuildingBtn {
+    margin-top: 15px;
+    margin-left: auto;
+}
+
+.error {
+    margin-top: 10px;
+}

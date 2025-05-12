@@ -20,3 +20,15 @@ createRoot(document.getElementById('root')!).render(
     </StrictMode>
   </StoreProvider>,
 );
+
+// createRoot(document.getElementById('root')!).render(
+//   <StoreProvider>
+//     <ErrorBoundary>
+//       <BrowserRouter>
+//         <ThemeProvider>
+//           <App />
+//         </ThemeProvider>
+//       </BrowserRouter>
+//     </ErrorBoundary>
+//   </StoreProvider>,
+// );

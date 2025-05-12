@@ -1,2 +1,3 @@
-export type { Figure, FigureType, Polygon, Rectangle } from './Figure';
+export { FigureType } from './Figure';
+export type { Figure, Polygon, Rectangle } from './Figure';
 

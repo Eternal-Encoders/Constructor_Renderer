@@ -1,13 +1,19 @@
 import { EnhancedStore, Reducer, ReducersMapObject, UnknownAction } from "@reduxjs/toolkit";
+import { BuildingSchema } from "entities/Building";
+import { BuildingSummarySchema } from "entities/BuildingsSummary";
 import { CounterSchema } from "entities/Counter";
 import { FillSchema } from "entities/Fill";
-import { FloorSchema } from "entities/Floors/model/types/floorSchema";
+import { FloorSchema } from "entities/Floors";
 import { ImageSchema } from "entities/Image";
 import { LayerSchema } from "entities/Layers";
 import { LayoutSchema } from "entities/Layout";
 import { NavigationSchema } from "entities/Navigation";
+import { ProjectSchema } from "entities/Project";
+import { ProjectSummarySchema } from "entities/ProjectsSummary";
 import { UserSchema } from "entities/User";
+import { AddBuildingSchema } from "features/AddBuilding";
 import { AddFloorSchema } from "features/AddFloor";
+import { AddProjectSchema } from "features/AddProject";
 import { LoginSchema } from "features/AuthByMail";
 import { RegisterSchema } from "features/RegisterByMail";
 
@@ -20,11 +26,17 @@ export interface StateSchema {
   layers: LayerSchema;
   floors: FloorSchema[];
   navigation: NavigationSchema;
-
+  project: ProjectSchema;
+  building: BuildingSchema;
+  
   // Асинхронные редюсеры
   loginForm?: LoginSchema | undefined; 
   registerForm?: RegisterSchema | undefined; 
   addFloorForm?: AddFloorSchema | undefined; 
+  addProjectForm?: AddProjectSchema | undefined; 
+  addBuildingForm?: AddBuildingSchema | undefined; 
+  getProjectsSummary?: ProjectSummarySchema | undefined;
+  getBuildingsSummary?: BuildingSummarySchema | undefined;
 }
 
 export type StateSchemaKey = keyof StateSchema;

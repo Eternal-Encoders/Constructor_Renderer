@@ -1,4 +1,5 @@
 import { configureStore, ReducersMapObject } from '@reduxjs/toolkit';
+import { buildingReducer } from 'entities/Building';
 import { counterReducer } from 'entities/Counter';
 import { fillReducer } from 'entities/Fill';
 import { floorsReducer } from 'entities/Floors';
@@ -6,6 +7,7 @@ import { imageReducer } from 'entities/Image';
 import { layersReducer } from 'entities/Layers';
 import { layoutReducer } from 'entities/Layout';
 import { navigationReducer } from 'entities/Navigation';
+import { projectReducer } from 'entities/Project';
 import { userReducer } from 'entities/User';
 import { StateSchema } from './StateSchema';
 import { createReducerManager } from './reducerManager';
@@ -20,7 +22,9 @@ export function createReduxStore(initialState?: StateSchema) {
     layout: layoutReducer,
     layers: layersReducer,
     floors: floorsReducer,
-    navigation: navigationReducer
+    navigation: navigationReducer,
+    project: projectReducer,
+    building: buildingReducer
   }
 
   const reducerManager = createReducerManager(rootReducers);
@@ -29,6 +33,9 @@ export function createReduxStore(initialState?: StateSchema) {
     reducer: reducerManager.reduce,
     devTools: import.meta.env.VITE_IS_DEV,
     preloadedState: initialState,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+      serializableCheck: false
+    }),
   });
 
   // @ts-expect-error make one more type after

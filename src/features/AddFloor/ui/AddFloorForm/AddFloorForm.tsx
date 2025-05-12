@@ -48,7 +48,7 @@ const AddFloorForm = memo(({ className, onSuccess }: IAddFloorFormProps) => {
   }, [dispatch]);
 
   const onAddFloorClick = useCallback(async () => {
-    const result = await dispatch(addFloor({ building_id, index, name }));
+    const result = await dispatch(addFloor({ building_id, number: index, name }));
     if (result.meta.requestStatus === 'fulfilled') {
       onSuccess();
     }

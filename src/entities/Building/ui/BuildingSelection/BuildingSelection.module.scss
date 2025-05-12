@@ -1,0 +1,21 @@
+.BuildingSelection {
+    display: flex;
+    
+    &__section {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 8px;
+
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+    }
+
+    &__title {
+        font: var(--font-description);
+        color: var(--highlights1-color);
+        line-height: 26px;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+}
