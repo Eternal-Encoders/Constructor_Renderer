@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Polygon, Rectangle } from 'entities/Figure/Figure';
-import { LayersSchema } from '../types/layersSchema';
+import { Polygon, Rectangle } from 'entities/Figure';
+import { LayerSchema } from '../types/layerSchema';
 
-const initialState: LayersSchema  = {
+const initialState: LayerSchema  = {
   figures: [],
 }
 

@@ -5,12 +5,38 @@
     background-color: var(--bg1-color);
     position: relative;
 
+    &_compact {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: var(--figures-z-index);
+        padding: 0;
+        border-radius: var(--corner-radius-2, 6px);
+        background-color: var(--bg2-color);
+    }
+
+    &__content {
+        background-color: var(--bg1-color);
+
+        &_compact {
+            border-radius: var(--corner-radius-2, 6px);
+        }
+    }
+
     &__header {
+        cursor: pointer;
         display: flex;
         justify-content: space-between;
         align-items: center;
         height: 40px;
         padding-left: 14px;
+        z-index: var(--dropdown-z-index);
+        margin-bottom: 12px;
+
+        &_compact {
+            height: 40px;
+            margin: 0;
+        }
 
         &_second {
             justify-content: left;
@@ -69,4 +95,14 @@
     cursor: ew-resize;
     background-color: transparent;
     z-index: 10;
+}
+
+.default {
+    transform: rotate(0);
+    transition: 0.3s transform !important;
+}
+
+.rotated {
+    transform: rotate(-0.25turn);
+    transition: 0.3s transform !important;
 }

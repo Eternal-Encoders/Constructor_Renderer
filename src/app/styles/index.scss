@@ -6,15 +6,10 @@
 body {
   font: var(--font-main);
   color: var(--primary1-color);
-}
 
-.app {
-  background: var(--bg2-color);
-  min-height: 100vh;
-}
-
-.app-navbar {
-  margin-bottom: 12px;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
 }
 
 .content-page {
@@ -24,6 +19,10 @@ body {
   align-items: center;
   background: var(--white);
   overflow: hidden;
+}
+
+.error {
+  color: var(--red-light);
 }
 
 .noselect {

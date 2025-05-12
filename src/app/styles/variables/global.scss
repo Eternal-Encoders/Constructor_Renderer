@@ -1,6 +1,12 @@
 :root {
     // Основной шрифт
     --font-family-main: lab grotesque, "Times New Roman", serif;
+
+    // Размер шрифта Functional
+    --font-size-functional: 12px;
+    --font-line-functional: 16px;
+    --font-weight-functional: 700;
+    --font-functional: var(--font-weight-functional) var(--font-size-functional) / var(--font-line-functional) var(--font-family-main);
     
     // Размер шрифта L
     --font-size-l: 24px;
@@ -57,6 +63,9 @@
     --panel-max-width: 360px;
     --panel-width-percent: 20%;
 
+    // Кастомные размеры
+    --card-height: calc(788px - var(--padding-bottom));
+
     // Цвет
     --white: #fff;
     --black: #000;
@@ -70,6 +79,7 @@
     // Округление
     --corner-radius-1: 2px;
     --corner-radius-2: 6px;
+    --corner-radius-3: 8px;
 
     // Границы
     --border: 1px solid var(--border-color, #C3C3D0);
@@ -85,10 +95,21 @@
     --modal-z-index: 10;
     --actions-z-index: 5;
     --figures-z-index: 5;
+    --above-dropdown-z-index: 2;
+    --dropdown-z-index: 1;
 
     // Состояния
     --hover: #F0F0F0;
+    --hover-dark: #C3C3D0;
     --pressed: #E0E0E0;
     --disabled: var(--bg2-color, #F8F8FB);
+
+    // Ограничения
+    --padding-bottom: 80px;
+
+    // Responsive
+    @media (min-height >= 1200px) {
+        --padding-bottom: -100px;
+    }
 }
 

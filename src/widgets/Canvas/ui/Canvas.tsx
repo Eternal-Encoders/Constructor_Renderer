@@ -4,11 +4,15 @@ import { FigureType, Polygon, Rectangle } from "entities/Figure/Figure";
 import { getFillHEXCode, getFillOpacity } from "entities/Fill";
 import { layersActions } from "entities/Layers/model/slice/layersSlice";
 import {
-  getLayoutBottomGapHeight,
+  getLayoutBottomGap,
+  getLayoutBreadCrumbsHeight,
+  getLayoutHeaderHeight,
+  getLayoutLeftGap,
   getLayoutLeftPanelWidth,
   getLayoutNavbarHeight,
+  getLayoutRightGap,
   getLayoutRightPanelWidth,
-  getLayoutTopGapHeight
+  getLayoutTopGap
 } from "entities/Layout";
 import { getRelativePointerPosition } from "helpers/getRelativePointerPosition";
 import { useWindowSize } from "helpers/hooks/useWindowSize";
@@ -315,10 +319,14 @@ export const Canvas = (props: ICanvasProps) => {
   };
 
   const navbarHeight = useSelector(getLayoutNavbarHeight);
-  const topGapHeight = useSelector(getLayoutTopGapHeight);
-  const bottomGapHeight = useSelector(getLayoutBottomGapHeight);
+  const breadCrumbsHeight = useSelector(getLayoutBreadCrumbsHeight);
+  const headerHeight = useSelector(getLayoutHeaderHeight);
   const leftPanelWidth = useSelector(getLayoutLeftPanelWidth);
   const rightPanelWidth = useSelector(getLayoutRightPanelWidth);
+  const topGap = useSelector(getLayoutTopGap);
+  const bottomGap = useSelector(getLayoutBottomGap);
+  const leftGap = useSelector(getLayoutLeftGap);
+  const rightGap = useSelector(getLayoutRightGap);
 
   console.log(layerRef.current?.children);
 
@@ -327,8 +335,8 @@ export const Canvas = (props: ICanvasProps) => {
       className={classNames(cls.Stage, selectedAction === ActionType.Drag ? cls['grab_active'] : null, [className])}
       ref={stageRef}
       // onDragMove={handleDragMove}
-      height={height - navbarHeight - topGapHeight - bottomGapHeight}
-      width={width - leftPanelWidth - rightPanelWidth}
+      height={height - navbarHeight - topGap - bottomGap - breadCrumbsHeight - headerHeight}
+      width={width - leftPanelWidth - rightPanelWidth - leftGap - rightGap}
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}

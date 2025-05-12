@@ -1,0 +1,18 @@
+.AddProjectForm {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+.input {
+    margin-top: 10px;
+}
+
+.addProjectBtn {
+    margin-top: 15px;
+    margin-left: auto;
+}
+
+.error {
+    margin-top: 10px;
+}

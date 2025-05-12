@@ -1,5 +1,6 @@
 .Save {
     display: flex;
+    justify-content: flex-end;
     font: var(--font-description);
 
     &__button {

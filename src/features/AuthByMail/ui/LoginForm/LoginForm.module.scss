@@ -1,0 +1,73 @@
+.LoginForm {
+    display: flex;
+    flex-direction: column;
+    width: 292px;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+    }
+
+    &__footer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__noAccount {
+        color: var(--highlights2-color);
+        font: var(--font-small);
+        margin-bottom: 8px;
+    }
+
+    &__register {
+        cursor: pointer;
+        color: var(--primary3-color);
+        font: var(--font-small);
+    }
+
+    &__title {
+        color: var(--highlights1-color);
+        font: var(--font-article);
+    }
+
+    &__forgotPassword {
+        cursor: pointer;
+        color: var(--highlights2-color);
+        font: var(--font-small);
+    }
+}
+
+.Form {
+    padding: 16px;
+    background-color: var(--white, #fff);
+    border-radius: var(--corner-radius-3, 8px);
+    margin-bottom: 24px;
+
+    .input {
+        display: flex;
+        align-items: center;
+        width: 260px;
+        height: 40px;
+        padding: 8px 16px 8px 8px;
+        border-radius: var(--corner-radius-2, 6px);
+        margin-bottom: 8px;
+
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+    }
+
+    .loginBtn {
+        background-color: var(--primary3-color, #324564);
+        width: 260px;
+        margin-top: 16px;
+    }
+
+    .error {
+        margin-bottom: 10px;
+    }
+}

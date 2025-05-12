@@ -3,6 +3,7 @@ import cls from "./Text.module.scss";
 
 export enum TextTheme {
   PRIMARY = "primary",
+  DANGER = 'danger',
   ERROR = "error",
 }
 

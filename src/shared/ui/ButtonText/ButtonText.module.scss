@@ -1,6 +1,7 @@
 .ButtonText {
+    cursor: pointer;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     text-align: center;
     outline: var(--outline);
@@ -11,16 +12,64 @@
     flex-shrink: 0;
     border: none;
 
+    &__text {
+        // min-width: 100px;
+        text-align: left;
+
+        &.inverted {
+            color: var(--bg1-color);
+        }
+    }
+
+    .danger {
+        &__text {
+             color: var(--red-dark);
+        }
+    }
+
+    &.centered {
+        justify-content: center;
+
+        &__text {
+            text-align: center;
+        }
+    }
+
     &__leftIcon {
+        margin-right: 4px;
+
+        &_medium {
+            margin-right: 6px;
+        }
+    }
+
+    &__rightIcon {
+        margin-left: 4px;
+
+        &.iconRightStickedToTheEnd {
+            margin-left: auto;
+        }
+
+        &_medium {
+            margin-left: 36px;
+
+            &.iconRightStickedToTheEnd {
+                margin-left: auto;
+            }
+        }
+    }   
+
+    &__leftIcon,
+    &__rightIcon {
         display: flex;
         width: 14px;
         height: 14px;
         justify-content: center;
         align-items: center;
-        margin-right: 4px;
+        flex-shrink: 0;
 
         &_medium {
-            margin-right: 6px;
+            flex-shrink: 0;
             width: 20px;
             height: 20px;
         }
@@ -46,6 +95,7 @@
         background: var(--bg2-color, #F8F8FB);
         color: var(--weak1-color, #BDBDBD);
         outline: var(--outline);
+        cursor: default;
     }
 }
 
@@ -84,6 +134,7 @@
     &:disabled {
         outline: none;
         background: none;
+        cursor: default;
     }
 }
 
@@ -108,5 +159,10 @@
 
     &:disabled {
         outline: none;
+        cursor: default;
     }
+}
+
+.bold {
+    font-weight: 700;
 }
