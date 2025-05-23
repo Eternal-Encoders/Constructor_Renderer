@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { userActions } from "entities/User";
+import { redirectAndTokenDelete } from "helpers/redirectAndTokenDelete";
 import { USER_LOCALSTORAGE_KEY } from "shared/const/localstorage";
 
 interface RegisterByEmailProps {
@@ -9,10 +10,9 @@ interface RegisterByEmailProps {
   nickname: string;
 }
 
-// enum RegisterErrors {
-//   INCORRECT_DATA = '',
-//   SERVER_ERROR = ''
-// }
+enum ERegisterByEmailStatusCode {
+  UN_AUTH = 401
+}
 
 export const registerByEmail = createAsyncThunk<string, RegisterByEmailProps, { rejectValue: string }>(
   "register/registerByEmail",
@@ -29,9 +29,13 @@ export const registerByEmail = createAsyncThunk<string, RegisterByEmailProps, { 
       thunkAPI.dispatch(userActions.setAuthData(response.data));
 
       return response.data;
-    } catch (err) {
-      console.log(err);
-      return thunkAPI.rejectWithValue('Вы ввели неккоректный email или пароль');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: AxiosError | any) {
+      const error = err as AxiosError;
+
+      redirectAndTokenDelete(ERegisterByEmailStatusCode.UN_AUTH, thunkAPI, error);
+      
+      return thunkAPI.rejectWithValue('Ошибка при получении данных. Попробуйте позже.');
     }
   },
 );

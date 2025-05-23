@@ -1,7 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { buildingActions, BuildingSchema } from "entities/Building";
 import { buildingsSummaryActions } from "entities/BuildingsSummary";
+import { redirectAndTokenDelete } from "helpers/redirectAndTokenDelete";
 import { GPS } from "shared/const/API";
 
 interface AddBuildingProps {
@@ -15,10 +16,9 @@ interface AddBuildingProps {
   gps?: GPS;
 }
 
-// enum BuildingErrors {
-//   INCORRECT_DATA = '404',
-//   SERVER_ERROR = '403'
-// }
+enum EAddBuildingStatusCode {
+  UN_AUTH = 401
+}
 
 export const addBuilding = createAsyncThunk<BuildingSchema, AddBuildingProps, { rejectValue: string }>(
   "building/addBuilding",
@@ -35,9 +35,13 @@ export const addBuilding = createAsyncThunk<BuildingSchema, AddBuildingProps, { 
       thunkAPI.dispatch(buildingsSummaryActions.addBuilding(response.data));
 
       return response.data;
-    } catch (err) {
-      console.log(err);
-      return thunkAPI.rejectWithValue('Вы ввели неккоректное название для полей ввода');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: AxiosError | any) {
+      const error = err as AxiosError;
+
+      redirectAndTokenDelete(EAddBuildingStatusCode.UN_AUTH, thunkAPI, error);
+      
+      return thunkAPI.rejectWithValue('Ошибка при добавлении здания. Попробуйте позже.');
     }
   },
 );

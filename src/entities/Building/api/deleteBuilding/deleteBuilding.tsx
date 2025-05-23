@@ -1,11 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { buildingsSummaryActions } from "entities/BuildingsSummary";
+import { redirectAndTokenDelete } from "helpers/redirectAndTokenDelete";
 
-// enum deleteBuildingErrors {
-//   INCORRECT_DATA = '',
-//   SERVER_ERROR = ''
-// }
+enum EDeleteBuildingStatusCode {
+  SUCCESS = 200,
+  UN_AUTH = 401
+}
 
 export const deleteBuilding = createAsyncThunk<void, string, { rejectValue: string }>(
   "buildingInfo/deleteBuilding",
@@ -13,13 +14,17 @@ export const deleteBuilding = createAsyncThunk<void, string, { rejectValue: stri
     try {
       const response = await axios.delete(`${import.meta.env.VITE_API_DOMAIN}/building/${id}`);
 
-      if (response.status.toString() !== '200') {
+      if (response.status !== EDeleteBuildingStatusCode.SUCCESS) {
         throw new Error();
       }
 
       thunkAPI.dispatch(buildingsSummaryActions.deleteBuilding(id));
-    } catch (err) {
-      console.log(err);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: AxiosError | any) {
+      const error = err as AxiosError;
+
+      redirectAndTokenDelete(EDeleteBuildingStatusCode.UN_AUTH, thunkAPI, error);
+
       return thunkAPI.rejectWithValue('Ошибка при удалении данных. Попробуйте позже.');
     }
   },

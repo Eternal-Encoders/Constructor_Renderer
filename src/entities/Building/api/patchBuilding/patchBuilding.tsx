@@ -1,11 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { redirectAndTokenDelete } from "helpers/redirectAndTokenDelete";
 import { GPS } from "shared/const/API";
 
-// enum PatchBuildingErrors {
-//   INCORRECT_DATA = '',
-//   SERVER_ERROR = ''
-// }
+enum EPatchBuildingStatusCode {
+  UN_AUTH = 401
+}
 
 interface PatchBuildingProps {
   building: {
@@ -25,11 +25,17 @@ export const patchBuilding = createAsyncThunk<void, PatchBuildingProps, { reject
   "buildingInfo/patchBuilding",
   async (buildingData, thunkAPI) => {
     try {
+
       await axios.patch(`${import.meta.env.VITE_API_DOMAIN}/building/${buildingData.buildingId}`,
         buildingData.building);
-    } catch (err) {
-      console.log(err);
-      return thunkAPI.rejectWithValue('Ошибка при получении данных. Попробуйте позже.');
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: AxiosError | any) {
+      const error = err as AxiosError;
+
+      redirectAndTokenDelete(EPatchBuildingStatusCode.UN_AUTH, thunkAPI, error);
+      
+      return thunkAPI.rejectWithValue('Ошибка при обновлении данных. Попробуйте позже.');
     }
   },
 );

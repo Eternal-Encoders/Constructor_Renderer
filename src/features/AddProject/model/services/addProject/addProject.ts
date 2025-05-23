@@ -1,7 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { projectActions, ProjectSchema } from "entities/Project";
 import { projectsSummaryActions } from "entities/ProjectsSummary";
+import { redirectAndTokenDelete } from "helpers/redirectAndTokenDelete";
 
 interface AddProjectProps {
   name: string;
@@ -9,10 +10,9 @@ interface AddProjectProps {
   url: string;
 }
 
-// enum ProjectErrors {
-//   INCORRECT_DATA = '404',
-//   SERVER_ERROR = '403'
-// }
+enum EAddProjectStatusCode {
+  UN_AUTH = 401
+}
 
 export const addProject = createAsyncThunk<ProjectSchema, AddProjectProps, { rejectValue: string }>(
   "project/addProject",
@@ -29,9 +29,13 @@ export const addProject = createAsyncThunk<ProjectSchema, AddProjectProps, { rej
       thunkAPI.dispatch(projectsSummaryActions.addProject(response.data));
 
       return response.data;
-    } catch (err) {
-      console.log(err);
-      return thunkAPI.rejectWithValue('Вы ввели неккоректное название для полей ввода');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: AxiosError | any) {
+      const error = err as AxiosError;
+
+      redirectAndTokenDelete(EAddProjectStatusCode.UN_AUTH, thunkAPI, error);
+      
+      return thunkAPI.rejectWithValue('Ошибка при добавлении этажа. Попробуйте позже.');
     }
   },
 );
