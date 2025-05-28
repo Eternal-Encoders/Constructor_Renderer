@@ -3,7 +3,8 @@ import axios, { AxiosError } from "axios";
 import { redirectAndTokenDelete } from "helpers/redirectAndTokenDelete";
 
 enum EFetchUserInfoStatusCode {
-  UN_AUTH = 401
+  UN_AUTH = 401,
+  NOT_FOUND = 404
 }
 
 export interface FetchUserInfoResponse {
@@ -37,6 +38,7 @@ export const fetchUserInfo = createAsyncThunk<FetchUserInfoResponse, void, any>(
       const error = err as AxiosError;
 
       redirectAndTokenDelete(EFetchUserInfoStatusCode.UN_AUTH, thunkAPI, error);
+      redirectAndTokenDelete(EFetchUserInfoStatusCode.NOT_FOUND, thunkAPI, error);
       
       return thunkAPI.rejectWithValue('Ошибка при получении данных. Попробуйте позже.');
     }

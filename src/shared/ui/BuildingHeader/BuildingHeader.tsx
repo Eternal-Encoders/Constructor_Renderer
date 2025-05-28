@@ -2,12 +2,14 @@ import Compas from 'assets/Compas.svg?react';
 import Settings from 'assets/Settings.svg?react';
 import classNames from "classnames";
 import { getNavigationCategory } from 'entities/Navigation';
-import { navigationActions } from 'entities/Navigation/model/slice/navigationSlice';
 import { ENavigationCategory } from 'entities/Navigation/model/types/navigationSchema';
 import { getPatchedProjectIsLoading, getProjectIsLoading, getProjectName } from 'entities/Project';
+import { getAddProjectIsLoading } from 'features/AddProject';
 import { getShorterIfOverflow } from 'helpers/getShorterIfOverflow';
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { RoutePath } from 'shared/config/routeConfig/routeConfig.';
 import { ButtonText } from "../ButtonText/ButtonText";
 import cls from "./BuildingHeader.module.scss";
 
@@ -16,22 +18,23 @@ interface IBuildingHeaderProps {
 }
 
 export const BuildingHeader = ({ className }: IBuildingHeaderProps) => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const selectedCategory = useSelector(getNavigationCategory);
-  const getProjectInfo = useSelector(getProjectName);
+  const projectInfo = useSelector(getProjectName);
 
   const isLoadingPatchedProject = useSelector(getPatchedProjectIsLoading);
   const isLoadingProjectInfo = useSelector(getProjectIsLoading);
+  const isAddProjectIsLoading = useSelector(getAddProjectIsLoading);
 
   const getProjectNameHandle = useCallback(() => {
     if (isLoadingPatchedProject === false || isLoadingProjectInfo === false) {
-      return getProjectInfo;
+      return projectInfo;
     } else {
       return 'Проект не выбран';
     }
-  }, [getProjectInfo, isLoadingPatchedProject, isLoadingProjectInfo]);
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoadingPatchedProject, isLoadingProjectInfo, isAddProjectIsLoading]);
   return (
     <div className={classNames(cls.BuildingHeader, {}, [className])}>
       <div className={classNames(cls.BuildingHeader__content)}>
@@ -39,24 +42,24 @@ export const BuildingHeader = ({ className }: IBuildingHeaderProps) => {
           <ButtonText 
             size='medium' 
             type='default'
-            iconLeft={getProjectInfo.length > 0 && <Compas style={{marginBottom: '2px'}}/>}
-            iconRight={getProjectInfo.length > 0 && '✓'}
+            iconLeft={projectInfo.length > 0 && <Compas style={{marginBottom: '2px'}}/>}
+            iconRight={projectInfo.length > 0 && '✓'}
             style={{marginRight: 16, width: 200}}
-            onClick={() => dispatch(navigationActions.setCategory(ENavigationCategory.ProjectSelection))}
+            onClick={() => navigate(RoutePath.project_selection)}
             iconRightStickedToTheEnd
             centered={false}
-            disabled={getProjectInfo.length <= 0}
+            disabled={projectInfo.length <= 0}
           >
-            {getProjectInfo ? getShorterIfOverflow(getProjectNameHandle(), 14) : 'Проект не выбран'}
+            {projectInfo ? getShorterIfOverflow(getProjectNameHandle(), 11) : 'Проект не выбран'}
           </ButtonText>
           <ul role="list" className={classNames(cls.BuildingHeader__list)}>
             <li>
               <ButtonText 
                 size="medium" 
                 type="link"
-                bold={ENavigationCategory.Review === selectedCategory}
+                bold={ENavigationCategory.None === selectedCategory}
                 style={{width: '116px'}}
-                onClick={() => dispatch(navigationActions.setCategory(ENavigationCategory.Review))}
+                onClick={() => navigate(RoutePath.review)}
               >
                 Обзор
               </ButtonText>
@@ -67,7 +70,7 @@ export const BuildingHeader = ({ className }: IBuildingHeaderProps) => {
                 type="link"
                 bold={ENavigationCategory.Analytics === selectedCategory}
                 style={{width: '116px'}}
-                onClick={() => dispatch(navigationActions.setCategory(ENavigationCategory.Analytics))}
+                onClick={() => navigate(RoutePath.analytics)}
               >
                 Аналитика
               </ButtonText>
@@ -78,7 +81,7 @@ export const BuildingHeader = ({ className }: IBuildingHeaderProps) => {
                 type="link"
                 bold={ENavigationCategory.Modules === selectedCategory}
                 style={{width: '116px'}}
-                onClick={() => dispatch(navigationActions.setCategory(ENavigationCategory.Modules))}
+                onClick={() => navigate(RoutePath.modules)}
               >
                 Модули
               </ButtonText>
@@ -89,7 +92,7 @@ export const BuildingHeader = ({ className }: IBuildingHeaderProps) => {
                 type="link" 
                 bold={ENavigationCategory.BuildingSelection === selectedCategory}
                 style={{width: '116px'}}
-                onClick={() => dispatch(navigationActions.setCategory(ENavigationCategory.BuildingSelection))}
+                onClick={() => navigate(RoutePath.constructor)}
               >
                 Конструктор
               </ButtonText>
@@ -100,7 +103,7 @@ export const BuildingHeader = ({ className }: IBuildingHeaderProps) => {
                 type="link"
                 bold={ENavigationCategory.Privileges === selectedCategory}
                 style={{width: '116px'}}
-                onClick={() => dispatch(navigationActions.setCategory(ENavigationCategory.Privileges))}
+                onClick={() => navigate(RoutePath.privileges)}
               >
                 Привилегии
               </ButtonText>

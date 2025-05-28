@@ -1,10 +1,15 @@
+import { useAppDispatch } from "app/providers/StoreProvider/lib/hooks/useAppDispatch";
 import classNames from "classnames";
+import { getBuildingId } from "entities/Building";
 import { FigureType, Polygon, Rectangle } from "entities/Figure";
 import { ActionType } from "entities/Figure/Action";
+import { fetchFloorsSummary, floorsSummaryReducer } from "entities/FloorsSummary";
 import { useCtrlWheelZoom } from "helpers/hooks/useCtrlWheelZoom";
 import { useKeyboardShortcuts } from "helpers/hooks/useKeyboardShortcuts";
 import { useMiddleMouseHold } from "helpers/hooks/useMiddleMouseHold";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { DynamicModuleLoader, ReducersList } from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import { Canvas } from "widgets/Canvas";
 import { DropdownPanel } from "widgets/DropdownPanel";
 import { InfoPanel } from "widgets/SectionPanel";
@@ -16,6 +21,10 @@ interface IConstructorProps {
   className?: string;
 }
 
+const initialReducers: ReducersList = {
+  'getFloorsSummary': floorsSummaryReducer
+}
+
 export const Constructor = ({ className }: IConstructorProps) => {
   const [polygons, setPolygons] = useState<Polygon[]>([]);
   const [rectangles, setRectangles] = useState<Rectangle[]>([]);
@@ -24,7 +33,16 @@ export const Constructor = ({ className }: IConstructorProps) => {
   const [selectedAction, setSelectedAction] = useState<ActionType>(ActionType.Cursor);
   const [scale, setScale] = useState<number>(1);
 
-  
+  const dispatch = useAppDispatch();
+  const buildingId = useSelector(getBuildingId);
+
+  useEffect(() => {
+    if (!buildingId) return;
+    (async () => {
+      await dispatch(fetchFloorsSummary(buildingId));
+    })()
+  }, [buildingId, dispatch]);
+
   const handleUndoMove = useCallback(() => {
     if (!selectedId) return;
     const isRectangle = rectangles.some((fig) => fig.id === selectedId);
@@ -94,39 +112,52 @@ export const Constructor = ({ className }: IConstructorProps) => {
   useCtrlWheelZoom({ scale, setScale });
 
   return (
-    <div className={classNames(cls.Constructor, {}, [className])}>
-      <div className={classNames(`content-page`, cls.ConstructorCategory)}>
-        <div style={{display: 'flex'}}>
-          <DropdownPanel className={classNames(cls.DropdownPanel)}/>
-          <Canvas
-            scale={scale}
-            setScale={setScale}
-            setPolygons={setPolygons}
-            polygons={polygons}
-            setRectangles={setRectangles}
-            rectangles={rectangles}
-            selectedId={selectedId ?? undefined}
+    <DynamicModuleLoader reducers={initialReducers} removeAfterUnmount>
+      <div className={classNames(cls.Constructor, {}, [className])}>
+        <div className={classNames(`content-page`, cls.ConstructorCategory)}>
+          <div style={{display: 'flex'}}>
+            <DropdownPanel 
+              className={classNames(cls.DropdownPanel)}
+              figures={[...polygons, ...rectangles]}
+              selectedId={selectedId}
+              setSelectedId={setSelectedId}
+            />
+            <Canvas
+              scale={scale}
+              setScale={setScale}
+              setPolygons={setPolygons}
+              polygons={polygons}
+              setRectangles={setRectangles}
+              rectangles={rectangles}
+              selectedId={selectedId ?? undefined}
+              selectedFigure={selectedFigure}
+              selectedAction={selectedAction}
+              setSelectedId={setSelectedId}
+            />
+            <Actions 
+              className={classNames(cls.Actions)}
+              handleUndoMove={handleUndoMove} 
+              handleRedoMove={handleRedoMove}
+              selectedId={selectedId} 
+              setScale={setScale} 
+              scale={scale}/>
+            <InfoPanel 
+              className={classNames(cls.InfoPanel)}
+              figures={[...polygons, ...rectangles]}
+              selectedFigure={selectedFigure}
+              selectedId={selectedId}
+              setSelectedFigure={setSelectedFigure}
+            />
+          </div>
+          <SelectorItems
+            className={classNames(cls.SelectorItems)}
             selectedFigure={selectedFigure}
             selectedAction={selectedAction}
-            setSelectedId={setSelectedId}
+            setSelectedAction={setSelectedAction}
+            setSelectedFigure={setSelectedFigure}
           />
-          <Actions 
-            className={classNames(cls.Actions)}
-            handleUndoMove={handleUndoMove} 
-            handleRedoMove={handleRedoMove}
-            selectedId={selectedId} 
-            setScale={setScale} 
-            scale={scale}/>
-          <InfoPanel className={classNames(cls.InfoPanel)}/>
         </div>
-        <SelectorItems
-          className={classNames(cls.SelectorItems)}
-          selectedFigure={selectedFigure}
-          selectedAction={selectedAction}
-          setSelectedAction={setSelectedAction}
-          setSelectedFigure={setSelectedFigure}
-        />
       </div>
-    </div>
+    </DynamicModuleLoader>
   );
 };

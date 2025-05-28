@@ -8,6 +8,7 @@ import { getProjectIsLoading } from "entities/Project/model/selectors/getProject
 import { getProjectName } from "entities/Project/model/selectors/getProjectName/getProjectName";
 import { getProjectURL } from "entities/Project/model/selectors/getProjectURL/getProjectURL";
 import { projectActions } from "entities/Project/model/slice/projectSlice";
+import { fetchProjectsSummary } from "entities/ProjectsSummary";
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { ButtonText } from "shared/ui/ButtonText/ButtonText";
@@ -48,9 +49,12 @@ export const ProjectInfo = ({ className }: IProjectInfoProps) => {
 
   const onClickSaveHandle = useCallback(async () => {
     if (name !== projectName || url !== projectURL) {
-      await dispatch(patchProject({id: projectId, name: projectName, url: projectURL}));
-      setName(projectName);
-      setURL(projectURL);
+      const result = await dispatch(patchProject({id: projectId, name: projectName, url: projectURL}));
+      if (result.meta.requestStatus === 'fulfilled') {
+        await dispatch(fetchProjectsSummary());
+        setName(projectName);
+        setURL(projectURL);
+      }
     }
   },[dispatch, name, projectId, projectName, projectURL, url]);
 

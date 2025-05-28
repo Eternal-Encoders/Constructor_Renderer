@@ -1,7 +1,9 @@
 import { useAppDispatch } from "app/providers/StoreProvider/lib/hooks/useAppDispatch";
 import classNames from "classnames";
+import { fetchBuildingsSummary } from "entities/BuildingsSummary";
 import { navigationActions } from "entities/Navigation/model/slice/navigationSlice";
 import { ENavigationCategory } from "entities/Navigation/model/types/navigationSchema";
+import { getProjectId } from "entities/Project";
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { ButtonText } from "shared/ui/ButtonText/ButtonText";
@@ -32,6 +34,7 @@ export const BuildingInfo = ({ className }: IBuildingInfoProps) => {
   const buildingURL = useSelector(getBuildingURL);
   const errorBuildingInfo = useSelector(getBuildingError);
   const isLoadingBuildingInfo = useSelector(getBuildingIsLoading);
+  const projectId = useSelector(getProjectId);
 
   const [name, setName] = useState(buildingName);
   const [url, setURL] = useState(buildingURL);
@@ -50,11 +53,16 @@ export const BuildingInfo = ({ className }: IBuildingInfoProps) => {
 
   const onClickSaveHandle = useCallback(async () => {
     if (name !== buildingName || url !== buildingURL) {
-      await dispatch(patchBuilding({buildingId: buildingId, building: { name: buildingName, url: buildingURL}}));
-      setName(buildingName);
-      setURL(buildingURL);
+      const result = 
+        await dispatch(patchBuilding({buildingId, building: { name: buildingName, url: buildingURL}}));
+      if (result.meta.requestStatus === 'fulfilled') {
+        await dispatch(fetchBuildingsSummary(projectId));
+        setName(buildingName);
+        setURL(buildingURL);
+      }
+
     }
-  },[name, buildingName, url, buildingURL, dispatch, buildingId]);
+  },[name, buildingName, url, buildingURL, dispatch, buildingId, projectId]);
 
   const onClickDeleteHandle = useCallback(async () => {
     await dispatch(deleteBuilding(buildingId));

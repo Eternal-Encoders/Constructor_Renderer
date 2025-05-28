@@ -1,5 +1,9 @@
 .LayersItems {
+    overflow: auto;
+    max-height: 758px;
+
     &__item {
+        cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: left;
@@ -11,6 +15,9 @@
             background-color: var(--white);
         }
 
+        &:hover {
+            background-color: var(--hover-dark);
+        }
     }
 
     li:last-of-type {
@@ -30,4 +37,12 @@
         justify-content: center;
         margin-right: 4px;
     }
+
+    @media (height <= 1079px) {
+        max-height: 390px;
+    }
+}
+
+.selected {
+    background-color: var(--bg2-color);
 }

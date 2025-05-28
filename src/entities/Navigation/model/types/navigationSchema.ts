@@ -1,5 +1,4 @@
 export enum ENavigationCategory {
-  Review = 'Обзор',
   Analytics = 'Аналитика',
   Modules = 'Модули',
   Constructor = 'Конструктор',
@@ -10,7 +9,7 @@ export enum ENavigationCategory {
 }
 
 export interface NavigationSchema {
-  selectedCategory: ENavigationCategory.Review | 
+  selectedCategory:
   ENavigationCategory.Analytics | 
   ENavigationCategory.Modules | 
   ENavigationCategory.Constructor | 

@@ -1,7 +1,6 @@
 import { useAppDispatch } from "app/providers/StoreProvider/lib/hooks/useAppDispatch";
 import classNames from "classnames";
 import {
-  getPatchedProjectIsLoading,
   getProject
 } from "entities/Project";
 import {
@@ -12,6 +11,7 @@ import {
 } from "entities/ProjectsSummary";
 import { ProjectSummary } from "entities/ProjectsSummary/model/types/projectsSummary";
 import { AddProjectModal } from "features/AddProject";
+import { getLoginIsLoading } from "features/AuthByMail/model/selectors/getLoginIsLoading/getLoginIsLoading";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { DynamicModuleLoader, ReducersList } from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
@@ -39,9 +39,8 @@ export const ProjectSelection = ({ className }: IProjectSelectionProps) => {
   const projectsSummary = useSelector(getProjectsSummary);
   const projectInfo = useSelector(getProject);
   
-  // const isLoadingProjectsSummary = useSelector(getProjectsSummaryIsLoading);
   const errorProjectsSummary = useSelector(getProjectsSummaryError);
-  const isLoadingPatchedProject = useSelector(getPatchedProjectIsLoading);
+  const isLoadingAuth = useSelector(getLoginIsLoading);
   
   const onCloseModal = useCallback(() => {
     setIsAddProjectModal(false);
@@ -54,18 +53,13 @@ export const ProjectSelection = ({ className }: IProjectSelectionProps) => {
   useEffect(() => {
     (async () => {
       setIsLoaded(true);
+      console.log(isLoadingAuth);
       const result = await dispatch(fetchProjectsSummary());
       if (result.meta.requestStatus === 'fulfilled') {
         setIsLoaded(false);
       }
     })()
-  }, [dispatch]);
-
-  useEffect(() => {
-    (async () => {
-      await dispatch(fetchProjectsSummary());
-    })()
-  }, [dispatch, isLoadingPatchedProject]);
+  }, [dispatch, isLoadingAuth]);
 
   const onClickHandle = useCallback(
     async (_: React.MouseEvent<HTMLButtonElement, MouseEvent>, project: ProjectSummary) => {

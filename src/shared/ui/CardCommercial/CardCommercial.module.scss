@@ -1,0 +1,76 @@
+.CardCommercial {
+  padding: 16px 16px 24px;
+  background-color: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 0 10px 0 rgb(0 0 0 / 4%);
+  position: relative;
+  overflow: hidden;
+
+  &__img {
+    position: absolute;
+    width: 192px;
+    height: 192px;
+    opacity: 0.4;
+    right: 0;
+    top: 0;
+    transform: translate(50%, -20%) scaleX(-1);
+  }
+
+  &__title {
+    font: var(--font-main);
+    color: var(--blue-dark);
+  }
+
+  &__description {
+    display: flex;
+    font: var(--font-main);
+    color: var(--weak1-color);
+    width: 280px;
+  }
+
+  &__category {
+    display: flex;
+    align-items: center;
+    margin-top: 24px;
+    margin-bottom: 16px;
+  }
+
+  &__categoryText {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 12px;
+    font: var(--font-functional);
+    color: var(--blue-accent);
+    border-radius: 2px 6px 6px 2px;
+    background: rgb(57 116 170 / 20%);
+    margin-right: 5px;
+  }
+
+  &__interval {
+    font: var(--font-secondary);
+    color: var(--blue-dark);
+  }
+
+  &__price {
+    display: flex;
+  }
+
+  &__asideText {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-end;
+    font-size: 14px;
+    line-height: 10px;
+    font-weight: 500;
+    color: var(--blue-dark);
+    margin-right: 8px;
+  }
+
+  &__priceValue {
+    font-size: 24px;
+    line-height: 17px;
+    font-weight: 500;
+    color: var(--blue-dark);
+  }
+}

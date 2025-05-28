@@ -13,6 +13,7 @@ const initialState: BuildingSchema = {
   description: '',
   latitude: 0,
   longitude: 0,
+  last_floor_id: '',
   created_at: new Date(),
   updated_at: new Date(),
   isLoading: false,
@@ -48,6 +49,9 @@ const buildingSlice = createSlice({
     setLongitute: (state, action: PayloadAction<number>) => { 
       state.longitude = action.payload;
     },
+    setLastFloorId: (state, action: PayloadAction<string>) => { 
+      state.last_floor_id = action.payload;
+    },
     setCreatedAt: (state, action: PayloadAction<Date>) => { 
       state.created_at = action.payload;
     },
@@ -63,6 +67,7 @@ const buildingSlice = createSlice({
       state.description = action.payload.description;
       state.latitude = action.payload.latitude;
       state.longitude = action.payload.longitude;
+      state.last_floor_id = action.payload.last_floor_id;
       state.created_at = action.payload.created_at;
       state.updated_at = action.payload.updated_at;
     },
@@ -75,6 +80,7 @@ const buildingSlice = createSlice({
       state.description = '';
       state.latitude = 0;
       state.longitude = 0;
+      state.last_floor_id = '';
       state.created_at = new Date();
       state.updated_at = new Date();
     },

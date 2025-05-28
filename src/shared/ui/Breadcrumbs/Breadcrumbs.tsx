@@ -1,8 +1,9 @@
 import classNames from "classnames";
 import { getNavigationCategory } from "entities/Navigation";
-import { navigationActions } from "entities/Navigation/model/slice/navigationSlice";
 import { ENavigationCategory } from "entities/Navigation/model/types/navigationSchema";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { RoutePath } from "shared/config/routeConfig/routeConfig.";
 import { ButtonText } from "../ButtonText/ButtonText";
 import cls from "./Breadcrumbs.module.scss";
 
@@ -11,7 +12,7 @@ interface IBreadcrumbsProps {
 }
 
 export const Breadcrumbs = ({ className }: IBreadcrumbsProps) => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const selectedCategory = useSelector(getNavigationCategory);
 
   if (selectedCategory === ENavigationCategory.Constructor) {
@@ -31,7 +32,7 @@ export const Breadcrumbs = ({ className }: IBreadcrumbsProps) => {
             <ButtonText 
               size="small" 
               type="link" 
-              onClick={() => dispatch(navigationActions.setCategory(ENavigationCategory.BuildingSelection))}
+              onClick={() => navigate(RoutePath.building_selection)}
             >
               {ENavigationCategory.BuildingSelection}
             </ButtonText>

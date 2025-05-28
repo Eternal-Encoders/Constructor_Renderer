@@ -1,14 +1,18 @@
 import ArrowDownMini from 'assets/ArrowDownMini.svg?react';
 import classNames from "classnames";
-import { useState } from 'react';
+import { Polygon, Rectangle } from 'entities/Figure';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { LayersItems } from '../LayersItems/LayersItems';
 import cls from "./Layers.module.scss";
 
 interface ILayersProps {
   className?: string;
+  figures: (Polygon | Rectangle)[];
+  selectedId: string | null;
+  setSelectedId: Dispatch<SetStateAction<string | null>>;
 }
 
-export const Layers = ({ className }: ILayersProps) => {
+export const Layers = ({ className, figures, selectedId, setSelectedId  }: ILayersProps) => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const rotatingMods = {
     [cls.rotated]: isCollapsed,
@@ -37,7 +41,12 @@ export const Layers = ({ className }: ILayersProps) => {
           Слои
         </h4>
       </header>
-      {!isCollapsed && <LayersItems/>}
+      {!isCollapsed && 
+      <LayersItems 
+        figures={figures} 
+        selectedId={selectedId} 
+        setSelectedId={setSelectedId}
+      />}
     </div>
   );
 };

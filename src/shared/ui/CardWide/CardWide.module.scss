@@ -1,0 +1,89 @@
+.CardWide {
+  height: 125px;
+  background-color: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 0 10px 0 rgb(0 0 0 / 4%);
+  padding: 16px;
+
+  &__title {
+    font: var(--font-main);
+    color: var(--highlights1-color);
+  }
+
+  &__data {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  &__number {
+    font: var(--font-pick);
+    color: var(--blue-dark);
+    margin-right: 12px;
+  }
+
+  &__extra {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    min-width: 63px;
+    height: 25px;
+    border-radius: 2px 6px 6px 2px;
+
+    &_green {
+      background: rgb(84 152 0 / 20%);
+    }
+
+    &_red {
+      background: rgb(255 0 19 / 20%);
+    }
+  }
+
+  &__arrow {
+    margin-right: 5px;
+
+    &_red {
+      color: #A9202A;
+    }
+
+    &_green {
+      color: var(--green);
+    }
+  }
+
+  &__percent {
+    font: var(--font-functional);
+
+    &_red {
+      color: #A9202A;
+    }
+
+    &_green {
+      color: var(--green);
+    }
+  }
+
+  &__aside {
+    display: flex;
+    align-items: center;
+  }
+
+  &__stonks {
+    font: var(--font-description-header);
+    color: var(--green);
+    margin-right: 4px;
+
+    &_green {
+      color: var(--green);
+    }
+
+    &_red {
+      color: #A9202A;
+    }
+  }
+
+  &__date {
+    font: var(--font-description);
+    color: var(--highlights2-color);
+  }
+}

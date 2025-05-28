@@ -10,32 +10,15 @@ const AuthPage = () => {
   const navigate = useNavigate();
   const [isRegister, setIsRegister] = useState(false);
 
-  // const selectedCategory = useSelector(getNavigationCategory);
-  
-  // switch (selectedCategory) {
-  //   case ENavigationCategory.BuildingSelection:
-  //     return (
-  //       <BuildingSelection/>
-  //     );
-  //   case ENavigationCategory.Constructor:
-  //     return (
-  //       <Constructor/>
-  //     );
-  //   case ENavigationCategorfqry.ProjectSelection:
-  //     return (
-  //       <Project/>
-  //     );
-  // }
-
   const redirect = () => {
-    navigate(RoutePath.main);
+    navigate(RoutePath.project_selection);
   }
 
   return (
     <div className={cls.AuthPage}>
       <Logo center className={cls.Logo}/>
-      {isRegister &&<RegisterForm onSuccess={redirect} onLoginClicked={() => setIsRegister(false)}/>}
-      {!isRegister &&<LoginForm onSuccess={redirect} onRegisterClicked={() => setIsRegister(true)}/>}
+      {isRegister && <RegisterForm onSuccess={redirect} onLoginClicked={() => setIsRegister(false)}/>}
+      {!isRegister && <LoginForm onSuccess={redirect} onRegisterClicked={() => setIsRegister(true)}/>}
     </div>
   ); 
 };

@@ -1,0 +1,72 @@
+.FloorsSummary {
+    min-height: 26px;
+
+    &__dropdown {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        z-index: var(--dropdown-z-index);
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+    }
+
+    &__title {
+        font: var(--font-description-header);
+        color: var(--highlights1-color);
+    }
+
+    &__leftIcon,
+    &__rightIcon {
+        cursor: pointer;
+        width: 26px;
+        height: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__rightIcon {
+        cursor: pointer;
+        margin-left: auto;
+        z-index: var(--above-dropdown-z-index);
+
+        &:hover {
+            background-color: var(--hover-dark);
+            border-radius: var(--corner-radius-2);
+        }
+    }
+
+    &__icon {
+        &_arrowDownMini,
+        &_plusMini {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &_arrowDownMini {
+            width: 14px;
+            height: 14px;
+        }
+
+        &_plusMini {
+            width: 12px;
+            height: 12px;
+        }
+    }
+}
+
+.default {
+    transform: rotate(0);
+    transition: 0.3s transform !important;
+}
+
+.rotated {
+    transform: rotate(-0.25turn);
+    transition: 0.3s transform !important;
+}

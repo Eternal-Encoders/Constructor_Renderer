@@ -1,21 +1,27 @@
 import ArrowDown from 'assets/ArrowDown.svg?react';
 import ArrowDownMini from 'assets/ArrowDownMini.svg?react';
 import classNames from "classnames";
-import { Floors } from 'entities/Floors/ui/Floors/Floors';
+import { getBuildingName } from 'entities/Building';
+import { Polygon, Rectangle } from 'entities/Figure';
+import { FloorsSummary } from 'entities/FloorsSummary/ui/FloorsSummary/FloorsSummary';
 import { Layers } from 'entities/Layers/ui/Layers/Layers';
 import { getLayoutLeftPanelWidth } from 'entities/Layout';
 import { layoutActions } from 'entities/Layout/model/slice/layoutSlice';
 import { useResizablePanel } from 'helpers/hooks/useResizablePanel';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cls from "./DropdownPanel.module.scss";
 
 interface IDropdownPanelProps {
   className?: string;
+  figures: (Polygon | Rectangle)[];
+  selectedId: string | null;
+  setSelectedId: Dispatch<SetStateAction<string | null>>;
 }
 
-export const DropdownPanel = ({ className }: IDropdownPanelProps) => {
+export const DropdownPanel = ({ className, figures, selectedId, setSelectedId }: IDropdownPanelProps) => {
   const dispatch = useDispatch();
+  const buildingName = useSelector(getBuildingName);
   const reduxWidth = useSelector(getLayoutLeftPanelWidth);
 
   const { panelRef, handleMouseDown } = useResizablePanel({
@@ -44,7 +50,6 @@ export const DropdownPanel = ({ className }: IDropdownPanelProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCollapsed]);
 
-
   return (
     <div
       ref={panelRef}
@@ -64,7 +69,7 @@ export const DropdownPanel = ({ className }: IDropdownPanelProps) => {
         >
           <h3 
             className={classNames(cls.DropdownPanel__title)}>
-            {isCollapsed && 'Главная площадка'}
+            {isCollapsed && buildingName}
           </h3>
           <div 
             className={classNames(cls.DropdownPanel__shrinkArea)}>
@@ -82,17 +87,21 @@ export const DropdownPanel = ({ className }: IDropdownPanelProps) => {
             cls.DropdownPanel__header_border
           )}>
             <h3 className={classNames(cls.DropdownPanel__title)}>
-              Главная площадка
+              {buildingName}
             </h3>
             <div className={classNames(cls.DropdownPanel__arrowDownMini)} style={{ marginLeft: 12 }}>
               <ArrowDownMini />
             </div>
           </section>
           <section className={classNames(cls.DropdownPanel__floors)}>
-            <Floors />
+            <FloorsSummary />
           </section>
           <section className={classNames(cls.DropdownPanel__layers)}>
-            <Layers />
+            <Layers 
+              figures={figures} 
+              selectedId={selectedId} 
+              setSelectedId={setSelectedId}
+            />
           </section>
         </>}
       </div>

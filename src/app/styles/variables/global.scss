@@ -2,12 +2,24 @@
     // Основной шрифт
     --font-family-main: lab grotesque, "Times New Roman", serif;
 
+    // Размер шрифта Pick
+    --font-size-pick: 24px;
+    --font-line-pick: 29px;
+    --font-weight-pick: 700;
+    --font-pick: var(--font-weight-pick) var(--font-size-pick) / var(--font-line-pick) var(--font-family-main);
+
+    // Размер шрифта Card
+    --font-size-card: 14px;
+    --font-line-card: 20px;
+    --font-weight-card: 700;
+    --font-card: var(--font-weight-card) var(--font-size-card) / var(--font-line-card) var(--font-family-main);
+
     // Размер шрифта Functional
     --font-size-functional: 12px;
     --font-line-functional: 16px;
     --font-weight-functional: 700;
     --font-functional: var(--font-weight-functional) var(--font-size-functional) / var(--font-line-functional) var(--font-family-main);
-    
+
     // Размер шрифта L
     --font-size-l: 24px;
     --font-line-l: 32px;
@@ -75,6 +87,13 @@
     --box-shadow-color: #C3C3D0;
     --red-light: #ee0303;
     --red-dark: #ce0707;
+    --red-pink:#FF5B60;
+    --blue-accent: #3974AA;
+    --blue-dark: #346;
+    --blue-darker: #26334D;
+    --blue-darkest: #1A2233;
+    --gray-light: #F5F7FA;
+    --green: #709F43;
 
     // Округление
     --corner-radius-1: 2px;

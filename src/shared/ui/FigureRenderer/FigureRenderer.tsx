@@ -4,9 +4,11 @@ import { getImageOpacity } from "entities/Image/model/selectors/getImageOpacity/
 import { getImageSrc } from "entities/Image/model/selectors/getImageSrc/getImageSrc";
 import { getImageVisibility } from "entities/Image/model/selectors/getImageVisibility/getImageVisibility";
 import { getMagneticPosition } from "helpers/getMagneticPosition";
+import { useLoadImage } from "helpers/hooks/useLoadImage";
+import { useTransformer } from "helpers/hooks/useTransformer";
 import Konva from "konva";
 import { KonvaEventObject } from "konva/lib/Node";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Image as KonvaImage, Line, Rect, Transformer } from "react-konva";
 import { useSelector } from "react-redux";
 
@@ -24,26 +26,16 @@ interface IFigureRendererProps {
 
 export const FigureRenderer = ({  figure, selectedId, selectedAction, 
   setSelectedId, setRectangles, setPolygons, layerRef, scale } : IFigureRendererProps) => {
-  const transformerRef = useRef<Konva.Transformer>(null);
-  const selectedNodeRef = useRef<Konva.Node | null>(null);
-  
+
   const [idHovered, setIdHovered] = useState<string | null>(null);
 
-  // Добавление ссылок для трансформации
-  useEffect(() => {
-    if (transformerRef.current) {
-      if (selectedId) {
-        const selectedNode = selectedNodeRef.current;
-        if (selectedNode) {
-          transformerRef.current.nodes([selectedNode]);
-          transformerRef.current.getLayer()?.batchDraw();
-        }
-      } else {
-        transformerRef.current.nodes([]);
-        transformerRef.current.getLayer()?.batchDraw();
-      }
-    }
-  }, [selectedId]);
+  const imageVisibility = useSelector(getImageVisibility);
+  const imageOpacity = useSelector(getImageOpacity);
+  const imageSrc = useSelector(getImageSrc);
+
+  const { imageObj, imagePosition } = useLoadImage(imageSrc, layerRef);
+
+  const {transformerRef, selectedNodeRef} = useTransformer(selectedId);
 
   // Трансформация фигуры: Изменение размера, поворота фигуры
   const onTransformEnd = (e: KonvaEventObject<Event>) => {
@@ -76,6 +68,7 @@ export const FigureRenderer = ({  figure, selectedId, selectedAction,
           fig.id === node.id()
             ? {
               id: fig.id,
+              name: fig.name,
               points: fig.points.map((p, i) =>
                 i % 2 === 0 ? p * scaleX : p * scaleY // Масштабируем x и y координаты
               ),
@@ -85,6 +78,7 @@ export const FigureRenderer = ({  figure, selectedId, selectedAction,
               isClosed: fig.isClosed,
               draggable: fig.draggable,
               type: fig.type,
+              createdAt: fig.createdAt
             }
             : fig
         )
@@ -180,50 +174,6 @@ export const FigureRenderer = ({  figure, selectedId, selectedAction,
     }
   };
 
-  const imageSrc = useSelector(getImageSrc);
-  const imageVisibility = useSelector(getImageVisibility);
-  const imageOpacity = useSelector(getImageOpacity);
-  const [imageObj, setImageObj] = useState<HTMLImageElement | null>(null);
-  const [imagePosition, setImagePosition] = useState<{ x: number; y: number } | null>(null);
-
-  // Загружаем изображение
-  useEffect(() => {
-    if (!imageSrc) {
-      setImageObj(null);
-      return;
-    }
-
-    const img = new Image();
-
-    img.src = imageSrc;
-    img.onload = () => {
-      setImageObj(img);
-      const stage = layerRef.current?.parent;
-      if (stage) {
-        const scale = stage.scaleX(); // предполагаем, что scaleX == scaleY
-        const position = stage.position();
-        const containerSize = {
-          width: stage.width(),
-          height: stage.height(),
-        };
-  
-        // Центр видимой части канвы в мировых координатах
-        const worldCenterX = (containerSize.width / 2 - position.x) / scale;
-        const worldCenterY = (containerSize.height / 2 - position.y) / scale;
-
-        // С учётом размеров изображения
-        const x = worldCenterX - img.width / 2;
-        const y = worldCenterY - img.height / 2;
-
-        setImagePosition({ x, y });
-      }
-    };
-    return () => {
-      setImageObj(null);
-      setImagePosition(null);
-    };
-  }, [imageSrc]);
-
   return (
     <>
       {imageObj && (
@@ -252,7 +202,6 @@ export const FigureRenderer = ({  figure, selectedId, selectedAction,
           onMouseEnter={(evt) => setIdHovered(evt.target.id())}
           onMouseLeave={() => setIdHovered(null)}
           key={fig.id}
-          name="rect"
           {...fig}
           id={fig.id}
           type={fig.type}
@@ -283,7 +232,7 @@ export const FigureRenderer = ({  figure, selectedId, selectedAction,
             onMouseEnter={(evt) => setIdHovered(evt.target.id())}
             onMouseLeave={() => setIdHovered(null)}
             key={pol.id}
-            name="polygon"
+            name={pol.name}
             {...pol.isClosed ? { ...pol } : null}
             id={pol.id}
             type={pol.type}

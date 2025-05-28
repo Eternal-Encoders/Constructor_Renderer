@@ -1,8 +1,7 @@
 import { useAppDispatch } from "app/providers/StoreProvider/lib/hooks/useAppDispatch";
 import classNames from "classnames";
 import {
-  getBuilding,
-  getPatchedBuildingIsLoading
+  getBuilding
 } from "entities/Building";
 import {
   buildingsSummaryReducer,
@@ -33,7 +32,8 @@ const initialReducers: ReducersList = {
 
 export const BuildingSelection = ({ className }: IBuildingSelectionProps) => {  
   const [isAddBuildingModal, setIsAddBuildingModal] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showError, setShowError] = useState(false);
   const [selectedItem, setSelectedItem] = useState<string>('');
   
   const dispatch = useAppDispatch();
@@ -43,7 +43,6 @@ export const BuildingSelection = ({ className }: IBuildingSelectionProps) => {
   
   // const isLoadingBuildingsSummary = useSelector(getBuildingsSummaryIsLoading);
   const errorBuildingsSummary = useSelector(getBuildingsSummaryError);
-  const isLoadingPatchedBuilding = useSelector(getPatchedBuildingIsLoading);
   
   const onCloseModal = useCallback(() => {
     setIsAddBuildingModal(false);
@@ -55,19 +54,16 @@ export const BuildingSelection = ({ className }: IBuildingSelectionProps) => {
 
   useEffect(() => {
     (async () => {
-      setIsLoaded(true);
-      const result = await dispatch(fetchBuildingsSummary(projectId));
-      if (result.meta.requestStatus === 'fulfilled') {
-        setIsLoaded(false);
+      setIsLoading(true);
+      if (projectId) {
+        await dispatch(fetchBuildingsSummary(projectId));
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+        setShowError(true);
       }
     })()
   }, [dispatch, projectId]);
-
-  useEffect(() => {
-    (async () => {
-      await dispatch(fetchBuildingsSummary(projectId));
-    })()
-  }, [dispatch, isLoadingPatchedBuilding, projectId]);
 
   const onClickHandle = useCallback(
     async (_: React.MouseEvent<HTMLButtonElement, MouseEvent>, building: BuildingSummary) => {
@@ -89,7 +85,7 @@ export const BuildingSelection = ({ className }: IBuildingSelectionProps) => {
           <ul role="list" className={classNames(cls.Card__list)} style={{padding: '8px 12px'}}>
             {errorBuildingsSummary && 
               <Text text={errorBuildingsSummary} theme={TextTheme.ERROR} className={cls.error}/>}
-            {!isLoaded && buildingsSummary 
+            {!isLoading && buildingsSummary 
               ? buildingsSummary.buildings?.map((building) => {
                 return (
                   <ListedItem 
@@ -97,7 +93,7 @@ export const BuildingSelection = ({ className }: IBuildingSelectionProps) => {
                     onClick={(e) => onClickHandle(e, building)}
                     style={{width: '100%', marginBottom: '8px', cursor: 'pointer'}} 
                     selected={selectedItem === building.id}
-                    disabled={isLoaded}
+                    disabled={isLoading}
                   >
                     {building.name}
                   </ListedItem>
@@ -109,8 +105,12 @@ export const BuildingSelection = ({ className }: IBuildingSelectionProps) => {
                 <div><Skeleton width={334} height={36}/> </div> 
               </div> 
             }
-            {!isLoaded && !buildingsSummary?.buildings?.length && 
+            {!isLoading && !buildingsSummary?.buildings?.length && 
             <Text 
+              text={'У вас пока нет зданий'} 
+              theme={TextTheme.PRIMARY} 
+            />}
+            {showError && <Text 
               text={'У вас пока нет зданий'} 
               theme={TextTheme.PRIMARY} 
             />}

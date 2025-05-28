@@ -9,6 +9,9 @@ const initialState: ProjectSchema = {
   name: '',
   url: '',
   description: '',
+  buildingIds: [],
+  customGraphPointTypes: [],
+  imageId: null,
   created_at: new Date(),
   updated_at: new Date(),
   isLoading: false,
@@ -41,16 +44,22 @@ const projectSlice = createSlice({
     initProject: (state, action: PayloadAction<Project>) => { 
       state.id = action.payload.id;
       state.name = action.payload.name;
+      state.description = action.payload.description;
       state.url = action.payload.url;
-      state.id = action.payload.id;
+      state.buildingIds = action.payload.buildingIds;
+      state.customGraphPointTypes = action.payload.customGraphPointTypes;
+      state.imageId = action.payload.imageId;
       state.created_at = action.payload.created_at;
       state.updated_at = action.payload.updated_at;
     },
     clearProject: (state) => { 
       state.id = '';
       state.name = '';
-      state.url = '';
       state.description = '';
+      state.url = '';
+      state.buildingIds = [];
+      state.customGraphPointTypes = [];
+      state.imageId = null;
       state.created_at = new Date();
       state.updated_at = new Date();
     },
