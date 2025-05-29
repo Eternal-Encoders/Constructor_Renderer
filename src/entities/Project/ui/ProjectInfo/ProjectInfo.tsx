@@ -2,6 +2,7 @@ import { useAppDispatch } from "app/providers/StoreProvider/lib/hooks/useAppDisp
 import classNames from "classnames";
 import { deleteProject } from "entities/Project/api/deleteProject/deleteProject";
 import { patchProject } from "entities/Project/api/patchProject/patchProject";
+import { getProjectDescription } from "entities/Project/model/selectors/getProjectDescription/getProjectDescription";
 import { getProjectError } from "entities/Project/model/selectors/getProjectError/getProjectError";
 import { getProjectId } from "entities/Project/model/selectors/getProjectId/getProjectId";
 import { getProjectIsLoading } from "entities/Project/model/selectors/getProjectIsLoading/getProjectIsLoading";
@@ -28,17 +29,25 @@ export const ProjectInfo = ({ className }: IProjectInfoProps) => {
   
   const projectId = useSelector(getProjectId);
   const projectName = useSelector(getProjectName);
+  const projectDescription = useSelector(getProjectDescription);
   const projectURL = useSelector(getProjectURL);
   const errorProjectInfo = useSelector(getProjectError);
   const isLoadingProjectInfo = useSelector(getProjectIsLoading);
 
   const [name, setName] = useState(projectName);
+  const [description, setDescription] = useState(projectDescription);
   const [url, setURL] = useState(projectURL);
 
   const onChangeName = useCallback((value: string | File) => {
     if (typeof value !== 'string') return;
     if (value.length < 1) return;
     dispatch(projectActions.setName(value));
+  }, [dispatch]);
+
+  const onChangeDescription = useCallback((value: string | File) => {
+    if (typeof value !== 'string') return;
+    if (value.length < 1) return;
+    dispatch(projectActions.setDescription(value));
   }, [dispatch]);
 
   const onChangeURL = useCallback((value: string | File) => {
@@ -48,15 +57,24 @@ export const ProjectInfo = ({ className }: IProjectInfoProps) => {
   }, [dispatch]);
 
   const onClickSaveHandle = useCallback(async () => {
-    if (name !== projectName || url !== projectURL) {
-      const result = await dispatch(patchProject({id: projectId, name: projectName, url: projectURL}));
+    if (name !== projectName || url !== projectURL || description !== projectDescription) {
+      const result = await dispatch(
+        patchProject({
+          id: projectId, 
+          name: projectName, 
+          description: projectDescription, 
+          url: projectURL
+        }));
       if (result.meta.requestStatus === 'fulfilled') {
         await dispatch(fetchProjectsSummary());
         setName(projectName);
         setURL(projectURL);
+        setDescription(projectDescription);
       }
+    } else {
+      console.log('Данные не изменились. Измените поля');
     }
-  },[dispatch, name, projectId, projectName, projectURL, url]);
+  },[description, dispatch, name, projectDescription, projectId, projectName, projectURL, url]);
 
   const onClickDeleteHandle = useCallback(async () => {
     await dispatch(deleteProject(projectId));
@@ -76,6 +94,12 @@ export const ProjectInfo = ({ className }: IProjectInfoProps) => {
               Название
             </h5>
             <Input value={projectName} onChange={onChangeName} />
+          </section>
+          <section className={classNames(cls.ProjectInfo__section)}>
+            <h5 className={classNames(cls.ProjectInfo__title)}>
+              Описание
+            </h5>
+            <Input value={projectDescription} onChange={onChangeDescription} />
           </section>
           <section className={classNames(cls.ProjectInfo__section)}>
             <h5 className={classNames(cls.ProjectInfo__title)}>

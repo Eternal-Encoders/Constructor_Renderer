@@ -8,7 +8,6 @@ import { FloorSummarySchema } from "entities/FloorsSummary";
 import { ImageSchema } from "entities/Image";
 import { LayerSchema } from "entities/Layers";
 import { LayoutSchema } from "entities/Layout";
-import { NavigationSchema } from "entities/Navigation";
 import { ProjectSchema } from "entities/Project";
 import { ProjectSummarySchema } from "entities/ProjectsSummary";
 import { UserSchema } from "entities/User";
@@ -26,7 +25,6 @@ export interface StateSchema {
   image: ImageSchema;
   layout: LayoutSchema;
   layers: LayerSchema;
-  navigation: NavigationSchema;
   project: ProjectSchema;
   building: BuildingSchema;
   floor: FloorSchema;

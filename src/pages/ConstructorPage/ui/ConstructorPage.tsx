@@ -13,11 +13,11 @@ import { DynamicModuleLoader, ReducersList } from "shared/lib/components/Dynamic
 import { Canvas } from "widgets/Canvas";
 import { DropdownPanel } from "widgets/DropdownPanel";
 import { InfoPanel } from "widgets/SectionPanel";
-import { Actions } from "../Actions/ui/Actions";
-import { SelectorItems } from "../SelectorItems/ui/SelectorItems";
-import cls from "./Constructor.module.scss";
+import { Actions } from "../../../shared/ui/Actions/ui/Actions";
+import { SelectorItems } from "../../../shared/ui/SelectorItems/ui/SelectorItems";
+import cls from "./ConstructorPage.module.scss";
 
-interface IConstructorProps {
+interface IConstructorPageProps {
   className?: string;
 }
 
@@ -25,7 +25,7 @@ const initialReducers: ReducersList = {
   'getFloorsSummary': floorsSummaryReducer
 }
 
-export const Constructor = ({ className }: IConstructorProps) => {
+const ConstructorPage = ({ className }: IConstructorPageProps) => {
   const [polygons, setPolygons] = useState<Polygon[]>([]);
   const [rectangles, setRectangles] = useState<Rectangle[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -113,8 +113,8 @@ export const Constructor = ({ className }: IConstructorProps) => {
 
   return (
     <DynamicModuleLoader reducers={initialReducers} removeAfterUnmount>
-      <div className={classNames(cls.Constructor, {}, [className])}>
-        <div className={classNames(`content-page`, cls.ConstructorCategory)}>
+      <div className={classNames(cls.ConstructorPage, {}, [className])}>
+        <div className={classNames(`content-page`, cls.ConstructorPageCategory)}>
           <div style={{display: 'flex'}}>
             <DropdownPanel 
               className={classNames(cls.DropdownPanel)}
@@ -161,3 +161,5 @@ export const Constructor = ({ className }: IConstructorProps) => {
     </DynamicModuleLoader>
   );
 };
+
+export default ConstructorPage;

@@ -6,7 +6,6 @@ import { floorReducer } from 'entities/Floor';
 import { imageReducer } from 'entities/Image';
 import { layersReducer } from 'entities/Layers';
 import { layoutReducer } from 'entities/Layout';
-import { navigationReducer } from 'entities/Navigation';
 import { projectReducer } from 'entities/Project';
 import { userReducer } from 'entities/User';
 import { StateSchema } from './StateSchema';
@@ -21,7 +20,6 @@ export function createReduxStore(initialState?: StateSchema) {
     fill: fillReducer,
     layout: layoutReducer,
     layers: layersReducer,
-    navigation: navigationReducer,
     project: projectReducer,
     building: buildingReducer,
     floor: floorReducer

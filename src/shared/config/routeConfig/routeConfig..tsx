@@ -1,11 +1,12 @@
-import { Building } from "entities/Building/ui/Building/Building";
+import { AnalyticsPage } from "pages/AnalyticsPage";
 import { AuthPage } from "pages/AuthPage";
+import { BuildingPage } from "pages/BuildingPage";
+import { ConstructorPage } from "pages/ConstructorPage";
 import { NotFoundPage } from "pages/NotFoundPage";
 import { ProfilePage } from "pages/ProfilePage";
 import { ProjectPage } from "pages/ProjectPage";
 import { ReviewPage } from "pages/ReviewPage";
 import { RouteProps } from "react-router";
-import { Constructor } from "shared/ui/Constructor/Constructor";
 
 export enum AppRoutes {
   AUTH  = 'auth',
@@ -48,7 +49,7 @@ export const routeConfig: Record<AppRoutes, RouteProps> = {
   },
   [AppRoutes.ANALYTICS]: {
     path: RoutePath.analytics,
-    element: <ProfilePage />
+    element: <AnalyticsPage />
   },
   [AppRoutes.MODULES]: {
     path: RoutePath.modules,
@@ -56,7 +57,7 @@ export const routeConfig: Record<AppRoutes, RouteProps> = {
   },
   [AppRoutes.CONSTRUCTOR]: {
     path: RoutePath.constructor,
-    element: <Constructor />
+    element: <ConstructorPage />
   },
   [AppRoutes.PRIVILEGES]: {
     path: RoutePath.privileges,
@@ -64,7 +65,7 @@ export const routeConfig: Record<AppRoutes, RouteProps> = {
   },
   [AppRoutes.BUILDING_SELECTION]: {
     path: RoutePath.building_selection,
-    element: <Building />
+    element: <BuildingPage />
   },
   [AppRoutes.PROFILE]: {
     path: RoutePath.profile,

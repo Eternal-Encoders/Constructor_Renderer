@@ -8,6 +8,7 @@ enum EPatchProjectStatusCode {
 
 interface PatchProjectProps {
   name?: string;
+  description?: string;
   url?: string;
   id: string;
 }

@@ -7,6 +7,7 @@
   overflow: hidden;
 
   &__img {
+    filter: grayscale(100%);
     position: absolute;
     width: 192px;
     height: 192px;

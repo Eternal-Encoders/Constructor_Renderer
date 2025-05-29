@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { ECategoryModule } from "pages/ReviewPage";
 import cls from "./CardCommercial.module.scss";
 
 interface ICardCommercialProps {
@@ -12,17 +13,24 @@ interface ICardCommercialProps {
   imgSrc?: string;
 }
 
-export enum ECategoryModule {
-  AI = 'AI',
-  TYPOGRAPHY = 'Типографика',
-  TECHNICAL = 'Техническое'
-}
-
 export const CardCommercial = (props: ICardCommercialProps) => {
-  const { className, title, category, color, background, priceValue, description, imgSrc } = props;
+  const { className, 
+    title, 
+    category, 
+    color, 
+    background, 
+    priceValue, 
+    description, 
+    imgSrc, 
+  } 
+  = props;
   return (
     <div className={classNames(cls.CardCommercial, [className])}>
-      <img className={classNames(cls.CardCommercial__img)} src={imgSrc} alt="" />
+      <img 
+        className={classNames(cls.CardCommercial__img)} 
+        src={imgSrc} 
+        alt="" 
+      />
       <h5 className={classNames(cls.CardCommercial__title)} style={{marginBottom: 16}}>{title}</h5>
       <span className={classNames(cls.CardCommercial__description)}>
         {description}

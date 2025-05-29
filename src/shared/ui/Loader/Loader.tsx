@@ -3,8 +3,10 @@ import cls from "./Loader.module.scss";
 
 export const Loader = () => {
   return (
-    <span className={classNames(cls.loader)}>
-
-    </span>
+    <div className={cls.Loader}>
+      <span className={classNames(cls.loader)}>
+  
+      </span>
+    </div>
   );
 };

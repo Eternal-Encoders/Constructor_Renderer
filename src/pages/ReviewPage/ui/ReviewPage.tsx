@@ -1,12 +1,17 @@
 import Settings from 'assets/Settings.svg?react';
 import classNames from 'classnames';
+import { useNavigate } from 'react-router';
+import { RoutePath } from 'shared/config/routeConfig/routeConfig.';
 import { ButtonText } from 'shared/ui/ButtonText/ButtonText';
-import { CardCommercial, ECategoryModule } from 'shared/ui/CardCommercial/CardCommercial';
+import { CardCommercial } from 'shared/ui/CardCommercial/CardCommercial';
 import { CardWide } from 'shared/ui/CardWide/CardWide';
 import { TextTheme } from 'shared/ui/Text/Text';
+import { ECategoryModule } from '../types/ECategoryModule';
 import cls from './ReviewPage.module.scss';
 
 const ReviewPage = () => {
+
+  const navigate = useNavigate();
 
   const constructorIcon = () => <div style={{color: 'white'}}>🔧</div>;
 
@@ -14,6 +19,7 @@ const ReviewPage = () => {
     <div className={cls.ReviewPage}>
       <ul role='list' className={cls.ReviewPage__list} style={{marginRight: 16}}>
         <ButtonText 
+          onClick={() => navigate(RoutePath.building_selection)}
           size='small' 
           type='fill' 
           theme={TextTheme.INVERTED} 
@@ -134,6 +140,7 @@ const ReviewPage = () => {
       </ul>
       <ul role='list' className={cls.ReviewPage__list}>
         <ButtonText 
+          onClick={() => navigate(RoutePath.analytics)}
           size='small' 
           type='fill' 
           theme={TextTheme.INVERTED} 
@@ -165,7 +172,7 @@ const ReviewPage = () => {
             priceValue={3200}
             color={'#E88F00'}
             background={'rgba(232, 143, 0, 0.20)'}
-            imgSrc={'/scheme.png'}
+            imgSrc={'/loupe.png'}
           />
         </li>
         <li style={{marginBottom: 12}}>
@@ -176,7 +183,7 @@ const ReviewPage = () => {
             priceValue={3000}
             color={'#549800'}
             background={'rgba(84, 152, 0, 0.20)'}
-            imgSrc={'/scheme.png'}
+            imgSrc={'/settings.png'}
           />
         </li>
         <li>

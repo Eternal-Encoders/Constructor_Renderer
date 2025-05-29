@@ -3,8 +3,10 @@ import cls from "./PageLoader.module.scss";
 
 export const PageLoader = () => {
   return (
-    <span className={classNames(cls.loader)}>
-
-    </span>
+    <div className={classNames(cls.PageLoader)}>
+      <span className={classNames(cls.loader)}>
+  
+      </span>
+    </div>
   );
 };

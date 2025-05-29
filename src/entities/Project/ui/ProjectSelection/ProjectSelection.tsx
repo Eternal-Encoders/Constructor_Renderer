@@ -53,7 +53,6 @@ export const ProjectSelection = ({ className }: IProjectSelectionProps) => {
   useEffect(() => {
     (async () => {
       setIsLoaded(true);
-      console.log(isLoadingAuth);
       const result = await dispatch(fetchProjectsSummary());
       if (result.meta.requestStatus === 'fulfilled') {
         setIsLoaded(false);

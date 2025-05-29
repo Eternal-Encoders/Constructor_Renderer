@@ -1,8 +1,6 @@
 import Compas from 'assets/Compas.svg?react';
 import Settings from 'assets/Settings.svg?react';
 import classNames from "classnames";
-import { getNavigationCategory } from 'entities/Navigation';
-import { ENavigationCategory } from 'entities/Navigation/model/types/navigationSchema';
 import { getPatchedProjectIsLoading, getProjectIsLoading, getProjectName } from 'entities/Project';
 import { getAddProjectIsLoading } from 'features/AddProject';
 import { getShorterIfOverflow } from 'helpers/getShorterIfOverflow';
@@ -20,7 +18,6 @@ interface IBuildingHeaderProps {
 export const BuildingHeader = ({ className }: IBuildingHeaderProps) => {
   const navigate = useNavigate();
 
-  const selectedCategory = useSelector(getNavigationCategory);
   const projectInfo = useSelector(getProjectName);
 
   const isLoadingPatchedProject = useSelector(getPatchedProjectIsLoading);
@@ -57,7 +54,7 @@ export const BuildingHeader = ({ className }: IBuildingHeaderProps) => {
               <ButtonText 
                 size="medium" 
                 type="link"
-                bold={ENavigationCategory.None === selectedCategory}
+                bold={window.location.pathname === RoutePath.review}
                 style={{width: '116px'}}
                 onClick={() => navigate(RoutePath.review)}
               >
@@ -68,7 +65,7 @@ export const BuildingHeader = ({ className }: IBuildingHeaderProps) => {
               <ButtonText 
                 size="medium" 
                 type="link"
-                bold={ENavigationCategory.Analytics === selectedCategory}
+                bold={window.location.pathname === RoutePath.analytics}
                 style={{width: '116px'}}
                 onClick={() => navigate(RoutePath.analytics)}
               >
@@ -79,7 +76,7 @@ export const BuildingHeader = ({ className }: IBuildingHeaderProps) => {
               <ButtonText 
                 size="medium" 
                 type="link"
-                bold={ENavigationCategory.Modules === selectedCategory}
+                bold={window.location.pathname === RoutePath.modules}
                 style={{width: '116px'}}
                 onClick={() => navigate(RoutePath.modules)}
               >
@@ -90,9 +87,9 @@ export const BuildingHeader = ({ className }: IBuildingHeaderProps) => {
               <ButtonText 
                 size="medium" 
                 type="link" 
-                bold={ENavigationCategory.BuildingSelection === selectedCategory}
+                bold={window.location.pathname === RoutePath.building_selection}
                 style={{width: '116px'}}
-                onClick={() => navigate(RoutePath.constructor)}
+                onClick={() => navigate(RoutePath.building_selection)}
               >
                 Конструктор
               </ButtonText>
@@ -101,7 +98,7 @@ export const BuildingHeader = ({ className }: IBuildingHeaderProps) => {
               <ButtonText 
                 size="medium" 
                 type="link"
-                bold={ENavigationCategory.Privileges === selectedCategory}
+                bold={window.location.pathname === RoutePath.privileges}
                 style={{width: '116px'}}
                 onClick={() => navigate(RoutePath.privileges)}
               >

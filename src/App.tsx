@@ -16,17 +16,17 @@ function App() {
   const { theme } = useTheme();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [isAfterInit, setIsAfterInit] = useState(false);
   
   useEffect(() => {
     dispatch(userActions.initAuthData());
-    setIsSuccess(true);
+    setIsAfterInit(true);
   }, [dispatch]);
   
   const token = useSelector(getUserAuthData);
   
   useEffect(() => {
-    if (!isSuccess) return;
+    if (!isAfterInit) return;
     if (token) {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
       navigate(window.location.pathname);
@@ -34,7 +34,7 @@ function App() {
       axios.defaults.headers.common['Authorization'] = null;
       navigate(RoutePath.auth);
     }
-  }, [isSuccess, navigate, token]);
+  }, [isAfterInit, navigate, token]);
 
   useEffect(() => {
     if (token) {
@@ -50,13 +50,19 @@ function App() {
     }
   }, [dispatch, token]);
 
+  const ConstructorPageWithAppRouter = () => {
+    return (
+      <MainPage>
+        <AppRouter />
+      </MainPage>
+    );
+  };
+
   return (
     <div className={classNames(`${theme} noselect`)}>
-      {token && isSuccess ? 
-        <MainPage>
-          <AppRouter />
-        </MainPage>
-        : isSuccess && <AppRouter />}
+      {isAfterInit && (token && window.location.pathname !== '/'  ? 
+        ConstructorPageWithAppRouter()
+        : <AppRouter />)}
     </div>
   );
 }
