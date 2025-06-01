@@ -15,6 +15,7 @@ export interface FetchUserInfoResponse {
   paid_feature_id: string[]
   password_hash?: string;
   selected_project_id: string;
+  last_building_id: string;
   updated_at: Date;
 }
 

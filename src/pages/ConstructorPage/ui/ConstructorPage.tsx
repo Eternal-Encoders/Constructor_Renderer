@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { getBuildingId } from "entities/Building";
 import { FigureType, Polygon, Rectangle } from "entities/Figure";
 import { ActionType } from "entities/Figure/Action";
-import { fetchFloorsSummary, floorsSummaryReducer } from "entities/FloorsSummary";
+import { fetchFloorsSummary, floorsSummaryReducer, getFloorsSummary } from "entities/FloorsSummary";
 import { useCtrlWheelZoom } from "helpers/hooks/useCtrlWheelZoom";
 import { useKeyboardShortcuts } from "helpers/hooks/useKeyboardShortcuts";
 import { useMiddleMouseHold } from "helpers/hooks/useMiddleMouseHold";
@@ -35,6 +35,7 @@ const ConstructorPage = ({ className }: IConstructorPageProps) => {
 
   const dispatch = useAppDispatch();
   const buildingId = useSelector(getBuildingId);
+  const floorsSummary = useSelector(getFloorsSummary);
 
   useEffect(() => {
     if (!buildingId) return;
@@ -151,6 +152,7 @@ const ConstructorPage = ({ className }: IConstructorPageProps) => {
           </div>
           <SelectorItems
             className={classNames(cls.SelectorItems)}
+            floorsSummary={floorsSummary}
             selectedFigure={selectedFigure}
             selectedAction={selectedAction}
             setSelectedAction={setSelectedAction}

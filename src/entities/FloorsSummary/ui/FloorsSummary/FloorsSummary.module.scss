@@ -33,6 +33,24 @@
         cursor: pointer;
         margin-left: auto;
         z-index: var(--above-dropdown-z-index);
+        border-radius: var(--corner-radius-2);
+
+
+        &_pulse {
+            animation: pulse 1s linear infinite !important;
+            
+            @keyframes pulse {
+                0% {
+                    background-color: transparent;
+                }
+
+                100% {
+                    background-color: var(--hover-dark);
+                }
+            } 
+        }
+
+
 
         &:hover {
             background-color: var(--hover-dark);

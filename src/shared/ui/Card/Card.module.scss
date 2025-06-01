@@ -10,6 +10,12 @@
         border-bottom: var(--border);
     }
 
+    &__toggle {
+        justify-content: space-between;
+        height: 40px;
+        margin-top: 20px;
+    }
+
     &__content {
         display: flex;
         flex-direction: column;

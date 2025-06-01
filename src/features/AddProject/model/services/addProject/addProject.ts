@@ -35,7 +35,7 @@ export const addProject = createAsyncThunk<ProjectSchema, AddProjectProps, { rej
 
       redirectAndTokenDelete(EAddProjectStatusCode.UN_AUTH, thunkAPI, error);
       
-      return thunkAPI.rejectWithValue('Ошибка при добавлении этажа. Попробуйте позже.');
+      return thunkAPI.rejectWithValue('Ошибка при добавлении проекта. Попробуйте позже.');
     }
   },
 );

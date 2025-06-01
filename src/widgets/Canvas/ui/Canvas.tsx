@@ -208,9 +208,6 @@ export const Canvas = (props: ICanvasProps) => {
     }
   };
 
-  console.log(polygons);
-  console.log(tempLine);
-
   const navbarHeight = useSelector(getLayoutNavbarHeight);
   const breadCrumbsHeight = useSelector(getLayoutBreadCrumbsHeight);
   const headerHeight = useSelector(getLayoutHeaderHeight);

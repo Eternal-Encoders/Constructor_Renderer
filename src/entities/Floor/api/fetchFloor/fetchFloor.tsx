@@ -27,7 +27,7 @@ export const fetchFloor = createAsyncThunk<Floor, string, { rejectValue: string 
       
       redirectAndTokenDelete(EFetchFloorStatusCode.UN_AUTH, thunkAPI, error);
 
-      return thunkAPI.rejectWithValue('Ошибка при удалении данных. Попробуйте позже.');
+      return thunkAPI.rejectWithValue('Ошибка при получении данных. Попробуйте позже.');
     }
   },
 );

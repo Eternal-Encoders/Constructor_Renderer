@@ -174,6 +174,9 @@ export const FigureRenderer = ({  figure, selectedId, selectedAction,
     }
   };
 
+  console.log(layerRef);
+  console.log(figure);
+
   return (
     <>
       {imageObj && (

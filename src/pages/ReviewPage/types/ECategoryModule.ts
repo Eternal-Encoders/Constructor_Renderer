@@ -1,5 +1,6 @@
 export enum ECategoryModule {
   AI = 'AI',
   TYPOGRAPHY = 'Типографика',
-  TECHNICAL = 'Техническое'
+  TECHNICAL = 'Техническое',
+  CONSTRUCTOR = 'Конструктор'
 }

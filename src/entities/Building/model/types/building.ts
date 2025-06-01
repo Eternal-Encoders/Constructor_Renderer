@@ -8,6 +8,7 @@ export interface BuildingSchema {
   project: string;
   //projectId: string;
   name: string;
+  status: boolean;
   displayable_name: string;
   description?: string;
   url: string;

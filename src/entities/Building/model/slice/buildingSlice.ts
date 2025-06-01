@@ -8,6 +8,7 @@ const initialState: BuildingSchema = {
   id: '',
   name: '',
   displayable_name: '',
+  status: false,
   project: '',
   url: '',
   description: '',
@@ -33,6 +34,9 @@ const buildingSlice = createSlice({
     },
     setDisplayableName: (state, action: PayloadAction<string>) => { 
       state.displayable_name = action.payload;
+    },
+    setStatus: (state, action: PayloadAction<boolean>) => { 
+      state.status = action.payload;
     },
     setProjectId: (state, action: PayloadAction<string>) => { 
       state.project = action.payload;

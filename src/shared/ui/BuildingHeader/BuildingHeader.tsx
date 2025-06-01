@@ -1,9 +1,9 @@
-import Compas from 'assets/Compas.svg?react';
 import Settings from 'assets/Settings.svg?react';
 import classNames from "classnames";
 import { getPatchedProjectIsLoading, getProjectIsLoading, getProjectName } from 'entities/Project';
 import { getAddProjectIsLoading } from 'features/AddProject';
 import { getShorterIfOverflow } from 'helpers/getShorterIfOverflow';
+import { useIconSvg } from 'helpers/hooks/useIconSvg';
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -23,12 +23,22 @@ export const BuildingHeader = ({ className }: IBuildingHeaderProps) => {
   const isLoadingPatchedProject = useSelector(getPatchedProjectIsLoading);
   const isLoadingProjectInfo = useSelector(getProjectIsLoading);
   const isAddProjectIsLoading = useSelector(getAddProjectIsLoading);
+  const getIconSvg = useIconSvg();
 
   const getProjectNameHandle = useCallback(() => {
     if (isLoadingPatchedProject === false || isLoadingProjectInfo === false) {
       return projectInfo;
     } else {
       return 'Проект не выбран';
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoadingPatchedProject, isLoadingProjectInfo, isAddProjectIsLoading]);
+
+  const getProjectIconHandle = useCallback(() => {
+    if (isLoadingPatchedProject === false || isLoadingProjectInfo === false) {
+      return getIconSvg;
+    } else {
+      return '';
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoadingPatchedProject, isLoadingProjectInfo, isAddProjectIsLoading]);
@@ -39,7 +49,7 @@ export const BuildingHeader = ({ className }: IBuildingHeaderProps) => {
           <ButtonText 
             size='medium' 
             type='default'
-            iconLeft={projectInfo.length > 0 && <Compas style={{marginBottom: '2px'}}/>}
+            iconLeft={projectInfo.length > 0 && getProjectIconHandle()}
             iconRight={projectInfo.length > 0 && '✓'}
             style={{marginRight: 16, width: 200}}
             onClick={() => navigate(RoutePath.project_selection)}

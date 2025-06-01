@@ -114,6 +114,7 @@ export const BuildingInfo = ({ className }: IBuildingInfoProps) => {
         </Card>
         <Card 
           title="Управление" 
+          toggleText="Активно для пользователя"
           buttonTitle="Перейти в редактор"
           buttonTitlePreIcon='⚒'
           onClickButtonTitle={() => navigate(RoutePath.constructor)}

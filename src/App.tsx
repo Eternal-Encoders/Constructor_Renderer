@@ -3,6 +3,7 @@ import { useAppDispatch } from 'app/providers/StoreProvider/lib/hooks/useAppDisp
 import { useTheme } from 'app/providers/ThemeProvider';
 import axios from 'axios';
 import classNames from 'classnames';
+import { fetchBuilding } from 'entities/Building';
 import { fetchProject } from 'entities/Project';
 import { getUserAuthData, userActions } from 'entities/User';
 import { fetchUserInfo, FetchUserInfoResponse } from 'entities/User/api/fetchUserInfo/fetchUserInfo';
@@ -45,6 +46,7 @@ function App() {
           const userPayload = fetchedUserInfoResult!.payload as FetchUserInfoResponse;;
           if (!userPayload.selected_project_id) return;
           await dispatch(fetchProject(userPayload.selected_project_id));
+          await dispatch(fetchBuilding(userPayload.last_building_id));
         }
       })()
     }

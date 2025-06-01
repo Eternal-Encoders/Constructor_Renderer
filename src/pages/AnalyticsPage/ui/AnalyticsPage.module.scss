@@ -1,5 +1,6 @@
 .AnalyticsPage {
   display: flex;
+  flex-direction: column;
   height: 100%;
   background: var(--bg2-color);
 
@@ -20,68 +21,126 @@
     display: flex;
     flex-direction: column;
   }
-}
 
-.Continuework,
-.Status {
-  background-color: var(--white);
-  border-radius: 16px;
-  box-shadow: 0 0 10px 0 rgb(0 0 0 / 4%);
-  padding: 16px;
-}
-
-.Continuework {
-  height: 201px;
-
-  &__title {
-    margin-bottom: 32px;
-  }
-}
-
-.Status {
-  height: 328px;
-
-  &__list {
+  &__wrapper {
     display: flex;
-    flex-direction: column;
+    margin-bottom: 16px;
   }
 
-  &__item {
-    cursor: pointer;
-    padding: 8px 16px;
-    height: 44px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--gray-light);
-    border-radius: var(--corner-radius-3);
+  &__chartWrapper {
+    background-color: var(--white);
+    border-radius: 16px;
+    box-shadow: 0 0 10px 0 rgb(0 0 0 / 4%);
+    padding: 16px;
+  }
 
-    &:hover {
-      background-color: var(--hover-dark);
+  &__chart {
+    width: 800px;
+    height: 400px;
+  }
+
+  .ChartWrapper {
+    margin-top: 16px;
+    padding-bottom: 12px;
+
+    &__aside {
+      margin-top: 16px;
+      display: flex;
     }
-  }
 
-  &__aside {
+  }
+}
+
+.Table {
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  padding: 16px;
+  box-shadow: 0 0 10px 0 rgb(0 0 0 / 4%), 0 0 10px 0 rgb(0 0 0 / 4%);
+  border-radius: 16px;
+
+  &__header {
     display: flex;
-    align-items: center;
-  }
-
-  &__title {
-    font: var(--font-card);
-    color: var(--blue-dark);
+    height: 20px;
     margin-bottom: 24px;
   }
-
-  &__itemTitle {
-    font: var(--font-description);
-    color: var(--highlights1-color);
+  
+  &__title {
+    font: var(--font-chart);
+    color: var(--blue-dark);
+    margin-right: 12px;
   }
 
-  &__mode {
-    font: var(--font-functional);
-    color: var(--weak1-color);
-    margin-right: 6px;
+  &__subtitle {
+    font: var(--font-subtitle);
+    color: var(--highlights2-color);
+    align-self: flex-end;
+  }
+
+  &__body {
+    .table{
+      width: 100%;
+      border: none;
+      margin-bottom: 56px;
+      border-collapse: separate;
+    }
+
+    .table thead th {
+      font: var(--font-description);
+      color: var(--highlights1-color);
+      font-weight: bold;
+      text-align: left;
+      border: none;
+      padding: 10px 15px;
+      background: #EDEDED;
+      font-size: 14px;
+      border-top: 1px solid #DDE1EB;
+      border-left: 1px solid #DDE1EB;
+      border-right: 1px solid #DDE1EB;
+    }
+
+    .table tr th:first-child, .table tr td:first-child {
+      border-left: 1px solid #DDE1EB;
+    }
+
+    .table tr th:last-child, .table tr td:last-child {
+      border-right: 1px solid #DDE1EB;
+    }
+
+    .table thead tr th:first-child {
+      border-radius: 16px 0 0;
+    }
+
+    .table thead tr th:last-child {
+      border-radius: 0 16px 0 0;
+    }
+
+    .table tbody td {
+      font: var(--font-description);
+      color: var(--highlights1-color);
+      text-align: left;
+      border: none;
+      padding: 10px 15px;
+      font-size: 14px;
+      vertical-align: top;
+      border-right: 1px solid #DDE1EB;
+    }
+
+    .table tbody tr:nth-child(even) {
+      background: #F8F8F8;
+    }
+
+    .table tbody tr:last-child td{
+      border-bottom: 1px solid #DDE1EB;
+    }
+
+    .table tbody tr:last-child td:first-child {
+      border-radius: 0 0 0 16px;
+    }
+
+    .table tbody tr:last-child td:last-child {
+      border-radius: 0 0 16px;
+    }
   }
 }
 
@@ -109,8 +168,9 @@
 }
 
 .title {
-  font: var(--font-main);
-  color: var(--highlights1-color);
+  font: var(--font-chart);
+  color: var(--blue-dark);
+  margin-bottom: 24px;
 }
 
 .microCard {
@@ -141,4 +201,15 @@
     font: var(--font-description);
     color: var(--highlights2-color);
   }
+}
+
+.toggle {
+  display: flex;
+  max-width: 126px;
+  align-items: center;
+  height: 20px;
+}
+
+.oldClients {
+  margin-left: 24px;
 }

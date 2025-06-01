@@ -1,4 +1,5 @@
-$toggle-background-color-on: dodgerblue;
+$toggle-background-color-on-blue: dodgerblue;
+$toggle-background-color-on-red: var(--red-pink);
 $toggle-background-color-off: darkgray;
 $toggle-color: white;
 $toggle-width: 32px;
@@ -27,8 +28,16 @@ $toggle-size: $toggle-height - ($toggle-gutter * 2);
     width: 0;
   }
 
-  input:checked ~ .control {
-    background-color: $toggle-background-color-on;
+  input:checked ~ .controlBlue {
+    background-color: $toggle-background-color-on-blue;
+    
+    &::after {
+      left: $toggle-width - $toggle-size - $toggle-gutter;
+    }
+  }
+
+  input:checked ~ .controlRed {
+    background-color: $toggle-background-color-on-red;
     
     &::after {
       left: $toggle-width - $toggle-size - $toggle-gutter;

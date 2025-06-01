@@ -2,13 +2,16 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { deleteProject } from "../../api/deleteProject/deleteProject";
 import { fetchProject } from "../../api/fetchProject/fetchProject";
 import { patchProject } from "../../api/patchProject/patchProject";
+import { Icon } from "../types/icon";
 import { Project, ProjectSchema } from "../types/project";
 
 const initialState: ProjectSchema = {
   id: '',
   name: '',
   url: '',
+  status: false,
   description: '',
+  icon: Icon.CROSS,
   buildingIds: [],
   customGraphPointTypes: [],
   imageId: null,
@@ -29,11 +32,17 @@ const projectSlice = createSlice({
     setName: (state, action: PayloadAction<string>) => { 
       state.name = action.payload;
     },
+    setStatus: (state, action: PayloadAction<boolean>) => { 
+      state.status = action.payload;
+    },
     setURL: (state, action: PayloadAction<string>) => { 
       state.url = action.payload;
     },
     setDescription: (state, action: PayloadAction<string>) => { 
       state.id = action.payload;
+    },
+    setIcon: (state, action: PayloadAction<Icon>) => { 
+      state.icon = action.payload;
     },
     setCreatedAt: (state, action: PayloadAction<Date>) => { 
       state.created_at = action.payload;
@@ -45,6 +54,7 @@ const projectSlice = createSlice({
       state.id = action.payload.id;
       state.name = action.payload.name;
       state.description = action.payload.description;
+      state.icon = action.payload.icon;
       state.url = action.payload.url;
       state.buildingIds = action.payload.buildingIds;
       state.customGraphPointTypes = action.payload.customGraphPointTypes;
@@ -56,6 +66,7 @@ const projectSlice = createSlice({
       state.id = '';
       state.name = '';
       state.description = '';
+      state.icon = Icon.CROSS;
       state.url = '';
       state.buildingIds = [];
       state.customGraphPointTypes = [];

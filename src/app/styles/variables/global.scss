@@ -8,6 +8,12 @@
     --font-weight-pick: 700;
     --font-pick: var(--font-weight-pick) var(--font-size-pick) / var(--font-line-pick) var(--font-family-main);
 
+    // Размер шрифта Chart
+    --font-size-chart: 18px;
+    --font-line-chart: 20px;
+    --font-weight-chart: 700;
+    --font-chart: var(--font-weight-chart) var(--font-size-chart) / var(--font-line-chart) var(--font-family-main);
+
     // Размер шрифта Card
     --font-size-card: 14px;
     --font-line-card: 20px;
@@ -38,17 +44,23 @@
     --font-weight-main: 500;
     --font-main: var(--font-weight-main) var(--font-size-main) / var(--font-line-main) var(--font-family-main);
 
+    // Размер шрифта Description-Header
+    --font-size-description-header: 12px;
+    --font-line-description-header: 16px;
+    --font-weight-description-header: 500;
+    --font-description-header: var(--font-weight-description-header) var(--font-size-description-header) / var(--font-line-description-header) var(--font-family-main);
+
     // Размер шрифта Secondary
     --font-size-secondary: 14px;
     --font-line-secondary: 20px;
     --font-weight-secondary: 400;
     --font-secondary: var(--font-weight-secondary) var(--font-size-secondary) / var(--font-line-secondary) var(--font-family-main);
 
-    // Размер шрифта Light
-    --font-size-light: 14px;
-    --font-line-light: 20px;
-    --font-weight-light: 300;
-    --font-light: var(--font-weight-light) var(--font-size-light) / var(--font-line-light) var(--font-family-main);
+    // Размер шрифта subtitle
+    --font-size-subtitle: 14px;
+    --font-line-subtitle: 16px;
+    --font-weight-subtitle: 400;
+    --font-subtitle: var(--font-weight-subtitle) var(--font-size-subtitle) / var(--font-line-subtitle) var(--font-family-main);
 
     // Размер шрифта Description
     --font-size-description: 12px;
@@ -56,24 +68,31 @@
     --font-weight-description: 400;
     --font-description: var(--font-weight-description) var(--font-size-description) / var(--font-line-description) var(--font-family-main);
 
-    // Размер шрифта Description-Header
-    --font-size-description-header: 12px;
-    --font-line-description-header: 16px;
-    --font-weight-description-header: 500;
-    --font-description-header: var(--font-weight-description-header) var(--font-size-description-header) / var(--font-line-description-header) var(--font-family-main);
-
     // Размер шрифта small
     --font-size-small: 12px;
     --font-line-small: 14px;
     --font-weight-small: 400;
     --font-small: var(--font-weight-small) var(--font-size-small) / var(--font-line-small) var(--font-family-main);
 
+    // Размер шрифта Light
+    --font-size-light: 14px;
+    --font-line-light: 20px;
+    --font-weight-light: 300;
+    --font-light: var(--font-weight-light) var(--font-size-light) / var(--font-line-light) var(--font-family-main);
+
     // Размеры
     --navbar-height: 84px;
+    --header-height: 64px;
+    --breadcrumbs-height: 40px;
     --navbar-height-percent: 18%;
     --panel-min-width: 240px;
     --panel-max-width: 360px;
     --panel-width-percent: 20%;
+
+    // Отступы
+    --navbar-margin: 16px;
+    --header-margin: 8px;
+    --breadcrumbs-margin: 8px;
 
     // Кастомные размеры
     --card-height: calc(788px - var(--padding-bottom));

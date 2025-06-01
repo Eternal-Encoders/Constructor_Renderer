@@ -1,0 +1,75 @@
+.ModulesPage {
+  display: flex;
+  height: 100%;
+  background: var(--bg2-color);
+
+  &__navbar {
+    margin-bottom: 16px;
+  }
+
+  &__breadcrumbs {
+    margin-bottom: 8px;
+  }
+  
+  &__building_header {
+    margin-bottom: 8px;
+  }
+
+  &__leftBlock {
+    width: 290px;
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    margin-right: 16px;
+  }
+
+  &__rightBlock {
+    display: flex;
+    flex-wrap: wrap;
+    align-self: baseline;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__item {
+    width: 370px;
+    max-height: 207px;
+  }
+}
+
+.FilterAndCategory {
+  background-color: var(--white);
+  border-radius: var(--corner-radius-2);
+  box-shadow: 0 0 10px 0 rgb(0 0 0 / 4%);
+  padding: 16px;
+  margin-bottom: 12px;
+  margin-top: 12px;
+
+  .Filter,
+  .Category {
+    margin-bottom: 8px;
+
+    &__title {
+      font: var(--font-main);
+      color: var(--highlights1-color);
+      margin-bottom: 16px;
+    }
+  }
+}
+
+.title {
+  font: var(--font-main);
+  color: var(--highlights1-color);
+}
+
+.CategoryToggle {
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.search {
+  box-shadow: 0 0 10px 0 rgb(0 0 0 / 4%);
+}

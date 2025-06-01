@@ -1,4 +1,5 @@
 import { GraphPointType } from "shared/const/API";
+import { Icon } from "./icon";
 
 export interface ProjectSchema {
   id: string;
@@ -8,6 +9,8 @@ export interface ProjectSchema {
   imageId: string | null;
   description?: string;
   url: string;
+  icon: Icon;
+  status: boolean;
   created_at: Date;
   updated_at: Date;
   isLoading: boolean;
@@ -21,6 +24,7 @@ export interface ProjectSchema {
 export interface Project {
   id: string;
   name: string;
+  icon: Icon;
   buildingIds: string[];
   customGraphPointTypes: GraphPointType[];
   imageId: string | null;

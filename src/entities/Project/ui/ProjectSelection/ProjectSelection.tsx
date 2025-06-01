@@ -1,7 +1,8 @@
 import { useAppDispatch } from "app/providers/StoreProvider/lib/hooks/useAppDispatch";
 import classNames from "classnames";
 import {
-  getProject
+  getProject,
+  getProjectId
 } from "entities/Project";
 import {
   fetchProjectsSummary,
@@ -11,13 +12,14 @@ import {
 } from "entities/ProjectsSummary";
 import { ProjectSummary } from "entities/ProjectsSummary/model/types/projectsSummary";
 import { AddProjectModal } from "features/AddProject";
-import { getLoginIsLoading } from "features/AuthByMail/model/selectors/getLoginIsLoading/getLoginIsLoading";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { DynamicModuleLoader, ReducersList } from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import { Card } from "shared/ui/Card/Card";
 import { ListedItem } from "shared/ui/ListedItem/ListedItem";
 import { Skeleton } from "shared/ui/Skeleton/Skeleton";
+import { StatusActive } from "shared/ui/StatusActive/StatusActive";
+import { StatusDisable } from "shared/ui/StatusDisable/StatusDisable";
 import { Text, TextTheme } from "shared/ui/Text/Text";
 import { fetchProject } from "../../api/fetchProject/fetchProject";
 import cls from "./ProjectSelection.module.scss";
@@ -33,14 +35,15 @@ const initialReducers: ReducersList = {
 export const ProjectSelection = ({ className }: IProjectSelectionProps) => {  
   const [isAddProjectModal, setIsAddProjectModal] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<string>('');
+  const [, setSelectedItem] = useState<string>('');
   
   const dispatch = useAppDispatch();
   const projectsSummary = useSelector(getProjectsSummary);
   const projectInfo = useSelector(getProject);
-  
+  const projectId = useSelector(getProjectId);  
+
   const errorProjectsSummary = useSelector(getProjectsSummaryError);
-  const isLoadingAuth = useSelector(getLoginIsLoading);
+  // const isLoadingAuth = useSelector(getLoginIsLoading);
   
   const onCloseModal = useCallback(() => {
     setIsAddProjectModal(false);
@@ -58,7 +61,7 @@ export const ProjectSelection = ({ className }: IProjectSelectionProps) => {
         setIsLoaded(false);
       }
     })()
-  }, [dispatch, isLoadingAuth]);
+  }, [dispatch]);
 
   const onClickHandle = useCallback(
     async (_: React.MouseEvent<HTMLButtonElement, MouseEvent>, project: ProjectSummary) => {
@@ -86,10 +89,11 @@ export const ProjectSelection = ({ className }: IProjectSelectionProps) => {
                     key={project.id}
                     onClick={(e) => onClickHandle(e, project)}
                     style={{width: '100%', marginBottom: '8px', cursor: 'pointer'}} 
-                    selected={selectedItem === project.id}
+                    selected={projectId === project.id}
                     disabled={isLoaded}
                   >
-                    {project.name}
+                    {<span>{project.name}</span>}
+                    {project.status ? <StatusActive/> : <StatusDisable/>}
                   </ListedItem>
                 );
               }) 

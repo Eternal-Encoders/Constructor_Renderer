@@ -1,7 +1,8 @@
 import { useAppDispatch } from "app/providers/StoreProvider/lib/hooks/useAppDispatch";
 import classNames from "classnames";
 import {
-  getBuilding
+  getBuilding,
+  getBuildingId
 } from "entities/Building";
 import {
   buildingsSummaryReducer,
@@ -18,6 +19,8 @@ import { DynamicModuleLoader, ReducersList } from "shared/lib/components/Dynamic
 import { Card } from "shared/ui/Card/Card";
 import { ListedItem } from "shared/ui/ListedItem/ListedItem";
 import { Skeleton } from "shared/ui/Skeleton/Skeleton";
+import { StatusActive } from "shared/ui/StatusActive/StatusActive";
+import { StatusDisable } from "shared/ui/StatusDisable/StatusDisable";
 import { Text, TextTheme } from "shared/ui/Text/Text";
 import { fetchBuilding } from "../../api/fetchBuilding/fetchBuilding";
 import cls from "./BuildingSelection.module.scss";
@@ -33,14 +36,14 @@ const initialReducers: ReducersList = {
 export const BuildingSelection = ({ className }: IBuildingSelectionProps) => {  
   const [isAddBuildingModal, setIsAddBuildingModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showError, setShowError] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<string>('');
+  const [, setSelectedItem] = useState<string>('');
   
   const dispatch = useAppDispatch();
   const projectId = useSelector(getProjectId);
   const buildingsSummary = useSelector(getBuildingsSummary);
   const buildingInfo = useSelector(getBuilding);
-  
+  const buildingId = useSelector(getBuildingId);
+
   // const isLoadingBuildingsSummary = useSelector(getBuildingsSummaryIsLoading);
   const errorBuildingsSummary = useSelector(getBuildingsSummaryError);
   
@@ -58,9 +61,6 @@ export const BuildingSelection = ({ className }: IBuildingSelectionProps) => {
       if (projectId) {
         await dispatch(fetchBuildingsSummary(projectId));
         setIsLoading(false);
-      } else {
-        setIsLoading(false);
-        setShowError(true);
       }
     })()
   }, [dispatch, projectId]);
@@ -92,10 +92,11 @@ export const BuildingSelection = ({ className }: IBuildingSelectionProps) => {
                     key={building.id}
                     onClick={(e) => onClickHandle(e, building)}
                     style={{width: '100%', marginBottom: '8px', cursor: 'pointer'}} 
-                    selected={selectedItem === building.id}
+                    selected={buildingId === building.id}
                     disabled={isLoading}
                   >
-                    {building.name}
+                    {<span>{building.name}</span>}
+                    {building.status ? <StatusActive/> : <StatusDisable/>}
                   </ListedItem>
                 );
               }) 
@@ -107,10 +108,6 @@ export const BuildingSelection = ({ className }: IBuildingSelectionProps) => {
             }
             {!isLoading && !buildingsSummary?.buildings?.length && 
             <Text 
-              text={'У вас пока нет зданий'} 
-              theme={TextTheme.PRIMARY} 
-            />}
-            {showError && <Text 
               text={'У вас пока нет зданий'} 
               theme={TextTheme.PRIMARY} 
             />}

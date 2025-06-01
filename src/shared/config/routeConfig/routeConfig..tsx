@@ -2,6 +2,7 @@ import { AnalyticsPage } from "pages/AnalyticsPage";
 import { AuthPage } from "pages/AuthPage";
 import { BuildingPage } from "pages/BuildingPage";
 import { ConstructorPage } from "pages/ConstructorPage";
+import { ModulesPage } from "pages/ModulesPage";
 import { NotFoundPage } from "pages/NotFoundPage";
 import { ProfilePage } from "pages/ProfilePage";
 import { ProjectPage } from "pages/ProjectPage";
@@ -53,7 +54,7 @@ export const routeConfig: Record<AppRoutes, RouteProps> = {
   },
   [AppRoutes.MODULES]: {
     path: RoutePath.modules,
-    element: <ProfilePage />
+    element: <ModulesPage />
   },
   [AppRoutes.CONSTRUCTOR]: {
     path: RoutePath.constructor,

@@ -1,8 +1,10 @@
 import ArrowDownMini from 'assets/ArrowDownMini.svg?react';
 import PlusMini from 'assets/PlusMini.svg?react';
 import classNames from "classnames";
+import { getFloorsSummary } from 'entities/FloorsSummary/model/selectors/getFloorsSummary/getFloorsSummary';
 import { AddFloorModal } from 'features/AddFloor';
 import { useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { FloorItems } from '../FloorsItems/FloorItems';
 import cls from "./FloorsSummary.module.scss";
 
@@ -13,6 +15,7 @@ interface IFloorsSummaryProps {
 export const FloorsSummary = ({ className }: IFloorsSummaryProps) => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const [isAddFloorModal, setIsAddFloorModal] = useState(false);
+  const floorsSummary = useSelector(getFloorsSummary);
 
   const onCloseModal = useCallback(() => {
     setIsAddFloorModal(false);
@@ -52,7 +55,10 @@ export const FloorsSummary = ({ className }: IFloorsSummaryProps) => {
           Этажи
         </h4>
         <div 
-          className={classNames(cls.FloorsSummary__rightIcon)}
+          className={classNames(cls.FloorsSummary__rightIcon, 
+            floorsSummary?.floors && 
+            floorsSummary.floors.length <= 0 && 
+            cls.FloorsSummary__rightIcon_pulse)}
           onClick={onShowModal} 
         >
           <div 
