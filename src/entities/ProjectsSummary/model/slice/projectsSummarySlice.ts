@@ -16,6 +16,13 @@ const projectsSummarySlice = createSlice({
     addProject: (state, action: PayloadAction<ProjectSummary>) => {
       state.projects?.push(action.payload);
     },
+    updateProject: (state, action: PayloadAction<ProjectSummary>) => {
+      const index = state.projects!.map(project => {
+        return project.id;
+      }).indexOf(action.payload.id);
+
+      state.projects![index] = action.payload;
+    },
     deleteProject: (state, action: PayloadAction<string>) => {
       const index = state.projects!.map(project => {
         return project.id;

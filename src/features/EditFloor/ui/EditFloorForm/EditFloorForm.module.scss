@@ -1,0 +1,34 @@
+.AddFloorForm {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+.input {
+    margin-top: 10px;
+}
+
+.buttons {
+    display: flex;
+    margin-top: 12px;
+    justify-content: space-between;
+}
+
+.addFloorBtn {
+    margin-top: 15px;
+    margin-left: auto;
+}
+
+.deleteFloorBtn {
+    background-color: var(--red-light);
+    color: var(--bg1-color);
+
+    &:hover {
+        background-color: var(--red-dark);
+        color: var(--white);
+    }
+}
+
+.error {
+    margin-top: 10px;
+}

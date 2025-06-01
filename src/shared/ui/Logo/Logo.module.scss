@@ -1,4 +1,7 @@
 .Logo {
+    display: flex;
+    flex-shrink: 0;
+    
     &.topLeft {
         margin-right: auto;
     }

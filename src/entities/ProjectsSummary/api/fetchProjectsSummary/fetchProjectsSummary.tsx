@@ -1,12 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { redirectAndTokenDelete } from "helpers/redirectAndTokenDelete";
 import { projectsSummaryActions } from "../../model/slice/projectsSummarySlice";
 import { ProjectSummary } from "../../model/types/projectsSummary";
 
-// enum RegisterErrors {
-//   INCORRECT_DATA = '',
-//   SERVER_ERROR = ''
-// }
+enum EFetchProjectsSummaryStatusCode {
+  UN_AUTH = 401
+}
 
 export const fetchProjectsSummary = createAsyncThunk<ProjectSummary[], void, { rejectValue: string }>(
   "projectSummary/fetchProjectSummary",
@@ -21,8 +21,12 @@ export const fetchProjectsSummary = createAsyncThunk<ProjectSummary[], void, { r
       thunkAPI.dispatch(projectsSummaryActions.initProjects(response.data));
 
       return response.data;
-    } catch (err) {
-      console.log(err);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: AxiosError | any) {
+      const error = err as AxiosError;
+
+      redirectAndTokenDelete(EFetchProjectsSummaryStatusCode.UN_AUTH, thunkAPI, error);
+      
       return thunkAPI.rejectWithValue('Ошибка при получении данных. Попробуйте позже.');
     }
   },

@@ -16,4 +16,47 @@
         align-items: center;
         margin-bottom: 8px;
     }
+
+    &__toggle {
+        margin-top: 20px;
+        height: 32px;
+        justify-content: space-between;
+    }
+}
+
+.Icons {
+    &__content {
+        background: var(--white);
+    }
+
+    &__name {
+        color: var(--highlights1-color);
+        font: var(--font-functional);
+    }
+
+    &__chosen {
+        padding: 0 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        height: 30px;
+        font: var(--font-description);
+        color: var(--highlights1-color);
+    }
+}
+
+.Droplist {
+    padding: 8px;
+    display: flex;
+    flex-wrap: wrap;
+
+    &__item {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        aspect-ratio: 1/1;
+    }
 }

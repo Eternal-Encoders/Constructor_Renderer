@@ -1,0 +1,130 @@
+.ReviewPage {
+  display: flex;
+  height: 100%;
+  background: var(--bg2-color);
+
+  &__navbar {
+    margin-bottom: 16px;
+  }
+
+  &__breadcrumbs {
+    margin-bottom: 8px;
+  }
+  
+  &__building_header {
+    margin-bottom: 8px;
+  }
+
+  &__list {
+    width: 370px; 
+    display: flex;
+    flex-direction: column;
+  }
+
+  &_centered {
+    display: flex;
+    height: calc(100vh - var(--header-height) - var(--breadcrumbs-height) - var(--navbar-height) - var(--navbar-margin) - var(--header-margin) - var(--breadcrumbs-margin) - 16px);
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.Continuework,
+.Status {
+  background-color: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 0 10px 0 rgb(0 0 0 / 4%);
+  padding: 16px;
+}
+
+.Continuework {
+  height: 201px;
+
+  &__title {
+    margin-bottom: 32px;
+  }
+}
+
+.Status {
+  height: 328px;
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__item {
+    cursor: pointer;
+    padding: 8px 16px;
+    height: 44px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--gray-light);
+    border-radius: var(--corner-radius-3);
+
+    &:hover {
+      background-color: var(--hover-dark);
+    }
+  }
+
+  &__title {
+    font: var(--font-card);
+    color: var(--blue-dark);
+    margin-bottom: 24px;
+  }
+
+  &__itemTitle {
+    font: var(--font-description);
+    color: var(--highlights1-color);
+  }
+}
+
+.title {
+  font: var(--font-main);
+  color: var(--highlights1-color);
+}
+
+.microCard {
+  display: flex;
+
+  &__create {
+    font: var(--font-card);
+    color: var(--blue-dark);
+
+  }
+
+  &__item {
+    cursor: pointer;
+    height: 117px;
+    width: 107px;
+    padding: 16px 16px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--gray-light);
+    border-radius: var(--corner-radius-3);
+
+    &_create {
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      text-align: center;
+    }
+
+    &:hover {
+      background-color: var(--hover-dark);
+    }
+  }
+
+  &__title {
+    font: var(--font-card);
+    color: var(--blue-dark);
+  }
+
+  &__description {
+    font: var(--font-description);
+    color: var(--highlights2-color);
+  }
+}

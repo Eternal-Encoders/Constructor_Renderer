@@ -1,33 +1,28 @@
 import classNames from "classnames";
+import { FigureType, Polygon, Rectangle } from "entities/Figure";
 import { Input } from "../Input/Input";
 import { TextArea } from "../TextArea/TextArea";
 import cls from "./Information.module.scss";
 
 interface IInformationProps {
   className?: string;
+  figure: (Polygon | Rectangle);
+  selectedId: string | null;
+  selectedFigure: FigureType;
+  setSelectedFigure: (figure: FigureType) => void;
 }
 
-export const Information = ({ className }: IInformationProps) => {
-
-  const getInformationTitle = () => {
-    const isObject = false;
-    const isBuilding = true;
-
-    if (isObject) {
-      return 'Информация об объекте';
-    }
-    if (isBuilding) {
-      return 'Информация о здании';
-    } else {
-      return 'Инфмормация о чём-то...';
-    }
-  }
+export const Information = ({ 
+  className, 
+  selectedId, 
+  figure,
+}: IInformationProps) => {
 
   return (
     <div className={classNames(cls.Information, {}, [className])}>
       <header className={classNames(cls.Information__header)} style={{ marginBottom: '8px' }}>
         <h4 className={classNames(cls.Information__title)}>
-          {getInformationTitle()}
+          {selectedId ? 'Информация об объекте' : 'Настройки холста'}
         </h4>
       </header>
       <div className={classNames(cls.Information__content)}>
@@ -40,7 +35,11 @@ export const Information = ({ className }: IInformationProps) => {
             style={{ marginBottom: '8px' }}>
             Название
           </h5>
-          <Input className={classNames(cls.Information__input)} />
+          <Input 
+            className={classNames(cls.Information__input)} 
+            placeholder="Название объекта"
+            value={figure?.name || ''}
+          />
         </section>
         <section className={classNames(cls.Section, cls.Information__section, cls.Information__description)} 
           style={{ marginBottom: '8px' }}>

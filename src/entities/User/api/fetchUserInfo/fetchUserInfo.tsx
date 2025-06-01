@@ -1,10 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { redirectAndTokenDelete } from "helpers/redirectAndTokenDelete";
 
-// enum FetchErrors {
-//   INCORRECT_DATA = '',
-//   SERVER_ERROR = ''
-// }
+enum EFetchUserInfoStatusCode {
+  UN_AUTH = 401,
+  NOT_FOUND = 404
+}
 
 export interface FetchUserInfoResponse {
   created_at: string;
@@ -14,11 +15,13 @@ export interface FetchUserInfoResponse {
   paid_feature_id: string[]
   password_hash?: string;
   selected_project_id: string;
+  last_building_id: string;
   updated_at: Date;
 }
 
  
-export const fetchUserInfo = createAsyncThunk<FetchUserInfoResponse, void, { rejectValue: string }>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const fetchUserInfo = createAsyncThunk<FetchUserInfoResponse, void, any>(
   "userInfo/fetchUserInfo",
   async (_, thunkAPI) => {
     try {
@@ -30,8 +33,14 @@ export const fetchUserInfo = createAsyncThunk<FetchUserInfoResponse, void, { rej
       }
 
       return response.data;
-    } catch (err) {
-      console.log(err);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: AxiosError | any) {
+      const error = err as AxiosError;
+
+      redirectAndTokenDelete(EFetchUserInfoStatusCode.UN_AUTH, thunkAPI, error);
+      redirectAndTokenDelete(EFetchUserInfoStatusCode.NOT_FOUND, thunkAPI, error);
+      
       return thunkAPI.rejectWithValue('Ошибка при получении данных. Попробуйте позже.');
     }
   },

@@ -1,0 +1,24 @@
+.ConstructorPageCategory {
+    position: relative;
+    border: var(--border);
+    border-radius: 6px;
+}
+ 
+.InfoPanel,
+.DropdownPanel {
+    min-width: var(--panel-min-width);
+    max-width: var(--panel-max-width);
+}
+
+.SelectorItems {
+    position: absolute;
+    z-index: var(--actions-z-index);
+    bottom: 27px;
+}
+
+.Actions {
+    position: absolute;
+    z-index: var(--actions-z-index);
+    right: 256px;
+    top: 8px;
+}

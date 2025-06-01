@@ -8,11 +8,13 @@ export interface BuildingSchema {
   project: string;
   //projectId: string;
   name: string;
+  status: boolean;
   displayable_name: string;
   description?: string;
   url: string;
   latitude: number;
   longitude: number;
+  last_floor_id: string;
   gps?: GPS;
   created_at: Date;
   updated_at: Date;
@@ -34,6 +36,7 @@ export interface Building {
   url: string;
   latitude: number;
   longitude: number;
+  last_floor_id: string;
   gps?: GPS;
   created_at: Date;
   updated_at: Date;

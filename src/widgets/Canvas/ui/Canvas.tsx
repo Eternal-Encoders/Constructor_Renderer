@@ -1,8 +1,6 @@
 import classNames from "classnames";
 import { ActionType } from "entities/Figure/Action";
 import { FigureType, Polygon, Rectangle } from "entities/Figure/Figure";
-import { getFillHEXCode, getFillOpacity } from "entities/Fill";
-import { layersActions } from "entities/Layers/model/slice/layersSlice";
 import {
   getLayoutBottomGap,
   getLayoutBreadCrumbsHeight,
@@ -14,12 +12,18 @@ import {
   getLayoutRightPanelWidth,
   getLayoutTopGap
 } from "entities/Layout";
+import { createSquare } from "helpers/createSquare";
 import { getRelativePointerPosition } from "helpers/getRelativePointerPosition";
+import { getUniqueId } from "helpers/getUniqueId";
+import { useBackgroundCanvas } from "helpers/hooks/useBackgroundCanvas";
+import { useCancelTempFiguresFromKeyboard } from "helpers/hooks/useCancelTempFiguresFromKeyboard";
+import { useMovingFigureFromKeyboard } from "helpers/hooks/useMovingFigureFromKeyboard";
 import { useWindowSize } from "helpers/hooks/useWindowSize";
+import { snapToAngle } from "helpers/snapToAngle";
 import { KonvaEventObject } from "konva/lib/Node";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Layer, Stage } from "react-konva";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { FigureRenderer } from "shared/ui/FigureRenderer/FigureRenderer";
 import cls from './Canvas.module.scss';
 
@@ -63,94 +67,16 @@ export const Canvas = (props: ICanvasProps) => {
   // const backgroundRef = useRef(null);
 
   const [points, setPoints] = useState<number[]>([]);
-  const isClosed = false;
-
-  const bgcHEXCode = useSelector(getFillHEXCode);
-  const bgOpacity = useSelector(getFillOpacity);
+  const [isClosed, setIsClosed] = useState(false);
 
   // Set CSS background when component mounts
-  useEffect(() => {
-    if (stageRef.current) {
-      // Apply CSS background to stage container
-      const container = stageRef.current.container();
-      container.style.backgroundColor = bgcHEXCode;
-      container.style.opacity = bgOpacity;
-    }
-  }, [bgcHEXCode, bgOpacity]);
+  useBackgroundCanvas(stageRef);
 
   // Обработчик для передвижения фигуры по нажатиям на клавиши
-  useEffect(() => {
-    if (!selectedId) return;
-
-    const movement: Record<number, { x: number; y: number; }> = {
-      37: { x: -1, y: 0 }, // Влево
-      38: { x: 0, y: -1 }, // Вверх
-      39: { x: 1, y: 0 }, // Вправо
-      40: { x: 0, y: 1 }, // Вниз
-    };
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (!(event.keyCode in movement)) return;
-      event.preventDefault();
-
-      const { x, y } = movement[event.keyCode];
-
-      if (rectangles.some((fig) => fig.id === selectedId)) {
-        setRectangles((prev) =>
-          prev.map((fig) =>
-            fig.id === selectedId
-              ? {
-                ...fig,
-                history: [...fig.history, { x: fig.x, y: fig.y }],
-                x: fig.x + x,
-                y: fig.y + y,
-              }
-              : fig
-          )
-        );
-      } else if (polygons.some((fig) => fig.id === selectedId)) {
-        setPolygons((prev) =>
-          prev.map((fig) => {
-            if (fig.id === selectedId) {
-              if (fig.x && fig.y) {
-                return {
-                  ...fig,
-                  history: [...fig.history, { points: [...fig.points], x: fig.x, y: fig.y }],
-                  x: fig.x + x,
-                  y: fig.y + y,
-                };
-              }
-            }
-            return fig;
-          }
-          )
-        );
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedId, rectangles, polygons, setRectangles, setPolygons]);
+  useMovingFigureFromKeyboard(selectedId, rectangles, polygons, setRectangles, setPolygons);
 
   // Отмена временных фигур при нажатии кнопки ESC
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        if (selectedFigure === FigureType.Rectangle) {
-          setTempRectangle(null);
-          setRectStartPos(null);
-        }
-        // TODO: Реализовать отдельные линии 
-        else if (selectedFigure === FigureType.Polygon) {
-          setTempLine(null);
-          setPoints([]);
-        }
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedFigure]);
+  useCancelTempFiguresFromKeyboard(selectedFigure, setTempRectangle, setRectStartPos, setTempLine, setPoints);
 
   // Обработчик для нажатия кнопки мыши
   const onMouseDown = (event: KonvaEventObject<MouseEvent>) => {
@@ -178,14 +104,11 @@ export const Canvas = (props: ICanvasProps) => {
           // const closedPoints = [...points, points[points.length - 2], points[points.length - 1]];
           setPolygons([...polygons, {
             points, isClosed: true,
-            id: `${selectedFigure}-${Date.now()}`,
-            draggable: true, history: [], type: FigureType.Polygon
+            draggable: true, history: [], type: FigureType.Polygon,
+            id: `Многоугольник ${polygons.length + 1}`,
+            name: `Многоугольник ${polygons.length + 1}`,
+            createdAt: new Date(),  
           }]);
-          dispatch(layersActions.setLayersPolygon({
-            points, isClosed: true,
-            id: `${selectedFigure}-${Date.now()}`,
-            draggable: true, history: [], type: FigureType.Polygon
-          }));
           setTempLine(null);
           setPoints([]);
           return;
@@ -195,29 +118,6 @@ export const Canvas = (props: ICanvasProps) => {
       const snappedPoint = event.evt.shiftKey ? snapToAngle(points, pos.x, pos.y).points.slice(-2) : [pos.x, pos.y];
       setPoints([...points, ...snappedPoint]);
     }
-  };
-
-  // Обработчик для доведения линии
-  const snapToAngle = (points: number[], x: number, y: number) => {
-    const [startX, startY] = [points[points.length - 2], points[points.length - 1]];
-    const dx = x - startX;
-    const dy = y - startY;
-    const angle = Math.round(Math.atan2(dy, dx) / (Math.PI / 4)) * (Math.PI / 4);
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    const snappedX = startX + Math.cos(angle) * distance;
-    const snappedY = startY + Math.sin(angle) * distance;
-
-    return {
-      id: "temp-line",
-      type: FigureType.Polygon as FigureType.Polygon,
-      draggable: false,
-      history: [],
-      x: snappedX,
-      y: snappedY,
-      isClosed: false,
-      points: [...points, snappedX, snappedY],
-    };
   };
 
   // Обработчик для движения мыши
@@ -233,18 +133,10 @@ export const Canvas = (props: ICanvasProps) => {
 
     // Проверяем, зажат ли Shift
     if (event.evt.shiftKey) {
+      // Сделать логику квадрата
       if (selectedFigure === FigureType.Rectangle) {
         if (!startRectPos) return;
-        setTempRectangle({
-          id: "temp-rectangle",
-          type: selectedFigure,
-          x: Math.min(startRectPos.x, pos.x),
-          y: Math.min(startRectPos.y, pos.y),
-          width: Math.abs(pos.x - startRectPos.x),
-          height: Math.abs(pos.y - startRectPos.y),
-          draggable: false,
-          history: [],
-        });
+        setTempRectangle(createSquare(pos, startRectPos, rectangles, selectedFigure));
       } else if (selectedFigure === FigureType.Polygon) {
         if (!points.length) return;
         setTempLine(snapToAngle(points, pos.x, pos.y));
@@ -253,7 +145,8 @@ export const Canvas = (props: ICanvasProps) => {
       if (selectedFigure === FigureType.Rectangle) {
         if (!startRectPos) return;
         setTempRectangle({
-          id: "temp-rectangle",
+          id: `Прямоугольник ${rectangles.length + 1}`,
+          name: `Прямоугольник ${rectangles.length + 1}`,
           type: selectedFigure,
           x: Math.min(startRectPos.x, pos.x),
           y: Math.min(startRectPos.y, pos.y),
@@ -261,61 +154,58 @@ export const Canvas = (props: ICanvasProps) => {
           height: Math.abs(pos.y - startRectPos.y),
           draggable: false,
           history: [],
+          createdAt: new Date(),
         });
       } else if (selectedFigure === FigureType.Polygon) {
         if (!points.length) return;
         setTempLine({
-          id: "temp-line",
+          id: `temp-line-${getUniqueId()}`,
+          name: `temp-line-${getUniqueId()}`,
           type: selectedFigure,
           draggable: false,
           history: [],
           x: pos.x,
           y: pos.y,
-          isClosed: isClosed,
+          isClosed,
           points: [...points, pos.x, pos.y],
+          createdAt: new Date(),
         });
       }
     }
   };
-
-  const dispatch = useDispatch();
 
   // Обработчик для отпускания кнопки мыши
   const onMouseUp = () => {
     if (selectedAction !== ActionType.None) return;
 
     if (selectedFigure === FigureType.Rectangle) {
-      if (!tempRectangle) return;
+      const finishedRectangle = tempRectangle;
+      if (!finishedRectangle) return;
       // Проверяем минимальный размер перед добавлением
-      if (tempRectangle.width !== undefined && tempRectangle.height !== undefined
-                && (tempRectangle.width < 5 || tempRectangle.height < 5)) {
+      if (finishedRectangle.width !== undefined && finishedRectangle.height !== undefined
+                && (finishedRectangle.width < 5 || finishedRectangle.height < 5)) {
         setTempRectangle(null);
         setRectStartPos(null);
         return;
       }
 
       setRectangles((prev) => [...prev, {
-        ...tempRectangle,
+        ...finishedRectangle,
         id: `${selectedFigure}-${Date.now()}`
       }]);
-      dispatch(layersActions.setLayersRectangle({
-        ...tempRectangle,
-        id: `${selectedFigure}-${Date.now()}`
-      }));
       setTempRectangle(null);
       setRectStartPos(null);
     } 
-    // else if (selectedFigure === FigureType.Polygon) {
-    //   if (!tempLine) return;
-    //   if (isClosed) {
-    //     console.log(1);
-    //     setPolygons((prev) => [...prev, { ...tempLine, id: `${selectedFigure}-${Date.now()}` }]);
-    //     dispatch(layersActions.setLayersPolygon({ ...tempLine, id: `${selectedFigure}-${Date.now()}` }));
-    //     setTempLine(null);
-    //     setPoints([]);
-    //     setIsClosed(false);
-    //   }
-    // }
+    else if (selectedFigure === FigureType.Polygon) {
+      const finishedPolygon = tempLine
+      if (!finishedPolygon) return;
+      if (isClosed) {
+        setPolygons((prev) => [...prev, { ...tempLine, id: `${selectedFigure}-${Date.now()}` }]);
+        setTempLine(null);
+        setPoints([]);
+        setIsClosed(false);
+      }
+    }
   };
 
   const navbarHeight = useSelector(getLayoutNavbarHeight);
@@ -328,11 +218,16 @@ export const Canvas = (props: ICanvasProps) => {
   const leftGap = useSelector(getLayoutLeftGap);
   const rightGap = useSelector(getLayoutRightGap);
 
-  console.log(layerRef.current?.children);
-
   return (
     <Stage
-      className={classNames(cls.Stage, selectedAction === ActionType.Drag ? cls['grab_active'] : null, [className])}
+      className={
+        classNames(
+          cls.Stage, selectedAction === ActionType.Drag 
+            ? cls['grab_active'] 
+            : null, 
+          [className]
+        )
+      }
       ref={stageRef}
       // onDragMove={handleDragMove}
       height={height - navbarHeight - topGap - bottomGap - breadCrumbsHeight - headerHeight}

@@ -1,10 +1,12 @@
 import classNames from "classnames";
 import { ButtonText } from "../ButtonText/ButtonText";
+import { Toggle } from "../Toggle/Toggle";
 import cls from "./Card.module.scss";
 
 interface ICardProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   title: string;
+  toggleText?: string;
   children: React.ReactNode;
   buttonTitle?: string; 
   buttonTitleIcon?: React.ReactNode | string;
@@ -17,6 +19,7 @@ export const Card = (props: ICardProps) => {
     className,
     title,
     children,
+    toggleText,
     buttonTitle,
     buttonTitleIcon,
     buttonTitlePreIcon,
@@ -31,6 +34,11 @@ export const Card = (props: ICardProps) => {
           <h4 className={classNames(cls.Card__title)} style={{marginBottom: 8}}>
             {title}
           </h4>
+          {toggleText && 
+          <Toggle 
+            text={toggleText} 
+            className={cls.Card__toggle}
+          />}
           {buttonTitle && <div style={{display: 'flex', justifyContent: 'center', marginBottom: 8}}>
             <ButtonText 
               iconRight={<b>{buttonTitleIcon}</b>}

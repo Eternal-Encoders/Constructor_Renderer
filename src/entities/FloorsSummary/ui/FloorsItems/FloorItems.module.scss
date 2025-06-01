@@ -1,0 +1,54 @@
+.FloorItems {
+    &__item {
+        cursor: pointer;
+        height: 36px;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        border-radius: 6px;
+        padding: 5px 10px;
+
+        &_active {
+            background-color: var(--bg2-color);
+        }
+
+        &:hover {
+            background-color: var(--hover-dark);
+        }
+    }
+
+    &__title {
+        font: var(--font-description);
+        color: var(--highlights1-color);
+    }
+
+    &__rightIcon,
+    &__icon_star {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__rightIcons {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+    }
+
+    &__icon_star,
+    &__icon_edit {
+        color: gray;
+
+        // width: 12px;
+        // height: 12px;
+        &:hover {
+            color: rgb(89 87 87);
+        }
+    }
+
+    &__icon_star {
+        width: 20px;
+        height: 20px;
+    }
+}

@@ -5,6 +5,7 @@ export { getBuildingDescription } from './model/selectors/getBuildingDescription
 export { getBuildingError } from './model/selectors/getBuildingError/getBuildingError';
 export { getBuildingId } from './model/selectors/getBuildingId/getBuildingId';
 export { getBuildingIsLoading } from './model/selectors/getBuildingIsLoading/getBuildingIsLoading';
+export { getBuildingLastFloorId } from './model/selectors/getBuildingLastFloorId/getBuildingLastFloorId';
 export { getBuildingName } from './model/selectors/getBuildingName/getBuildingName';
 export { getBuildingUpdatedAt } from './model/selectors/getBuildingUpdatedAt/getBuildingUpdatedAt';
 export { getBuildingURL } from './model/selectors/getBuildingURL/getBuildingURL';

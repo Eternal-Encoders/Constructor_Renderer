@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from "react";
 import cls from "./Input.module.scss";
 
-type HTMLInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "value" | "onChange">
+type HTMLInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "value" | "onChange" | 'borderRadius'>
 
 interface IInputProps extends HTMLInputProps {
   className?: string;
@@ -13,6 +13,7 @@ interface IInputProps extends HTMLInputProps {
   iconLeft?: React.ReactNode | string;
   iconRight?: React.ReactNode | string;
   value?:string;
+  borderRadius?: string;
   onChange?: (event: string | File) => void;
   onLeftIconClicked?: () => void;
 }
@@ -27,6 +28,7 @@ export const Input = memo(forwardRef<HTMLInputElement, IInputProps>((props, ref)
     size = "small", 
     type = "text",
     value,
+    borderRadius,
     onChange,
     onLeftIconClicked,
     ...otherProps
@@ -86,7 +88,7 @@ export const Input = memo(forwardRef<HTMLInputElement, IInputProps>((props, ref)
         <div 
           onClick={() => (ref as React.RefObject<HTMLInputElement>)?.current?.focus()}
           className={classNames(cls.Input, cls[size], [className])}
-          style={iconLeft ? {display: 'flex'} : undefined}
+          style={iconLeft || iconRight ? {display: 'flex', borderRadius} : borderRadius ? {borderRadius} : undefined}
         >
           {iconLeft && <div 
             onClick={onLeftIconClicked}

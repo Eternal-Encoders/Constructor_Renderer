@@ -2,11 +2,10 @@ import { configureStore, ReducersMapObject } from '@reduxjs/toolkit';
 import { buildingReducer } from 'entities/Building';
 import { counterReducer } from 'entities/Counter';
 import { fillReducer } from 'entities/Fill';
-import { floorsReducer } from 'entities/Floors';
+import { floorReducer } from 'entities/Floor';
 import { imageReducer } from 'entities/Image';
 import { layersReducer } from 'entities/Layers';
 import { layoutReducer } from 'entities/Layout';
-import { navigationReducer } from 'entities/Navigation';
 import { projectReducer } from 'entities/Project';
 import { userReducer } from 'entities/User';
 import { StateSchema } from './StateSchema';
@@ -21,10 +20,9 @@ export function createReduxStore(initialState?: StateSchema) {
     fill: fillReducer,
     layout: layoutReducer,
     layers: layersReducer,
-    floors: floorsReducer,
-    navigation: navigationReducer,
     project: projectReducer,
-    building: buildingReducer
+    building: buildingReducer,
+    floor: floorReducer
   }
 
   const reducerManager = createReducerManager(rootReducers);

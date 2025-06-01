@@ -1,4 +1,3 @@
- 
 import Plus from "assets/Plus.svg?react";
 import classNames from "classnames";
 import { getFillHEXCode, getFillOpacity, getFillVisibility } from "entities/Fill";

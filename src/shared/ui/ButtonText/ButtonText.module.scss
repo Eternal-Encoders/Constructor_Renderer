@@ -166,3 +166,23 @@
 .bold {
     font-weight: 700;
 }
+
+.inverted {
+    background-color: var(--blue-dark);
+    color: var(--white);
+
+    &:hover {
+        background-color: var(--blue-darker);
+        color: var(--white);
+    }
+
+    &:active {
+        background-color: var(--blue-darkest);
+        color: var(--white);
+    }
+
+    &:disabled {
+        background-color: var(--gray-light);
+        color: var(--weak1-color, #BDBDBD);
+    }
+}

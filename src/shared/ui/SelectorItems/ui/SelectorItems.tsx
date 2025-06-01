@@ -5,6 +5,7 @@ import Rectangle from 'assets/Rectangle.svg?react';
 import classNames from "classnames";
 import { ActionType } from "entities/Figure/Action";
 import { FigureType } from "entities/Figure/Figure";
+import { FloorSummarySchema } from 'entities/FloorsSummary';
 import { SelectorItem } from 'shared/ui/SelectorItem/SelectorItem';
 import cls from "./SelectorItems.module.scss";
 
@@ -12,6 +13,7 @@ interface ISelectorItemsProps {
   className?: string;
   selectedFigure: FigureType;
   selectedAction: ActionType;
+  floorsSummary: FloorSummarySchema | undefined;
   setSelectedFigure: (figure: FigureType) => void;
   setSelectedAction: (action: ActionType) => void;
 }
@@ -20,6 +22,7 @@ export const SelectorItems = (props: ISelectorItemsProps) => {
   
   const { 
     className,
+    floorsSummary,
     selectedFigure, 
     selectedAction,
     setSelectedFigure, 
@@ -37,7 +40,9 @@ export const SelectorItems = (props: ISelectorItemsProps) => {
   const classNamesAction = (actionType: ActionType) => 
     classNames(cls.SelectorItems__item, {[cls.SelectorItems__item_active]: selectedAction === actionType});
 
-  return (
+  if (floorsSummary?.floors && floorsSummary?.floors.length <= 0) return null;
+
+  if (floorsSummary?.floors && floorsSummary?.floors.length >= 0) return (
     <div className={classNames(cls.SelectorItems, className)}>
       <SelectorItem
         className={classNamesAction(ActionType.Cursor)}

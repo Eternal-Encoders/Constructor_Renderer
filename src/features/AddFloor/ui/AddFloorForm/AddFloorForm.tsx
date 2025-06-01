@@ -1,5 +1,6 @@
 import { useAppDispatch } from "app/providers/StoreProvider/lib/hooks/useAppDispatch";
 import classNames from "classnames";
+import { getBuildingId } from "entities/Building";
 import { getAddFloorError } from "features/AddFloor/model/selectors/getAddFloorError/getAddFloorError";
 import { getAddFloorIndex } from "features/AddFloor/model/selectors/getAddFloorIndex/getAddFloorIndex";
 import { getAddFloorIsLoading } from "features/AddFloor/model/selectors/getAddFloorIsLoading/getAddFloorIsLoading";
@@ -30,7 +31,7 @@ const AddFloorForm = memo(({ className, onSuccess }: IAddFloorFormProps) => {
   const name = useSelector(getAddFloorName); 
   const isLoading = useSelector(getAddFloorIsLoading);
   const error = useSelector(getAddFloorError);
-  const building_id = '111111111111111111111111';
+  const building_id = useSelector(getBuildingId);
 
   const onChangeName = useCallback((value: string | number | File) => {
     if (typeof value !== "string") return;
@@ -48,12 +49,12 @@ const AddFloorForm = memo(({ className, onSuccess }: IAddFloorFormProps) => {
   }, [dispatch]);
 
   const onAddFloorClick = useCallback(async () => {
-    const result = await dispatch(addFloor({ building_id, number: index, name }));
+    const result = await dispatch(addFloor({ building_id, index, name }));
     if (result.meta.requestStatus === 'fulfilled') {
       onSuccess();
     }
     onSuccess();
-  }, [dispatch, index, onSuccess, name]);
+  }, [dispatch, building_id, index, name, onSuccess]);
 
   return (
     <DynamicModuleLoader removeAfterUnmount reducers={initialReducers}>

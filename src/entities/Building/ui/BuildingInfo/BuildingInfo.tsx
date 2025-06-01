@@ -1,9 +1,11 @@
 import { useAppDispatch } from "app/providers/StoreProvider/lib/hooks/useAppDispatch";
 import classNames from "classnames";
-import { navigationActions } from "entities/Navigation/model/slice/navigationSlice";
-import { ENavigationCategory } from "entities/Navigation/model/types/navigationSchema";
+import { fetchBuildingsSummary } from "entities/BuildingsSummary";
+import { getProjectId } from "entities/Project";
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { RoutePath } from "shared/config/routeConfig/routeConfig.";
 import { ButtonText } from "shared/ui/ButtonText/ButtonText";
 import { Card } from "shared/ui/Card/Card";
 import { Input } from "shared/ui/Input/Input";
@@ -26,12 +28,14 @@ interface IBuildingInfoProps {
 
 export const BuildingInfo = ({ className }: IBuildingInfoProps) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   
   const buildingId = useSelector(getBuildingId);
   const buildingName = useSelector(getBuildingName);
   const buildingURL = useSelector(getBuildingURL);
   const errorBuildingInfo = useSelector(getBuildingError);
   const isLoadingBuildingInfo = useSelector(getBuildingIsLoading);
+  const projectId = useSelector(getProjectId);
 
   const [name, setName] = useState(buildingName);
   const [url, setURL] = useState(buildingURL);
@@ -50,11 +54,16 @@ export const BuildingInfo = ({ className }: IBuildingInfoProps) => {
 
   const onClickSaveHandle = useCallback(async () => {
     if (name !== buildingName || url !== buildingURL) {
-      await dispatch(patchBuilding({buildingId: buildingId, building: { name: buildingName, url: buildingURL}}));
-      setName(buildingName);
-      setURL(buildingURL);
+      const result = 
+        await dispatch(patchBuilding({buildingId, building: { name: buildingName, url: buildingURL}}));
+      if (result.meta.requestStatus === 'fulfilled') {
+        await dispatch(fetchBuildingsSummary(projectId));
+        setName(buildingName);
+        setURL(buildingURL);
+      }
+
     }
-  },[name, buildingName, url, buildingURL, dispatch, buildingId]);
+  },[name, buildingName, url, buildingURL, dispatch, buildingId, projectId]);
 
   const onClickDeleteHandle = useCallback(async () => {
     await dispatch(deleteBuilding(buildingId));
@@ -105,9 +114,10 @@ export const BuildingInfo = ({ className }: IBuildingInfoProps) => {
         </Card>
         <Card 
           title="Управление" 
+          toggleText="Активно для пользователя"
           buttonTitle="Перейти в редактор"
           buttonTitlePreIcon='⚒'
-          onClickButtonTitle={() => dispatch(navigationActions.setCategory(ENavigationCategory.Constructor))}
+          onClickButtonTitle={() => navigate(RoutePath.constructor)}
         >
           <div style={{padding: '5px 12px'}}>
             <section className={classNames(cls.BuildingInfo__section)}>

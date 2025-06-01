@@ -1,11 +1,11 @@
 import classNames from "classnames";
-import { navigationActions } from 'entities/Navigation/model/slice/navigationSlice';
-import { ENavigationCategory } from 'entities/Navigation/model/types/navigationSchema';
 import { getUserAuthData, userActions } from "entities/User";
 import { LoginModal } from "features/AuthByMail";
 import { RegisterModal } from "features/RegisterByMail";
 import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { RoutePath } from "shared/config/routeConfig/routeConfig.";
 import { ButtonText } from "shared/ui/ButtonText/ButtonText";
 import { Logo } from "shared/ui/Logo/Logo";
 import cls from "./Navbar.module.scss";
@@ -19,6 +19,7 @@ export const Navbar = ({ className }: INavbarProps) => {
   const [isRegisterModal, setIsRegisterModal] = useState(false);
   const authData = useSelector(getUserAuthData);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onCloseModal = useCallback(() => {
     setIsAuthModal(false);
@@ -32,9 +33,9 @@ export const Navbar = ({ className }: INavbarProps) => {
     setIsAuthModal(true);
   }, []);
 
-  const onShowRegisterModal = useCallback(() => {
-    setIsRegisterModal(true);
-  }, []);
+  // const onShowRegisterModal = useCallback(() => {
+  //   setIsRegisterModal(true);
+  // }, []);
 
   const onLogout = useCallback(() => {
     dispatch(userActions.logout());
@@ -51,7 +52,7 @@ export const Navbar = ({ className }: INavbarProps) => {
                 size='medium' 
                 type='link' 
                 className={classNames({[cls.selected] : true})}
-                onClick={() => dispatch(navigationActions.setCategory(ENavigationCategory.ProjectSelection ))}
+                onClick={() => navigate(RoutePath.project_selection)}
               >
                 Проекты
               </ButtonText>
@@ -70,14 +71,6 @@ export const Navbar = ({ className }: INavbarProps) => {
                 Поддержка
               </ButtonText>
             </div>
-            <ButtonText 
-              size='medium' 
-              type='link'
-              onClick={onShowRegisterModal}
-              className={classNames(cls.registerLink)} 
-            >
-              Зарегистрироваться
-            </ButtonText>
             <RegisterModal 
               isOpen={isRegisterModal}
               onClose={onRegisterCloseModal}
@@ -105,7 +98,7 @@ export const Navbar = ({ className }: INavbarProps) => {
               size='medium' 
               type='link' 
               className={classNames({[cls.selected] : true})}
-              onClick={() => dispatch(navigationActions.setCategory(ENavigationCategory.ProjectSelection ))}
+              onClick={() => navigate(RoutePath.project_selection)}
             >
               Проекты
             </ButtonText>
@@ -124,14 +117,6 @@ export const Navbar = ({ className }: INavbarProps) => {
               Поддержка
             </ButtonText>
           </div>
-          <ButtonText 
-            size='medium' 
-            type='default'
-            onClick={onShowRegisterModal}
-            className={classNames(cls.registerLink)} 
-          >
-            Зарегистрироваться
-          </ButtonText>
           <RegisterModal 
             isOpen={isRegisterModal}
             onClose={onRegisterCloseModal}

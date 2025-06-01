@@ -1,0 +1,33 @@
+.StatusDisable {
+  display: flex;
+  align-items: center;
+
+  &__mode {
+    font: var(--font-functional);
+    color: var(--weak1-color);
+    margin-right: 6px;
+  }
+}
+
+.circle {
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  aspect-ratio: 1/1;
+
+  &_green {
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    aspect-ratio: 1/1;
+    background-color: var(--green);
+  }
+
+  &_red {
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    aspect-ratio: 1/1;
+    background-color: var(--red-pink);
+  }
+}

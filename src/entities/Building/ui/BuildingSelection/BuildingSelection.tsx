@@ -2,7 +2,7 @@ import { useAppDispatch } from "app/providers/StoreProvider/lib/hooks/useAppDisp
 import classNames from "classnames";
 import {
   getBuilding,
-  getPatchedBuildingIsLoading
+  getBuildingId
 } from "entities/Building";
 import {
   buildingsSummaryReducer,
@@ -19,6 +19,8 @@ import { DynamicModuleLoader, ReducersList } from "shared/lib/components/Dynamic
 import { Card } from "shared/ui/Card/Card";
 import { ListedItem } from "shared/ui/ListedItem/ListedItem";
 import { Skeleton } from "shared/ui/Skeleton/Skeleton";
+import { StatusActive } from "shared/ui/StatusActive/StatusActive";
+import { StatusDisable } from "shared/ui/StatusDisable/StatusDisable";
 import { Text, TextTheme } from "shared/ui/Text/Text";
 import { fetchBuilding } from "../../api/fetchBuilding/fetchBuilding";
 import cls from "./BuildingSelection.module.scss";
@@ -33,17 +35,17 @@ const initialReducers: ReducersList = {
 
 export const BuildingSelection = ({ className }: IBuildingSelectionProps) => {  
   const [isAddBuildingModal, setIsAddBuildingModal] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [, setSelectedItem] = useState<string>('');
   
   const dispatch = useAppDispatch();
   const projectId = useSelector(getProjectId);
   const buildingsSummary = useSelector(getBuildingsSummary);
   const buildingInfo = useSelector(getBuilding);
-  
+  const buildingId = useSelector(getBuildingId);
+
   // const isLoadingBuildingsSummary = useSelector(getBuildingsSummaryIsLoading);
   const errorBuildingsSummary = useSelector(getBuildingsSummaryError);
-  const isLoadingPatchedBuilding = useSelector(getPatchedBuildingIsLoading);
   
   const onCloseModal = useCallback(() => {
     setIsAddBuildingModal(false);
@@ -55,19 +57,13 @@ export const BuildingSelection = ({ className }: IBuildingSelectionProps) => {
 
   useEffect(() => {
     (async () => {
-      setIsLoaded(true);
-      const result = await dispatch(fetchBuildingsSummary(projectId));
-      if (result.meta.requestStatus === 'fulfilled') {
-        setIsLoaded(false);
+      setIsLoading(true);
+      if (projectId) {
+        await dispatch(fetchBuildingsSummary(projectId));
+        setIsLoading(false);
       }
     })()
   }, [dispatch, projectId]);
-
-  useEffect(() => {
-    (async () => {
-      await dispatch(fetchBuildingsSummary(projectId));
-    })()
-  }, [dispatch, isLoadingPatchedBuilding, projectId]);
 
   const onClickHandle = useCallback(
     async (_: React.MouseEvent<HTMLButtonElement, MouseEvent>, building: BuildingSummary) => {
@@ -89,17 +85,18 @@ export const BuildingSelection = ({ className }: IBuildingSelectionProps) => {
           <ul role="list" className={classNames(cls.Card__list)} style={{padding: '8px 12px'}}>
             {errorBuildingsSummary && 
               <Text text={errorBuildingsSummary} theme={TextTheme.ERROR} className={cls.error}/>}
-            {!isLoaded && buildingsSummary 
+            {!isLoading && buildingsSummary 
               ? buildingsSummary.buildings?.map((building) => {
                 return (
                   <ListedItem 
                     key={building.id}
                     onClick={(e) => onClickHandle(e, building)}
                     style={{width: '100%', marginBottom: '8px', cursor: 'pointer'}} 
-                    selected={selectedItem === building.id}
-                    disabled={isLoaded}
+                    selected={buildingId === building.id}
+                    disabled={isLoading}
                   >
-                    {building.name}
+                    {<span>{building.name}</span>}
+                    {building.status ? <StatusActive/> : <StatusDisable/>}
                   </ListedItem>
                 );
               }) 
@@ -109,7 +106,7 @@ export const BuildingSelection = ({ className }: IBuildingSelectionProps) => {
                 <div><Skeleton width={334} height={36}/> </div> 
               </div> 
             }
-            {!isLoaded && !buildingsSummary?.buildings?.length && 
+            {!isLoading && !buildingsSummary?.buildings?.length && 
             <Text 
               text={'У вас пока нет зданий'} 
               theme={TextTheme.PRIMARY} 

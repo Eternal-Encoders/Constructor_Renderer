@@ -1,5 +1,9 @@
+import { useAppDispatch } from "app/providers/StoreProvider/lib/hooks/useAppDispatch";
 import classNames from "classnames";
-import { useState } from "react";
+import { getBuildingLastFloorId } from "entities/Building";
+import { patchFloor } from "entities/Floor";
+import { useCallback, useState } from "react";
+import { useSelector } from "react-redux";
 import { ButtonText } from "../ButtonText/ButtonText";
 import cls from "./Save.module.scss";
 
@@ -8,7 +12,23 @@ interface ISaveProps {
 }
 
 export const Save = ({ className }: ISaveProps) => {
-  const [time, setTime] = useState(new Date().toLocaleString());
+  const [time, setTime] = useState(new Date().toLocaleDateString());
+
+  const dispatch = useAppDispatch();
+
+  const lastFloorId = useSelector(getBuildingLastFloorId);
+
+  const onClickSaveFloorHandle = useCallback(async () => {
+    if (!lastFloorId) return;
+    const result = 
+            await dispatch(patchFloor({floorId: lastFloorId, floor: {
+              
+            }}));
+    if (result.meta.requestStatus === 'fulfilled') {
+      setTime(new Date().toLocaleDateString());
+      console.log(result.payload);
+    }
+  },[dispatch, lastFloorId]);
 
   return (
     <div className={classNames(cls.Save, {}, [className])}>
@@ -22,7 +42,7 @@ export const Save = ({ className }: ISaveProps) => {
       </div>
       <ButtonText 
         className={classNames(cls.Save__button)}
-        onClick={() => setTime(new Date().toLocaleString())}
+        onClick={onClickSaveFloorHandle}
       >
         Сохранить
       </ButtonText>
